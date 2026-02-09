@@ -55,7 +55,7 @@ Raylib est utilisé pour sa **simplicité**, sa **légèreté** et ses **perform
 
 ## 🛠️ Technologies utilisées
 
-- **Langage** : C
+- **Langage** : Python
 - **Bibliothèque graphique** : [Raylib](https://www.raylib.com/)
 - **Paradigme** : Programmation récursive
 - **Algorithme** : Backtracking / DFS

@@ -2,9 +2,7 @@ from pyray import *
 
 class Game :
     def __init__(self):
-        Labyrinth : str = ""
-    def LoadLabyrinth(self, Filepath : str):
-        Labyrinth = str(open(Filepath, "r"))
+        pass
     def Launch(self):
         init_window(800, 450, "Hello")
     def Update(self):

@@ -1,4 +1,9 @@
 from pyray import *
+from Game import *
+
+game = Game()
+game.Launch()
+game.Update()
 dedale = open("dedales.txt", "r")
 laby = str(dedale.read())
 tableau = [list(ligne) for ligne in laby.splitlines()]

@@ -50,5 +50,4 @@ class Labyrinth:
                 draw_rectangle_rec((self.OffsetX + self.SideLenght * column,
                                     self.OffsetY + self.SideLenght * LineCount,
                                     self.SideLenght, self.SideLenght), Current)
-                print("Drew")
             LineCount += 1

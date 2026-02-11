@@ -1,3 +1,5 @@
+# A SUPPRIMER #
+
 from pyray import *
 from Game import *
 

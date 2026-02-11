@@ -3,17 +3,22 @@ from pyray import *
 class Labyrinth:
     def __init__(self):
         self.LabyrinthArray : list = []
+        self.Entry : Vector2 = (-1 ,-1)
         self.SideLenght : int = 10
         self.OffsetX : int = 100
         self.OffsetY : int = 100
 
-        self.Ground : Color = (20, 220, 20, 255)
-        self.Wall : Color = (220, 20, 20, 255)
-        self.Exit : Color = (20, 220, 220, 255)
-        self.Entry : Color = (20, 20, 220, 255)
-        self.Error : Color = (0, 0, 0, 255)
+        self.PathCounter : int = 0
+        self.PathStorage : list = []
+        self.PathFound : bool = False
 
-    def LoadLabyrinth(self, Filepath : str):
+        self.GroundColor : Color = (20, 220, 20, 255)
+        self.WallColor : Color = (220, 20, 20, 255)
+        self.ExitColor : Color = (20, 220, 220, 255)
+        self.EntryColor : Color = (20, 20, 220, 255)
+        self.ErrorColor : Color = (0, 0, 0, 255)
+
+    def LoadLabyrinth(self, Filepath : str) -> None:
         """
         Open, read and transform into an array the txt file used for the labyrinth. \n
         :param MazePath: The path to the txt file.
@@ -25,6 +30,15 @@ class Labyrinth:
         LabyrinthString = LabyrinthString.read()
         for line in LabyrinthString.splitlines():
             self.LabyrinthArray.append(list(line))
+        return None
+
+    def FindEntry(self) -> None:
+        for line in range(0, len(self.LabyrinthArray)):
+            for column in range(0, len(self.LabyrinthArray[line])):
+                if self.LabyrinthArray[line][column] == 'E':
+                    self.Entry = (line, column)
+                    return None
+        return None
 
     def Solve(self):
         pass
@@ -34,19 +48,19 @@ class Labyrinth:
         Draw the labyrinth with the defined colors.\n
         Loops through the array and draw each rectangle.
         """
-        Current : Color = self.Error
+        Current : Color = self.ErrorColor
         LineCount : int = 0
         for line in self.LabyrinthArray:
             for column in range(0, len(line)):
                 match line[column]:
                     case 'X':
-                        Current = self.Wall
+                        Current = self.WallColor
                     case ' ':
-                        Current = self.Ground
+                        Current = self.GroundColor
                     case 'E':
-                        Current = self.Entry
+                        Current = self.EntryColor
                     case 'S':
-                        Current = self.Exit
+                        Current = self.ExitColor
                 draw_rectangle_rec((self.OffsetX + self.SideLenght * column,
                                     self.OffsetY + self.SideLenght * LineCount,
                                     self.SideLenght, self.SideLenght), Current)

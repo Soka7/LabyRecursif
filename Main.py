@@ -11,6 +11,7 @@ game : Game = Game()
 init_window(ScreenWidth, ScreenHeight, Title)
 
 game.LoadMaze("dedales.txt")
+game.Maze.FindEntry()
 
 while not window_should_close():
     begin_drawing()

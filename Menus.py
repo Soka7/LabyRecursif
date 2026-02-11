@@ -3,24 +3,24 @@ from Button import Button
 
 class MainMenu:
     def __init__(self) -> None:
-        self.StartButton = Button()
-        self.QuitButton = Button()
-        self.CreditsButton = Button()
-        self.SettingsButton = Button()
-        self.CreationButton = Button()
+        self.StartButton : Button = Button()
+        self.QuitButton : Button = Button()
+        self.CreditsButton : Button = Button()
+        self.SettingsButton : Button = Button()
+        self.CreationButton : Button = Button()
 
-        self.TextSize = 24
-        self.TextColor = (0, 0, 0, 255)
-        self.HoverSize = 5
-        self.HoverColor = (0, 0, 255, 255)
+        self.TextSize : int = 24
+        self.TextColor : Color = (0, 0, 0, 255)
+        self.HoverSize : int = 5
+        self.HoverColor : Color = (0, 0, 255, 255)
         return None
     
-    def Draw(self) -> None:
-        self.StartButton.Draw()
-        self.QuitButton.Draw()
-        self.CreditsButton.Draw()
-        self.SettingsButton.Draw()
-        self.CreationButton.Draw()
+    def Draw(self, Atlas : Texture, TextureLocation : Rectangle) -> None:
+        self.StartButton.Draw(Atlas, TextureLocation)
+        self.QuitButton.Draw(Atlas, TextureLocation)
+        self.CreditsButton.Draw(Atlas, TextureLocation)
+        self.SettingsButton.Draw(Atlas, TextureLocation)
+        self.CreationButton.Draw(Atlas, TextureLocation)
         return None
 
     def EditPosAll(self) -> None:

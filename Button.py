@@ -8,8 +8,8 @@ class Button:
         """
         self.ButtonColor : Color = (0, 0, 0, 0)
         self.function = None
-        self.Position : Vector2 = (0, 0)
-        self.Size : Vector2 = (0, 0)
+        self.Position : Vector2 = Vector2(0, 0)
+        self.Size : Vector2 = Vector2(0, 0)
         self.Text : str = ""
         self.TextSize : int = 0
         self.TextColor : Color = (0, 0, 0, 0)
@@ -118,13 +118,20 @@ class Button:
             self.function()
         return None
     
-    def Draw(self) -> None:
+    def Draw(self, Atlas : Texture, TextureLocation : Rectangle) -> None:
         """
         Draw a rectangle being the button at the given coordinates with the given size. \n
         Also Draw its text and apply a hover effect if needed. \n
+        :param Atlas: The texture containing all the sprites.
+        :type Atlas: Texture
+        :param TextureLocation: The rectangle containing the position of the texture in the atlas.
+        :type TextureLocation: Rectangle
         :return: None
         """
-        draw_rectangle_rec((self.Position.x, self.Position.y, self.Size.x, self.Size.y), self.ButtonColor)
+        Origin : Vector2 = Vector2(0, 0)
+        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y)
+        Rotation : int = 0
+        draw_texture_pro(Atlas, TextureLocation, DestinationRec, Origin, Rotation, WHITE)
         self.DrawText()
         self.HoverEffect()
         return None

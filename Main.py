@@ -1,20 +1,19 @@
 from pyray import *
-from Game import *
-from Button import *
+from Game import Game
+from Menus import MainMenu
 
 Background : Color = (255, 255, 255, 255)
-ScreenWidth : int = 800
-ScreenHeight : int = 450
+ScreenWidth : int = 1200
+ScreenHeight : int = 720
 Title : str = "A based maze solver !"
 
 game : Game = Game()
+moi = MainMenu()
+moi.EditHoverAll()
+moi.EditPosAll()
+moi.EditTextAll()
 
 init_window(ScreenWidth, ScreenHeight, Title)
-
-bouton = Button()
-bouton.EditPos(Vector2(0, 0), Vector2(100, 100))
-bouton.EditText("Moi", 28, (255, 255, 255, 255))
-bouton.EditHover(10, (255, 0, 0, 255))
 
 game.LoadMaze("dedales.txt")
 game.Maze.FindEntry()
@@ -22,12 +21,11 @@ game.Maze.FindEntry()
 while not window_should_close():
     begin_drawing()
     clear_background(Background)
-    if bouton.IsClicked():
-        print("moi")
     game.Draw()
-    bouton.Draw()
+    moi.Draw()
     end_drawing()
 
 close_window()
 
 # Set-up : pip3 install raylib==5.5.0.3 --break-system-packages
+# Sources : https://electronstudio.github.io/raylib-python-cffi/README.html

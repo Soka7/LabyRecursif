@@ -4,18 +4,22 @@ from Menus import *
 
 class Game :
     def __init__(self):
-        self.Maze : Labyrinth = Labyrinth()
-        self.MainMenu : MainMenu = MainMenu()
+        self.Atlas : Texture = None                                     # The texture holding all the sprites
+        self.BaseButtonLocation : Rectangle = Rectangle(0, 0, 61, 18)   # Where the button sprite is in the Atlas
+        self.HoverButtonLocation : Rectangle = Rectangle(0, 18, 62, 20) # Where the hover button sprite is in the Atlas
+        self.PressedButtonLocation : Rectangle = Rectangle(0, 38, 62, 20) # Where the pressed button sprite is in the Atlas
 
-        self.Atlas : Texture = None
-        self.ButtonLocation : Rectangle = Rectangle(0, 0, 61, 18)
+        self.Maze : Labyrinth = Labyrinth()                         
+        self.MainMenu : MainMenu = MainMenu(self.BaseButtonLocation, self.HoverButtonLocation, self.PressedButtonLocation)
 
-        self.CurrentMenu : list = []
+        self.CurrentMenu : list = []                                    # Stack to know which menu you are in
+        self.ShouldClose : bool = False
 
     def Prepare(self) -> None:
         self.MainMenu.EditPosAll()
         self.MainMenu.EditTextAll()
-        self.MainMenu.EditHoverAll()
+        self.MainMenu.EditTexturesAll()
+        self.MainMenu.BindAll(None, self.PrepareToQuit, None, None, None)
         return None
 
     def LoadMaze(self, MazePath : str) -> None:
@@ -41,6 +45,7 @@ class Game :
         return None
 
     def Update(self) -> None:
+        self.MainMenu.Update()
         if self.CurrentMenu == []:
             self.CurrentMenu.append("MainMenu")
         return None
@@ -53,9 +58,10 @@ class Game :
         :rtype: None
         """
         self.Maze.Draw()
-        self.MainMenu.Draw(self.Atlas, self.ButtonLocation)
+        self.MainMenu.Draw(self.Atlas)
         return None
     
     def PrepareToQuit(self) -> None:
         unload_texture(self.Atlas)
+        self.ShouldClose = True
         return None

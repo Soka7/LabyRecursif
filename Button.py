@@ -6,15 +6,17 @@ class Button:
         Create a button object. \n
         All attributes are defaulted to 0 or null.
         """
-        self.ButtonColor : Color = (0, 0, 0, 0)
-        self.function = None
-        self.Position : Vector2 = Vector2(0, 0)
-        self.Size : Vector2 = Vector2(0, 0)
-        self.Text : str = ""
-        self.TextSize : int = 0
-        self.TextColor : Color = (0, 0, 0, 0)
-        self.HoverSize : int = 0
-        self.HoverColor : Color = (0, 0, 0, 0)
+        self.function = None                        # Function Called by the button when its clicked
+        self.Position : Vector2 = Vector2(0, 0)     # Position (x and y)
+        self.Size : Vector2 = Vector2(0, 0)         # Size (width, lenght)
+        self.Text : str = ""                        # Text displayed
+        self.TextSize : int = 0                     # Size of the text with default font
+        self.TextColor : Color = (0, 0, 0, 0)       # Color of the text (Red, Green, Blue, Alpha(Opacity))
+
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0) # The location of the texture to use for drawing.
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the base button texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)   # Location of the hover button texture in the Atlas
+        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the pressed button texture in the Atlas
         return None
         
     def IsHovered(self) -> bool:
@@ -58,20 +60,22 @@ class Button:
         self.TextSize = TextSize
         self.TextColor = TextColor
         return None
-
-    def EditHover(self, HoverSize : int, HoverColor : Color) -> None:
+    
+    def EditTextures(self, Base : Rectangle, Hover : Rectangle, Pressed : Rectangle) -> None:
         """
-        Edit the hover effect of the button. \n
-        The effect is simply a rectangular border.
+        Give the textures of the buttons
         
-        :param HoverSize: The size of the border in pixels.
-        :type HoverSize: int
-        :param HoverColor: The color of the border (RGBA).
-        :type HoverColor: Color
+        :param Base: The location of the base texture in the Atlas
+        :type Base: Rectangle
+        :param Hover: The location of the hover texture in the Atlas
+        :type Hover: Rectangle
+        :param Pressed: The location of the pressed texture in the Atlas.
+        :type Pressed: Rectangle
         :return: None
         """
-        self.HoverSize = HoverSize
-        self.HoverColor = HoverColor
+        self.BaseTexture = Base
+        self.HoverTexture = Hover
+        self.PressedTexture = Pressed
         return None
     
     def Bind(self, function) -> None:
@@ -96,17 +100,17 @@ class Button:
                                          self.Position.y + (self.Size.y - self.TextSize) / 2)
         draw_text(self.Text, int(TextPosition.x), int(TextPosition.y), self.TextSize, self.TextColor)
         return None
+    
+    def IsClicked(self) -> bool:
+        """
+        Check if the left mouse button is clicked.
 
-    def HoverEffect(self) -> None:
+        :return: If the buton is clicked
+        :rtype: bool
         """
-        Apply the hover effect to the button if it is hovered.
-        
-        :return: None
-        """
-        if self.IsHovered():
-            Object : Rectangle = (self.Position.x, self.Position.y, self.Size.x, self.Size.y)
-            draw_rectangle_lines_ex(Object, self.HoverSize, self.HoverColor)
-        return None
+        if is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
+            return True
+        return False
 
     def Update(self) -> None:
         """
@@ -114,25 +118,34 @@ class Button:
         
         :return: None
         """
-        if self.IsHovered() and is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
-            self.function()
+        # Check if the button is hovered by the mouse and if the left click of the mouse is pressed, call the function if it is the case
+        if self.IsHovered():
+            self.CurrentTexture = self.HoverTexture
+            if self.IsClicked():
+                self.function()
+                self.CurrentTexture = self.PressedTexture
+            elif is_mouse_button_down(MouseButton.MOUSE_BUTTON_LEFT):
+                self.CurrentTexture = self.PressedTexture
+            return None
+        if self.CurrentTexture != self.BaseTexture:
+            self.CurrentTexture = self.BaseTexture
         return None
     
-    def Draw(self, Atlas : Texture, TextureLocation : Rectangle) -> None:
+    def Draw(self, Atlas : Texture) -> None:
         """
         Draw a rectangle being the button at the given coordinates with the given size. \n
         Also Draw its text and apply a hover effect if needed. \n
         :param Atlas: The texture containing all the sprites.
         :type Atlas: Texture
-        :param TextureLocation: The rectangle containing the position of the texture in the atlas.
-        :type TextureLocation: Rectangle
         :return: None
         """
-        Origin : Vector2 = Vector2(0, 0)
-        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y)
-        Rotation : int = 0
-        draw_texture_pro(Atlas, TextureLocation, DestinationRec, Origin, Rotation, WHITE)
+        Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)
+        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y) # Button hitbox
+        Rotation : int = 0 # Rotation of the button's texture (0)
+
+        # Take a region of Atlas, being TextureLocation, to draw the button
+        # Draw it at its hitbox place with a WHITE tint (default)
+        draw_texture_pro(Atlas, self.CurrentTexture, DestinationRec, Origin, Rotation, WHITE)
         self.DrawText()
-        self.HoverEffect()
         return None
     

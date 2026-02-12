@@ -4,15 +4,16 @@ from Menus import *
 
 class Game :
     def __init__(self):
-        self.Maze : Labyrinth = Labyrinth()
+        self.Maze : Labyrinth = Labyrinth()                         
         self.MainMenu : MainMenu = MainMenu()
 
-        self.Atlas : Texture = None
-        self.ButtonLocation : Rectangle = Rectangle(0, 0, 61, 18)
+        self.Atlas : Texture = None                                 # The texture holding all the sprites
+        self.ButtonLocation : Rectangle = Rectangle(0, 0, 61, 18)   # Where the button sprite is in the Atlas
 
-        self.CurrentMenu : list = []
+        self.CurrentMenu : list = []                                # Stack to know which menu you are in
 
     def Prepare(self) -> None:
+        # Set the Main Menu
         self.MainMenu.EditPosAll()
         self.MainMenu.EditTextAll()
         self.MainMenu.EditHoverAll()
@@ -57,5 +58,6 @@ class Game :
         return None
     
     def PrepareToQuit(self) -> None:
+        # Unload the texture before quitting to avoid undefined behavior
         unload_texture(self.Atlas)
         return None

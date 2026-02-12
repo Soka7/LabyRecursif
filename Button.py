@@ -6,15 +6,14 @@ class Button:
         Create a button object. \n
         All attributes are defaulted to 0 or null.
         """
-        self.ButtonColor : Color = (0, 0, 0, 0)
-        self.function = None
-        self.Position : Vector2 = Vector2(0, 0)
-        self.Size : Vector2 = Vector2(0, 0)
-        self.Text : str = ""
-        self.TextSize : int = 0
-        self.TextColor : Color = (0, 0, 0, 0)
-        self.HoverSize : int = 0
-        self.HoverColor : Color = (0, 0, 0, 0)
+        self.function = None                        # Function Called by the button when its clicked
+        self.Position : Vector2 = Vector2(0, 0)     # Position (x and y)
+        self.Size : Vector2 = Vector2(0, 0)         # Size (width, lenght)
+        self.Text : str = ""                        # Text displayed
+        self.TextSize : int = 0                     # Size of the text with default font
+        self.TextColor : Color = (0, 0, 0, 0)       # Color of the text (Red, Green, Blue, Alpha(Opacity))
+        self.HoverSize : int = 0                    # Size of the hover effect (line thickness)
+        self.HoverColor : Color = (0, 0, 0, 0)      # Color of those lines
         return None
         
     def IsHovered(self) -> bool:
@@ -24,6 +23,7 @@ class Button:
         :return: True if the mouse is hovering it, False otherwise.
         :rtype: bool
         """
+        # Check if the mouse cursor is inside the button's hitbox
         if check_collision_point_rec(get_mouse_position(), (self.Position.x, self.Position.y, self.Size.x, self.Size.y)):
             return True
         return False
@@ -81,6 +81,7 @@ class Button:
         :param function: A function, must return None and have no parameters.
         :return: None
         """
+        # Define which function to call when the button is pressed
         self.function = function
         return None
     
@@ -90,7 +91,7 @@ class Button:
         
         :return: None
         """
-        TextWidth : int = measure_text(self.Text, self.TextSize)
+        TextWidth : int = measure_text(self.Text, self.TextSize) # Measure the width in pixels of the text
         # Find where the text should be to be centered.
         TextPosition : Vector2 = Vector2(self.Position.x + (self.Size.x - TextWidth) / 2,
                                          self.Position.y + (self.Size.y - self.TextSize) / 2)
@@ -103,6 +104,7 @@ class Button:
         
         :return: None
         """
+        # If the button is hovered apply a a small effect (lines of self.hoversize thicknexss and self.HoverCOlor color)
         if self.IsHovered():
             Object : Rectangle = (self.Position.x, self.Position.y, self.Size.x, self.Size.y)
             draw_rectangle_lines_ex(Object, self.HoverSize, self.HoverColor)
@@ -114,6 +116,7 @@ class Button:
         
         :return: None
         """
+        # Check if the button is hovered by the mouse and if the left click of the mouse is pressed, call the function if it is the case
         if self.IsHovered() and is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
             self.function()
         return None
@@ -128,9 +131,11 @@ class Button:
         :type TextureLocation: Rectangle
         :return: None
         """
-        Origin : Vector2 = Vector2(0, 0)
-        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y)
-        Rotation : int = 0
+        Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)
+        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y) # Button hitbox
+        Rotation : int = 0 # Rotation of the button's texture (0)
+        # Take a region of Atlas, being TextureLocation, to draw the button
+        # Draw it at its hitbox place with a WHITE tint (default)
         draw_texture_pro(Atlas, TextureLocation, DestinationRec, Origin, Rotation, WHITE)
         self.DrawText()
         self.HoverEffect()

@@ -2,17 +2,18 @@ from pyray import *
 
 class Labyrinth:
     def __init__(self):
-        self.LabyrinthArray : list = []
-        self.Entry : Vector2 = (-1 ,-1)
-        self.SideLenght : int = 10
-        self.OffsetX : int = 100
+        self.LabyrinthArray : list = []                 # The labyrinth 
+        self.Entry : Vector2 = (-1 ,-1)                 # Spawn point of the labyrinth
+        self.SideLenght : int = 10                      # Size of each cell of the labyrinth
+        self.OffsetX : int = 100                        
         self.OffsetY : int = 100
 
-        self.PathCounter : int = 0
-        self.PathStorage : list = []
-        self.PathFound : bool = False
+        self.PathCounter : int = 0                      # The current path used 
+        self.PathStorage : list = []                    # The numbers used to displayed the paths
+        self.PathFound : bool = False                   # If a path to the exit has been found
 
-        self.GroundColor : Color = (20, 220, 20, 255)
+        # Color of the different tiles
+        self.GroundColor : Color = (20, 220, 20, 255)      
         self.WallColor : Color = (220, 20, 20, 255)
         self.ExitColor : Color = (20, 220, 220, 255)
         self.EntryColor : Color = (20, 20, 220, 255)

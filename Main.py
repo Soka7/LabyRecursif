@@ -1,18 +1,18 @@
 from pyray import *
 from Game import Game
 
-Background : Color = (255, 255, 255, 255)
+Background : Color = (128, 128, 128, 255)
 ScreenWidth : int = 1200
 ScreenHeight : int = 720
 Title : str = "A based maze solver !"
 
 game : Game = Game()
 
-init_window(ScreenWidth, ScreenHeight, Title)
+init_window(ScreenWidth, ScreenHeight, Title) # Create the window
 
 game.LoadMaze("dedales.txt")
 game.LoadTextures("Textures/Sprites.png")
-game.Prepare()
+game.Prepare()                  
 game.Maze.FindEntry()
 
 while not window_should_close():

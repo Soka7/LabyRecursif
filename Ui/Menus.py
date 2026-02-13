@@ -1,5 +1,5 @@
 from pyray import *
-from Button import Button
+from Ui.Buttons import Button
 
 class Menu:
     def __init__(self, ButtonsCount : int, ButtonBase : Rectangle, ButtonHover : Rectangle, ButtonPressed : Rectangle) -> None:

@@ -1,6 +1,6 @@
 from pyray import *
 from Labyrinth import *
-from Menus import Menu
+from Ui.Menus import Menu
 
 class Game :
     def __init__(self):
@@ -20,12 +20,14 @@ class Game :
         self.LoadMaze("dedales.txt")
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
+
         self.MainMenu.EditPosAll(Rectangle(550, 400, 120, 40), Rectangle(550, 670, 120, 40),
                                  Rectangle(5, 670, 120, 40), Rectangle(1070, 5, 120, 40),
                                  Rectangle(550, 500, 120, 40))
         self.MainMenu.EditTextAll("Start", "Quit", "Credits", "Settings", "Creation")
         self.MainMenu.EditTexturesAll()
         self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, None, None)
+
         return None
 
     def PrepareMaze(self) -> None:

@@ -66,3 +66,4 @@ class Labyrinth:
                                     self.OffsetY + self.SideLenght * LineCount,
                                     self.SideLenght, self.SideLenght), Current)
             LineCount += 1
+        print(self.LabyrinthArray)

@@ -23,10 +23,15 @@ class Game :
         self.MainMenu.EditPosAll()
         self.MainMenu.EditTextAll()
         self.MainMenu.EditTexturesAll()
-        self.MainMenu.BindAll(self.PrepareGame, self.PrepareToQuit, None, None, None)
+        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, None, None)
         return None
 
-    def PrepareGame(self) -> None:
+    def PrepareMaze(self) -> None:
+        """
+        Prepare the change to the maze. By loading the maze and quitting the menu.
+
+        :return: None
+        """
         self.InMenus = False
         self.LoadMaze("dedales.txt")
         return None
@@ -36,8 +41,9 @@ class Game :
         Load a maze based of a txt file. \n
         :param MazePath: The relative path to the txt file.
         :type MazePath: str
-        :return:
         :rtype: None
+
+        Extras: - In this project the MazePath is dedales.txt
         """
         self.Maze.LoadLabyrinth(MazePath)
         return None
@@ -49,6 +55,8 @@ class Game :
         :param FilePath: The relative path to the file, likely png.
         :type FilePath: str
         :return: None
+
+        Extras: - In this project, the FilePath is Textures/Sprites.png
         """
         self.Atlas = load_texture(FilePath)
         return None
@@ -61,9 +69,8 @@ class Game :
     
     def Draw(self) -> None:
         """
-        Draw the ui and the labyrinth.
+        Draw the adequate menu or elements.
         
-        :return:
         :rtype: None
         """
         if self.InMenus:
@@ -73,6 +80,13 @@ class Game :
         return None
     
     def PrepareToQuit(self) -> None:
+        """
+        Prepare raylib for quitting by unloading all textures.
+
+        :return: None
+
+        Extras: - unload_texture() is a raylib function to remove a texture from the memory.
+        """
         unload_texture(self.Atlas)
         self.ShouldClose = True
         return None

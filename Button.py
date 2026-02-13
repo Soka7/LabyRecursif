@@ -5,18 +5,21 @@ class Button:
         """
         Create a button object. \n
         All attributes are defaulted to 0 or null.
+
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
+        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
         """
         self.function = None                        # Function Called by the button when its clicked
-        self.Position : Vector2 = Vector2(0, 0)     # Position (x and y)
-        self.Size : Vector2 = Vector2(0, 0)         # Size (width, lenght)
+        self.Dimensions = Rectangle(0, 0, 0, 0)     # Rectangle being the buttons dimmensions
         self.Text : str = ""                        # Text displayed
         self.TextSize : int = 0                     # Size of the text with default font
         self.TextColor : Color = (0, 0, 0, 0)       # Color of the text (Red, Green, Blue, Alpha(Opacity))
 
-        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0) # The location of the texture to use for drawing.
-        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the base button texture in the Atlas
-        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)   # Location of the hover button texture in the Atlas
-        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the pressed button texture in the Atlas
+        # Textures
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing.
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button texture in the Atlas
+        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button texture in the Atlas
         return None
         
     def IsHovered(self) -> bool:
@@ -25,23 +28,25 @@ class Button:
         
         :return: True if the mouse is hovering it, False otherwise.
         :rtype: bool
+
+        Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
+        Extras: - get_mouse_position() is a raylib function returning a Vector2 holding the x and y position of the mouse.
         """
-        if check_collision_point_rec(get_mouse_position(), (self.Position.x, self.Position.y, self.Size.x, self.Size.y)):
+        if check_collision_point_rec(get_mouse_position(), (self.Dimensions.x, self.Dimensions.y, self.Dimensions.width, self.Dimensions.height)):
             return True
         return False
 
-    def EditPos(self, Position : Vector2, Size : Vector2) -> None:
+    def EditPos(self, Dimensions : Rectangle) -> None:
         """
         Edit the button position and size.
         
-        :param Position: The x and y position of the button.
-        :type Position: Vector2
-        :param Size: The width and lenght of the button.
-        :type Size: Vector2
+        :param Dimensions: The x and y position of the button and its width and height.
+        :type Dimensions: Rectangle
         :return: None
+
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
-        self.Position = Position
-        self.Size = Size
+        self.Dimensions = Dimensions
         return None
     
     def EditText(self, Text : str, TextSize : int, TextColor : Color) -> None:
@@ -50,11 +55,14 @@ class Button:
         
         :param Text: The text to display.
         :type Text: str
-        :param TextSize: The fontsize of the text. 
+        :param TextSize: The fontsize of the text.
         :type TextSize: int
         :param TextColor: The color of the text. (RGBA)
         :type TextColor: Color
         :return: None
+
+        Extras: - Using default font. \n
+        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
         """
         self.Text = Text
         self.TextSize = TextSize
@@ -72,6 +80,9 @@ class Button:
         :param Pressed: The location of the pressed texture in the Atlas.
         :type Pressed: Rectangle
         :return: None
+
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - In this project the Atlas is Sprites.png
         """
         self.BaseTexture = Base
         self.HoverTexture = Hover
@@ -83,7 +94,10 @@ class Button:
         Give a function to the button that will be called when it is clicked.
         
         :param function: A function, must return None and have no parameters.
+        :type function: function
         :return: None
+
+        Extras: - Function must be argumentless and return None.
         """
         self.function = function
         return None
@@ -93,11 +107,14 @@ class Button:
         Draw the text of the button at its center.
         
         :return: None
+
+        Extras: - measure_text() is a raylib function returning the width of the text with the default font. \n
+        Extras: - draw_text() is a raylib function to draw text.
         """
         TextWidth : int = measure_text(self.Text, self.TextSize)
         # Find where the text should be to be centered.
-        TextPosition : Vector2 = Vector2(self.Position.x + (self.Size.x - TextWidth) / 2,
-                                         self.Position.y + (self.Size.y - self.TextSize) / 2)
+        TextPosition : Vector2 = Vector2(self.Dimensions.x + (self.Dimensions.width - TextWidth) / 2,
+                                         self.Dimensions.y + (self.Dimensions.height - self.TextSize) / 2)
         draw_text(self.Text, int(TextPosition.x), int(TextPosition.y), self.TextSize, self.TextColor)
         return None
     
@@ -107,6 +124,9 @@ class Button:
 
         :return: If the buton is clicked
         :rtype: bool
+
+        Extras: - is_mouse_button_pressed() is a raylib function checking if a button of the mouse has been pressed. \n
+        Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button
         """
         if is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
             return True
@@ -117,6 +137,9 @@ class Button:
         Check if the mouse clicked the button and call the function it has.
         
         :return: None
+
+        Extras: - is_mouse_button_down() is a raylib function checking if a button of the mouse is being held. \n
+        Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button
         """
         # Check if the button is hovered by the mouse and if the left click of the mouse is pressed, call the function if it is the case
         if self.IsHovered():
@@ -127,25 +150,29 @@ class Button:
             elif is_mouse_button_down(MouseButton.MOUSE_BUTTON_LEFT):
                 self.CurrentTexture = self.PressedTexture
             return None
+
+        # Reset the texture 
         if self.CurrentTexture != self.BaseTexture:
             self.CurrentTexture = self.BaseTexture
         return None
     
     def Draw(self, Atlas : Texture) -> None:
         """
-        Draw a rectangle being the button at the given coordinates with the given size. \n
-        Also Draw its text and apply a hover effect if needed. \n
-        :param Atlas: The texture containing all the sprites.
+        Draw the button with the adequate texture.
+
+        :param Atlas: The texture holding all the sprites of the game.
         :type Atlas: Texture
         :return: None
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility.
         """
         Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)
-        DestinationRec : Rectangle = Rectangle(self.Position.x, self.Position.y, self.Size.x, self.Size.y) # Button hitbox
         Rotation : int = 0 # Rotation of the button's texture (0)
 
         # Take a region of Atlas, being TextureLocation, to draw the button
         # Draw it at its hitbox place with a WHITE tint (default)
-        draw_texture_pro(Atlas, self.CurrentTexture, DestinationRec, Origin, Rotation, WHITE)
+        draw_texture_pro(Atlas, self.CurrentTexture, self.Dimensions, Origin, Rotation, WHITE)
         self.DrawText()
         return None
     

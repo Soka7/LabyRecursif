@@ -1,6 +1,6 @@
 from pyray import *
 from Labyrinth import *
-from Menus import *
+from Menus import Menu
 
 class Game :
     def __init__(self):
@@ -10,7 +10,7 @@ class Game :
         self.PressedButtonLocation : Rectangle = Rectangle(0, 38, 62, 20) # Where the pressed button sprite is in the Atlas
 
         self.Maze : Labyrinth = Labyrinth()                         
-        self.MainMenu : MainMenu = MainMenu(self.BaseButtonLocation, self.HoverButtonLocation, self.PressedButtonLocation)
+        self.MainMenu : Menu = Menu(5, self.BaseButtonLocation, self.HoverButtonLocation, self.PressedButtonLocation)
 
         self.CurrentMenu : list = []                                    # Stack to know which menu you are in
         self.ShouldClose : bool = False
@@ -20,8 +20,10 @@ class Game :
         self.LoadMaze("dedales.txt")
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
-        self.MainMenu.EditPosAll()
-        self.MainMenu.EditTextAll()
+        self.MainMenu.EditPosAll(Rectangle(550, 400, 120, 40), Rectangle(550, 670, 120, 40),
+                                 Rectangle(5, 670, 120, 40), Rectangle(1070, 5, 120, 40),
+                                 Rectangle(550, 500, 120, 40))
+        self.MainMenu.EditTextAll("Start", "Quit", "Credits", "Settings", "Creation")
         self.MainMenu.EditTexturesAll()
         self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, None, None)
         return None

@@ -4,7 +4,7 @@ from Menus import *
 
 class Game :
     def __init__(self):
-        self.Maze : Labyrinth = Labyrinth()                         
+        self.Maze : Labyrinth = Labyrinth()                         #Maze creation                 
         self.MainMenu : MainMenu = MainMenu()
 
         self.Atlas : Texture = None                                 # The texture holding all the sprites
@@ -53,8 +53,8 @@ class Game :
         :return:
         :rtype: None
         """
-        self.Maze.Draw()
-        self.MainMenu.Draw(self.Atlas, self.ButtonLocation)
+        self.Maze.Draw()                                                    #Maze drawing looping
+        self.MainMenu.Draw(self.Atlas, self.ButtonLocation)                 #Main menu drawing looping
         return None
     
     def PrepareToQuit(self) -> None:

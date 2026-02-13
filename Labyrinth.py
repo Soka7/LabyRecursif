@@ -1,4 +1,5 @@
 from pyray import *
+from SolverBotFile import SolverBot
 
 class Labyrinth:
     def __init__(self):
@@ -18,6 +19,8 @@ class Labyrinth:
         self.ExitColor : Color = (20, 220, 220, 255)
         self.EntryColor : Color = (20, 20, 220, 255)
         self.ErrorColor : Color = (0, 0, 0, 255)
+        
+        self.Solver = None
 
     def LoadLabyrinth(self, Filepath : str) -> None:
         """
@@ -38,6 +41,7 @@ class Labyrinth:
             for column in range(0, len(self.LabyrinthArray[line])):
                 if self.LabyrinthArray[line][column] == 'E':
                     self.Entry = (line, column)
+                    self.Solver = SolverBot(line, column)
                     return None
         return None
 
@@ -66,3 +70,4 @@ class Labyrinth:
                                     self.OffsetY + self.SideLenght * LineCount,
                                     self.SideLenght, self.SideLenght), Current)
             LineCount += 1
+        print(self.LabyrinthArray)

@@ -10,10 +10,7 @@ game : Game = Game()
 
 init_window(ScreenWidth, ScreenHeight, Title)
 
-game.LoadMaze("dedales.txt")
-game.LoadTextures("Textures/Sprites.png")
 game.Prepare()
-game.Maze.FindEntry()
 
 while not window_should_close():
     game.Update()
@@ -27,5 +24,8 @@ while not window_should_close():
 if not game.ShouldClose:
     game.PrepareToQuit()
 close_window()
+
 # Set-up : pip3 install raylib==5.5.0.3 --break-system-packages
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
+
+# NOTE : ADD PYRAY FUNCTIONS TO DOCSTRINGS

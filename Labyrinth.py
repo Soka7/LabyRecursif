@@ -26,6 +26,7 @@ class Labyrinth:
         :return:
         :rtype: None
         """
+        self.LabyrinthArray.clear()                 # Reset the previous labyrinth to avoid duplication
         LabyrinthString = open(Filepath, "r")
         LabyrinthString = LabyrinthString.read()
         for line in LabyrinthString.splitlines():

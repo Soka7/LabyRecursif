@@ -14,12 +14,21 @@ class Game :
 
         self.CurrentMenu : list = []                                    # Stack to know which menu you are in
         self.ShouldClose : bool = False
+        self.InMenus : bool = True                                      # If the player is inside menus or not
 
     def Prepare(self) -> None:
+        self.LoadMaze("dedales.txt")
+        self.Maze.FindEntry()
+        self.LoadTextures("Textures/Sprites.png")
         self.MainMenu.EditPosAll()
         self.MainMenu.EditTextAll()
         self.MainMenu.EditTexturesAll()
-        self.MainMenu.BindAll(None, self.PrepareToQuit, None, None, None)
+        self.MainMenu.BindAll(self.PrepareGame, self.PrepareToQuit, None, None, None)
+        return None
+
+    def PrepareGame(self) -> None:
+        self.InMenus = False
+        self.LoadMaze("dedales.txt")
         return None
 
     def LoadMaze(self, MazePath : str) -> None:
@@ -57,8 +66,10 @@ class Game :
         :return:
         :rtype: None
         """
-        self.Maze.Draw()
-        self.MainMenu.Draw(self.Atlas)
+        if self.InMenus:
+            self.MainMenu.Draw(self.Atlas)
+        else:
+            self.Maze.Draw()
         return None
     
     def PrepareToQuit(self) -> None:

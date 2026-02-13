@@ -50,7 +50,7 @@ class MainMenu:
         return None
     
     def EditTexturesAll(self) -> None:
-        # Make a small hover effeft on the button.
+        # Make a small hover effect on the button.
         self.StartButton.EditTextures(self.BaseButtonTexture, self.HoverButtonTexture, self.PressedButtonTexture)
         self.QuitButton.EditTextures(self.BaseButtonTexture, self.HoverButtonTexture, self.PressedButtonTexture)
         self.CreditsButton.EditTextures(self.BaseButtonTexture, self.HoverButtonTexture, self.PressedButtonTexture)

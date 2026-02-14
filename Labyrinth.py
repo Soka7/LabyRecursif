@@ -1,22 +1,26 @@
 from pyray import *
+from SolverBotFile import SolverBot
 
 class Labyrinth:
     def __init__(self):
-        self.LabyrinthArray : list = []
-        self.Entry : Vector2 = (-1 ,-1)
-        self.SideLenght : int = 10
-        self.OffsetX : int = 100
+        self.LabyrinthArray : list = []                 # The labyrinth 
+        self.Entry : Vector2 = (-1 ,-1)                 # Spawn point of the labyrinth
+        self.SideLenght : int = 10                      # Size of each cell of the labyrinth
+        self.OffsetX : int = 100                        
         self.OffsetY : int = 100
 
-        self.PathCounter : int = 0
-        self.PathStorage : list = []
-        self.PathFound : bool = False
+        self.PathCounter : int = 0                      # The current path used 
+        self.PathStorage : list = []                    # The numbers used to displayed the paths
+        self.PathFound : bool = False                   # If a path to the exit has been found
 
-        self.GroundColor : Color = (20, 220, 20, 255)
+        # Color of the different tiles
+        self.GroundColor : Color = (20, 220, 20, 255)      
         self.WallColor : Color = (220, 20, 20, 255)
         self.ExitColor : Color = (20, 220, 220, 255)
         self.EntryColor : Color = (20, 20, 220, 255)
         self.ErrorColor : Color = (0, 0, 0, 255)
+        
+        self.Solver = None
 
     def LoadLabyrinth(self, Filepath : str) -> None:
         """
@@ -38,6 +42,7 @@ class Labyrinth:
             for column in range(0, len(self.LabyrinthArray[line])):
                 if self.LabyrinthArray[line][column] == 'E':
                     self.Entry = (line, column)
+                    self.Solver = SolverBot(line, column)
                     return None
         return None
 
@@ -66,3 +71,4 @@ class Labyrinth:
                                     self.OffsetY + self.SideLenght * LineCount,
                                     self.SideLenght, self.SideLenght), Current)
             LineCount += 1
+        print(self.LabyrinthArray)

@@ -8,7 +8,7 @@ Title : str = "A based maze solver !"
 
 game : Game = Game()
 
-init_window(ScreenWidth, ScreenHeight, Title)
+init_window(ScreenWidth, ScreenHeight, Title) # Create the window
 
 game.Prepare()
 
@@ -16,7 +16,7 @@ while not window_should_close():
     game.Update()
     begin_drawing()
     clear_background(Background)
-    game.Draw()
+    game.Draw()                                                     # Game drawing looping
     end_drawing()
     if game.ShouldClose:
         break
@@ -24,6 +24,7 @@ while not window_should_close():
 if not game.ShouldClose:
     game.PrepareToQuit()
 close_window()
+
 
 # Set-up : pip3 install raylib==5.5.0.3 --break-system-packages
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html

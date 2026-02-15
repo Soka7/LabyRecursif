@@ -9,8 +9,8 @@ class TextBox:
         :type BaseTexture: Rectangle
         :return: None
         
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         self.WrittenCharacters : str = ""                   # Characters displayed by the box
@@ -168,6 +168,9 @@ class TextBox:
         # Handle character deletion
         if is_key_pressed(KEY_BACKSPACE):
             self.WrittenCharacters = self.WrittenCharacters[:-1]
+            return None
+        elif is_key_pressed(KEY_ENTER):
+            self.HasBeenClicked = False
             return None
 
         UnicodeCharacter : int = get_char_pressed()

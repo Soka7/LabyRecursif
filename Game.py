@@ -40,15 +40,31 @@ class Game :
         self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, self.ShowSettings, None)
         self.MainMenu.Prepare()
 
-        self.SettingsMenu.EditPosAll(Rectangle(445, 300, 150, 50), Rectangle(445, 600, 150, 50),
-                                     Rectangle(300, 200, 210, 70), Rectangle(520, 200, 210, 70))
+        self.SettingsMenu.EditPosAll(UiData["SettingsMenu"]["ApplyButton"]["Position"],
+                                     UiData["SettingsMenu"]["BackButton"]["Position"],
+                                     UiData["SettingsMenu"]["WidthInputBox"]["Position"],
+                                     UiData["SettingsMenu"]["HeightInputBox"]["Position"])
+        
+        self.SettingsMenu.EditTextAll(UiData["SettingsMenu"]["ApplyButton"]["Text"],
+                                      UiData["SettingsMenu"]["BackButton"]["Text"])
+        
+        WidthInputBox : dict = UiData["SettingsMenu"]["WidthInputBox"]
+        HeightInputBox : dict = UiData["SettingsMenu"]["HeightInputBox"]
+
+        self.SettingsMenu.EditInputBoxMessages((WidthInputBox["WelcomeText"], WidthInputBox["WarningText"],
+                                                WidthInputBox["WarningSize"], WidthInputBox["WarningColor"]),
+                                               (HeightInputBox["WelcomeText"], HeightInputBox["WarningText"],
+                                                HeightInputBox["WarningSize"], HeightInputBox["WarningColor"]))
+        
+        self.SettingsMenu.EditInputBoxContent((WidthInputBox["MaxCharacters"], WidthInputBox["CharacterRange"],
+                                               WidthInputBox["LineOffset"], WidthInputBox["LineCooldown"], WidthInputBox["LineColor"],
+                                               WidthInputBox["TextSize"], WidthInputBox["TextColor"]),
+                                              (HeightInputBox["MaxCharacters"], HeightInputBox["CharacterRange"],
+                                               HeightInputBox["LineOffset"], HeightInputBox["LineCooldown"], HeightInputBox["LineColor"],
+                                               HeightInputBox["TextSize"], HeightInputBox["TextColor"]))
+        
         self.SettingsMenu.EditTexturesAll()
-        self.SettingsMenu.EditTextAll("Apply", "Back")
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack)
-        self.SettingsMenu.EditInputBoxMessages(("Width : ", "Limit reached !", 16, RED),
-                                               ("Height : ", "Limit reahced !", 16, RED))
-        self.SettingsMenu.EditInputBoxContent((4, (48, 57), Vector2(5, 0), 0.5, BLACK, 24, BLACK),
-                                              (4, (48, 57), Vector2(5, 0), 0.5, BLACK, 24, BLACK))
         self.SettingsMenu.Prepare()
 
         return None

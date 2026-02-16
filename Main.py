@@ -31,4 +31,4 @@ close_window()
 
 # NOTE : ADD PYRAY FUNCTIONS TO DOCSTRINGS
 
-# On the work : CheckBox, a file to store data (to avoid the absolute mess that is Game.Prepare()), Label
+# On the work :  a file to store data (to avoid the absolute mess that is Game.Prepare()), Fix the bug when quitting, finish settings menu

@@ -1,6 +1,7 @@
 from pyray import *
 from Labyrinth import *
 from Ui.Menus import Menu
+from Data import UiData
 
 class Game :
     def __init__(self):
@@ -23,10 +24,18 @@ class Game :
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
 
-        self.MainMenu.EditPosAll(Rectangle(550, 400, 120, 40), Rectangle(550, 670, 120, 40),
-                                 Rectangle(5, 670, 120, 40), Rectangle(1070, 5, 120, 40),
-                                 Rectangle(550, 500, 120, 40))
-        self.MainMenu.EditTextAll("Start", "Quit", "Credits", "Settings", "Creation")
+        self.MainMenu.EditPosAll(UiData["MainMenu"]["StartButton"]["Position"],
+                                 UiData["MainMenu"]["QuitButton"]["Position"],
+                                 UiData["MainMenu"]["CreditsButton"]["Position"],
+                                 UiData["MainMenu"]["SettingsButton"]["Position"],
+                                 UiData["MainMenu"]["CreationButton"]["Position"])
+        
+        self.MainMenu.EditTextAll(UiData["MainMenu"]["StartButton"]["Text"],
+                                  UiData["MainMenu"]["QuitButton"]["Text"],
+                                  UiData["MainMenu"]["CreditsButton"]["Text"],
+                                  UiData["MainMenu"]["SettingsButton"]["Text"],
+                                  UiData["MainMenu"]["CreationButton"]["Text"])
+        
         self.MainMenu.EditTexturesAll()
         self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, self.ShowSettings, None)
         self.MainMenu.Prepare()

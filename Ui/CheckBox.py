@@ -9,14 +9,14 @@ class CheckBox:
 
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
-        self.CheckBoxLoc : Rectangle = Rectangle(0, 0, 0, 0)
-        self.IsChecked : bool = False
+        self.CheckBoxLoc : Rectangle = Rectangle(0, 0, 0, 0)            # Dimensions of the Check Box
+        self.IsChecked : bool = False                                   # If the Check Box is checked
 
-        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)
-        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)
-        self.CheckedTexture : Rectangle = Rectangle(0, 0, 0, 0)
-        self.CheckedHoverTexture : Rectangle = Rectangle(0, 0, 0, 0)
-        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)            # Location of the base Check Box texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)           # Location of the hover Check Box texture in the Atlas
+        self.CheckedTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the checked Check Box texture in the Atlas
+        self.CheckedHoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hoverchecked Check Box texture in the Atlas
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the current texture to use in the Atlas
         return None
     
     def GetChecked(self) -> bool:

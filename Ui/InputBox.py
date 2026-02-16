@@ -1,9 +1,9 @@
 from pyray import *
 
-class TextBox:
+class InputBox:
     def __init__(self, BaseTexture : Rectangle) -> None:
         """
-        Generate a TextBox object, all attributes are defauletd to None or 0
+        Generate a InputBox object, all attributes are defauletd to None or 0
 
         :param BaseTexture: The location of the texture in the Atlas
         :type BaseTexture: Rectangle
@@ -14,13 +14,13 @@ class TextBox:
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         self.WrittenCharacters : str = ""                   # Characters displayed by the box
-        self.MaxCharacters : int = 0                        # The Maximum amount of characters on the text box
+        self.MaxCharacters : int = 0                        # The Maximum amount of characters on the Input Box
         self.CharacterRange : tuple = (0, 0)                # The unicode character range that can be displayed
         self.ButtonLoc = Rectangle(0, 0, 0, 0)              # Location of the the box
 
         self.LastUpdateTime : float = 0                     # Time since the last time the line changed state
         self.ShowLine : bool = False                        # If the line should appear
-        self.HasBeenClicked : bool = False                  # If the text box has been clicked 
+        self.HasBeenClicked : bool = False                  # If the Input Box has been clicked 
 
         self.TextSize : int = 0                             # Size of the displayed text
         self.TextPos : Vector2 = Vector2(0, 0)              # Position of the text
@@ -92,9 +92,9 @@ class TextBox:
 
     def CenterText(self, Text : str) -> None:
         """
-        Center the text in the text box.
+        Center the text in the Input Box.
         
-        :param Text: The text to cenetr inside the text box.
+        :param Text: The text to cenetr inside the Input Box.
         :type Text: str
         :return: None
 
@@ -108,7 +108,7 @@ class TextBox:
     
     def CenterWarning(self) -> None:
         """
-        Center the warning text under the text box.
+        Center the warning text under the Input Box.
         
         :return: None
 
@@ -186,7 +186,7 @@ class TextBox:
 
     def Update(self) -> None:
         """
-        Update the differents state of the textbox.
+        Update the differents state of the Input box.
         
         :return: None
         """
@@ -214,7 +214,7 @@ class TextBox:
     
     def DrawContent(self) -> None:
         """
-        Draw the text of the text box.
+        Draw the text of the Input Box.
         
         :return: None
 
@@ -233,7 +233,7 @@ class TextBox:
 
     def Draw(self, Atlas : Texture) -> None:
         """
-        Draw the text box and all its content.
+        Draw the Input Box and all its content.
 
         :param Atlas: The texture holding all the game's sprites.
         :type Atlas: Texture
@@ -269,7 +269,7 @@ class TextBox:
     
     def EditCharacters(self, MaxAmount : int = 9, Range : tuple = (33, 126)) -> None:
         """
-        Edit the maximum amount of characters in the text box and their unicode range.
+        Edit the maximum amount of characters in the Input Box and their unicode range.
         
         :param MaxAmount: Maximum amount of characters displayable
         :type MaxAmount: int
@@ -283,7 +283,7 @@ class TextBox:
         self.CharacterRange = Range
         return None
     
-    def PlaceButton(self, Dimensions : Rectangle) -> None:
+    def EditPos(self, Dimensions : Rectangle) -> None:
         """
         Edit the button x and y and width and height.
         
@@ -335,7 +335,7 @@ class TextBox:
     
     def EditWelcome(self, WelcomeText : str = "Enter Text : ") -> None:
         """
-        Edit the welcome message of the text box.
+        Edit the welcome message of the Input Box.
         
         :param WelcomeText: Welcome message displayed when nothing is written
         :type WelcomeText: str
@@ -366,9 +366,9 @@ class TextBox:
     
     def GetInput(self) -> str:
         """
-        Return what was written inside the text box.
+        Return what was written inside the Input Box.
         
-        :return: The characters written inside the text box
+        :return: The characters written inside the Input Box
         :rtype: str
         """
         return self.WrittenCharacters

@@ -6,20 +6,20 @@ class Button:
         Create a button object. \n
         All attributes are defaulted to 0 or null.
 
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
         Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
         """
-        self.function = None                        # Function Called by the button when its clicked
-        self.Dimensions = Rectangle(0, 0, 0, 0)     # Rectangle being the buttons dimmensions
-        self.Text : str = ""                        # Text displayed
+        self.function = None                        # Function called by the button when its clicked
+        self.Dimensions = Rectangle(0, 0, 0, 0)     # Rectangle being the button's dimmensions
+        self.Text : str = ""                        # Text displayed by the button
         self.TextSize : int = 0                     # Size of the text with default font
         self.TextColor : Color = (0, 0, 0, 0)       # Color of the text (Red, Green, Blue, Alpha(Opacity))
 
         # Textures
-        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing.
-        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button texture in the Atlas
-        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button texture in the Atlas
-        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button texture in the Atlas
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button's texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button's texture in the Atlas
+        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button's texture in the Atlas
         return None
         
     def IsHovered(self) -> bool:
@@ -38,7 +38,7 @@ class Button:
 
     def EditPos(self, Dimensions : Rectangle) -> None:
         """
-        Edit the button position and size.
+        Edit the button's position and size.
         
         :param Dimensions: The x and y position of the button and its width and height.
         :type Dimensions: Rectangle
@@ -93,7 +93,7 @@ class Button:
         """
         Give a function to the button that will be called when it is clicked.
         
-        :param function: A function, must return None and have no parameters.
+        :param function: A function to call
         :type function: function
         :return: None
 
@@ -122,7 +122,7 @@ class Button:
         """
         Check if the left mouse button is clicked.
 
-        :return: If the buton is clicked
+        :return: True if the buton is clicked False otherwise
         :rtype: bool
 
         Extras: - is_mouse_button_pressed() is a raylib function checking if a button of the mouse has been pressed. \n
@@ -134,7 +134,7 @@ class Button:
 
     def Update(self) -> None:
         """
-        Check if the mouse clicked the button and call the function it has.
+        Check if the mouse clicked the button and call the function it holds.
         
         :return: None
 

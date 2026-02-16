@@ -3,7 +3,7 @@ from pyray import *
 class InputBox:
     def __init__(self, BaseTexture : Rectangle) -> None:
         """
-        Generate a InputBox object, all attributes are defauletd to None or 0
+        Generate a InputBox object, all attributes are defaulted to None or 0
 
         :param BaseTexture: The location of the texture in the Atlas
         :type BaseTexture: Rectangle
@@ -14,25 +14,25 @@ class InputBox:
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         self.WrittenCharacters : str = ""                   # Characters displayed by the box
-        self.MaxCharacters : int = 0                        # The Maximum amount of characters on the Input Box
+        self.MaxCharacters : int = 0                        # The maximum amount of characters on the Input Box
         self.CharacterRange : tuple = (0, 0)                # The unicode character range that can be displayed
-        self.ButtonLoc = Rectangle(0, 0, 0, 0)              # Location of the the box
+        self.ButtonLoc = Rectangle(0, 0, 0, 0)              # Location of the the input box
 
         self.LastUpdateTime : float = 0                     # Time since the last time the line changed state
         self.ShowLine : bool = False                        # If the line should appear
-        self.HasBeenClicked : bool = False                  # If the Input Box has been clicked 
+        self.HasBeenClicked : bool = False                  # If the Input Box has been clicked
 
         self.TextSize : int = 0                             # Size of the displayed text
         self.TextPos : Vector2 = Vector2(0, 0)              # Position of the text
-        self.TextColor : Color = (0, 0, 0, 0)               # Color of the text (Black)
+        self.TextColor : Color = (0, 0, 0, 0)               # Color of the text
 
         self.LineBegin : Vector2 = Vector2(0, 0)            # Starting position of the line
         self.LineEnd : Vector2 = Vector2(0, 0)              # Ending position of the line
         self.LineOffset : Vector2 = Vector2(0, 0)           # Small off set to the line
-        self.LineColor : Color = (0, 0, 0, 0)               # Color of the line (Black)
+        self.LineColor : Color = (0, 0, 0, 0)               # Color of the line
         self.LineCooldown : float = 0                       # Cooldown between each state switch of the line
 
-        self.WelcomeText : str = ""                         # Text displayed when no characters are written.
+        self.WelcomeText : str = ""                         # Text displayed when no characters are written
         self.ShowWelcomeText : bool = True                  # If the welcome text should be displayed
 
         self.MaxCharacterWarning : bool = False             # If the max character warning should be displayed
@@ -46,7 +46,7 @@ class InputBox:
     
     def IsReady(self, Cooldown : float) -> bool:
         """
-        Check if a timer is finished or not.
+        Check if the line timer is finished or not.
         
         :param Cooldown: The timer's coolwon in seconds
         :type Cooldown: float
@@ -94,7 +94,7 @@ class InputBox:
         """
         Center the text in the Input Box.
         
-        :param Text: The text to cenetr inside the Input Box.
+        :param Text: The text to center inside the Input Box.
         :type Text: str
         :return: None
 
@@ -145,8 +145,6 @@ class InputBox:
         :type Character: int
         :return: If the character can be displayed or not
         :rtype: bool
-
-        Extras: - Number corresponds to "!" from "~" in the unicode table.
         """
         if self.CharacterRange[0] <= Character and Character <= self.CharacterRange[1]:
             return True
@@ -235,7 +233,7 @@ class InputBox:
         """
         Draw the Input Box and all its content.
 
-        :param Atlas: The texture holding all the game's sprites.
+        :param Atlas: The texture holding all the game's sprites
         :type Atlas: Texture
         :return: None
 
@@ -259,7 +257,7 @@ class InputBox:
     
     def Prepare(self) -> None:
         """
-        Call the function that should be called once after creating the object.
+        Call the functions that should be called once after creating the object.
         
         :return: None
         """

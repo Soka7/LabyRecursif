@@ -16,7 +16,7 @@ while not window_should_close():
     game.Update()
     begin_drawing()
     clear_background(Background)
-    game.Draw()                                                     # Game drawing looping
+    game.Draw()                                                     # Game drawing loop
     end_drawing()
     if game.ShouldClose:
         break
@@ -30,3 +30,5 @@ close_window()
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
 
 # NOTE : ADD PYRAY FUNCTIONS TO DOCSTRINGS
+
+# On the work : CheckBox, a file to store data (to avoid the absolute mess that is Game.Prepare()), Label

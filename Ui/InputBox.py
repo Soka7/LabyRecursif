@@ -1,12 +1,10 @@
 from pyray import *
 
 class InputBox:
-    def __init__(self, BaseTexture : Rectangle) -> None:
+    def __init__(self) -> None:
         """
         Generate a InputBox object, all attributes are defaulted to None or 0
 
-        :param BaseTexture: The location of the texture in the Atlas
-        :type BaseTexture: Rectangle
         :return: None
         
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
@@ -16,7 +14,7 @@ class InputBox:
         self.WrittenCharacters : str = ""                   # Characters displayed by the box
         self.MaxCharacters : int = 0                        # The maximum amount of characters on the Input Box
         self.CharacterRange : tuple = (0, 0)                # The unicode character range that can be displayed
-        self.ButtonLoc = Rectangle(0, 0, 0, 0)              # Location of the the input box
+        self.ButtonLoc : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the the input box
 
         self.LastUpdateTime : float = 0                     # Time since the last time the line changed state
         self.ShowLine : bool = False                        # If the line should appear
@@ -41,7 +39,7 @@ class InputBox:
         self.WarningTextSize : int = 0                      # Font size of the warning text using default font
         self.WarningColor : Color = (0, 0, 0, 0)            # Color of the warning message
 
-        self.BaseTexture : Rectangle = BaseTexture          # The location of the texture to use in the Atlas
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)# The location of the texture to use in the Atlas
         return None
     
     def IsReady(self, Cooldown : float) -> bool:
@@ -174,7 +172,10 @@ class InputBox:
         UnicodeCharacter : int = get_char_pressed()
 
         # get_char_pressed() returns 0 if nothing is pressed
-        if UnicodeCharacter == 0 or len(self.WrittenCharacters) == self.MaxCharacters:
+        if UnicodeCharacter == 0:
+            return None
+        elif len(self.WrittenCharacters) == self.MaxCharacters:
+            self.MaxCharacterWarning = True
             return None
         elif not self.IsCharacterValid(UnicodeCharacter):
             return None
@@ -255,111 +256,42 @@ class InputBox:
             draw_line_ex(self.LineBegin, self.LineEnd, 1, self.LineColor) # 1 stands for line thickness
         return None
     
-    def Prepare(self) -> None:
+    def Prepare(self, Source : dict, MenuName : str, ButtonName : str, SpriteSource : dict) -> None:
         """
-        Call the functions that should be called once after creating the object.
-        
+        Call the functions that should be called once after creating the object. \n
+        Load everything the input box need to work.
+
+        :param Source: The dictionarry containing all Data.
+        :type Source: dict
+        :param MenuName: The name of the menu inside Data.py
+        :type MenuName: str
+        :param ButtonName: The name of the button inside Data.py
+        :type ButtonName: str
+        :param SpriteSource: The dictionarry containing all the sprites location
+        :type SpriteSource: dict
         :return: None
+
+        Extras: - Source and SpriteSource refers to Data.py
         """
+        Info = Source[MenuName][ButtonName]
+        SpriteInfo = SpriteSource[Info["RefTexture"]]
+
+        self.ButtonLoc = Info["Position"]
+        self.TextSize = Info["TextSize"]
+        self.TextColor = Info["TextColor"]
+        self.MaxCharacters = Info["MaxCharacters"]
+        self.CharacterRange = Info["CharacterRange"]
+        self.LineOffset = Info["LineOffset"]
+        self.LineCooldown = Info["LineCooldown"]
+        self.LineColor = Info["LineColor"]
+        self.WelcomeText = Info["WelcomeText"]
+        self.WarningText = Info["WarningText"]
+        self.WarningTextSize = Info["WarningSize"]
+        self.WarningColor = Info["WarningColor"]
+        self.BaseTexture = SpriteInfo["Base"]
+
         self.CenterWarning()
         self.CenterText(self.WelcomeText)
-        return None
-    
-    def EditCharacters(self, MaxAmount : int = 9, Range : tuple = (33, 126)) -> None:
-        """
-        Edit the maximum amount of characters in the Input Box and their unicode range.
-        
-        :param MaxAmount: Maximum amount of characters displayable
-        :type MaxAmount: int
-        :param Range: Start and end of the available unicode.
-        :type Range: tuple
-        :return: None
-
-        Extras: - The Range argument must be a tuple(a, b) where a < b.
-        """
-        self.MaxCharacters = MaxAmount
-        self.CharacterRange = Range
-        return None
-    
-    def EditPos(self, Dimensions : Rectangle) -> None:
-        """
-        Edit the button x and y and width and height.
-        
-        :param Dimensions: The x and y position of the button and width and height.
-        :type Dimensions: Rectangle
-        :return: None
-
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
-        """
-        self.ButtonLoc = Dimensions
-        return None
-    
-    def EditText(self, TextSize : int = 24, TextColor : Color = BLACK) -> None:
-        """
-        Edit the size and color of the displayed text.
-        
-        :param TextSize: The size of the text
-        :type TextSize: int
-        :param TextColor: The color of the text
-        :type TextColor: Color
-        :return: None
-
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
-        Extras: - Using default font.
-        """
-        self.TextSize = TextSize
-        self.TextColor = TextColor
-        return None
-    
-    def EditLine(self, LineOffset : Vector2 = Vector2(5, 0), LineCooldown : float = 0.5, LineColor : Color = BLACK) -> None:
-        """
-        Edit line offset, switch cooldown and color.
-        
-        :param LineOffset: Special offset used after centering the line
-        :type LineOffset: Vector2
-        :param LineCooldown: Time between the line goes from visible to invisible (in seconds)
-        :type LineCooldown: float
-        :param LineColor: Color of the line
-        :type LineColor: Color
-        :return: None
-
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
-        """
-        self.LineOffset = LineOffset
-        self.LineCooldown = LineCooldown
-        self.LineColor = LineColor
-        return None
-    
-    def EditWelcome(self, WelcomeText : str = "Enter Text : ") -> None:
-        """
-        Edit the welcome message of the Input Box.
-        
-        :param WelcomeText: Welcome message displayed when nothing is written
-        :type WelcomeText: str
-        :return: None
-        """
-        self.WelcomeText = WelcomeText
-        return None
-    
-    def EditWarning(self, WarningText : str = "Limit Reached !", TextSize : int = 16, WarningColor : Color = RED) -> None:
-        """
-        Edit the text, size, and color of the warning.
-        
-        :param WarningText: The text displayed by the warning
-        :type WarningText: str
-        :param TextSize: The size of the warning text
-        :type TextSize: int
-        :param WarningColor: The color of the warning text
-        :type WarningColor: Color
-        :return: None
-
-        Extras: - Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
-        Extras: - Using default font.
-        """
-        self.WarningText = WarningText
-        self.WarningTextSize = TextSize
-        self.WarningColor = WarningColor
         return None
     
     def GetInput(self) -> str:

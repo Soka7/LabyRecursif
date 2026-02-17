@@ -28,58 +28,6 @@ class CheckBox:
         """
         return self.IsChecked
     
-    def EditTextures(self, Base : Rectangle, Hover : Rectangle, Checked : Rectangle, HoverChecked : Rectangle) -> None:
-        """
-        Edit the different textures of the check box.
-        
-        :param Base: Location of the base texture in the Atlas.
-        :type Base: Rectangle
-        :param Hover: Location of the hover texture in the Atlas.
-        :type Hover: Rectangle
-        :param Checked: Location of the checked texture in the Atlas.
-        :type Checked: Rectangle
-        :param HoverChecked: Location of the hoverchecked texture in the Atlas.
-        :type HoverChecked: Rectangle
-        :return: None
-
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
-        """
-        self.BaseTexture = Base
-        self.HoverTexture = Hover
-        self.CheckedTexture = Checked
-        self.CheckedHoverTexture = HoverChecked
-        return None
-    
-    def EditPos(self, Dimensions : Rectangle) -> None:
-        """
-        Edit the position and dimensions of the check box.
-        
-        :param Dimensions: The x and y position and the width and height of the check box.
-        :type Dimensions: Rectangle
-        :return: None
-
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
-        """
-        self.CheckBoxLoc = Dimensions
-        return None
-    
-    def Draw(self, Atlas : Texture) -> None:
-        """
-        Draw the text box with the right texture.
-        
-        :param Atlas: The texture containing all the game's sprites.
-        :type Atlas: Texture
-        :return: None
-
-        Extras: - Texture is a raylib structure used to hold images. \n
-        Extras: - In this project, Atlas is Sprites.png
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
-        """
-        Origin : Vector2 = Vector2(0, 0)
-        Rotation : int = 0
-        draw_texture_pro(Atlas, self.CurrentTexture, self.CheckBoxLoc, Origin, Rotation, WHITE)
-        return None
-
     def IsHovered(self) -> bool:
         """
         Check if the mouse is hovering the check box.
@@ -107,6 +55,51 @@ class CheckBox:
         if is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
             return True
         return False
+    
+    def Prepare(self, Source : dict, MenuName : str, ButtonName : str, SpriteSource : dict) -> None:
+        """
+        Load everything the button needs to work.
+        
+        :param Source: The dictionarry containing all Data.
+        :type Source: dict
+        :param MenuName: The name of the menu inside Data.py
+        :type MenuName: str
+        :param ButtonName: The name of the button inside Data.py
+        :type ButtonName: str
+        :param SpriteSource: The dictionarry containing all the sprites location
+        :type SpriteSource: dict
+        :return: None
+
+        Extras: - Source and SpriteSource refers to Data.py
+        """
+
+        Info : dict = Source[MenuName][ButtonName]
+        SpriteInfo : dict = SpriteSource[Info["RefTexture"]]
+
+        self.CheckBoxLoc = Info["Position"]
+        self.BaseTexture = SpriteInfo["Base"]
+        self.HoverTexture = SpriteInfo["Hover"]
+        self.CheckedTexture = SpriteInfo["Checked"]
+        self.CheckedHoverTexture = SpriteInfo["CheckedHover"]
+
+        return None
+    
+    def Draw(self, Atlas : Texture) -> None:
+        """
+        Draw the text box with the right texture.
+        
+        :param Atlas: The texture containing all the game's sprites.
+        :type Atlas: Texture
+        :return: None
+
+        Extras: - Texture is a raylib structure used to hold images. \n
+        Extras: - In this project, Atlas is Sprites.png
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        Origin : Vector2 = Vector2(0, 0)
+        Rotation : int = 0
+        draw_texture_pro(Atlas, self.CurrentTexture, self.CheckBoxLoc, Origin, Rotation, WHITE)
+        return None
     
     def Update(self) -> None:
         """

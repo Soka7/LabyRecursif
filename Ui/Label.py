@@ -36,111 +36,44 @@ class Label:
 
         return None
     
-    def Prepare(self) -> None:
+    def Prepare(self, Source : dict, MenuName : str, ButtonName : str) -> None:
         """
-        Does the calculations for the under line and overline placement.
+        Does the calculations for the under line and overline placement. \n
+        Load all the info needed for the label.
         
+        :param Source: The dictionarry containing all Data.
+        :type Source: dict
+        :param MenuName: The name of the menu inside Data.py
+        :type MenuName: str
+        :param ButtonName: The name of the button inside Data.py
+        :type ButtonName: str
         :return: None
 
         Extras: - Vector2 is a raylib structure holding a x and a y position. \n
-        Extras: - Must be called once after setting everything up
+        Extras: - Source refers to Data.py
         """
-        if self.OverLine or self.UnderLine:
+        Info : dict = Source[MenuName][ButtonName]
+
+        self.Position = Info["Position"]
+        self.Text = Info["Text"]
+        self.TextSize = Info["TextSize"]
+        self.TextColor = Info["TextColor"]
+        self.Font = Info["Font"]
+        self.Rotation = Info["Rotation"]
+        self.Origin = Info["Origin"]
+        self.CharacterSpacing = Info["CharacterSpacing"]
+        self.Underline = Info["Underline"]
+        self.LineColor = Info["LineColor"]
+        self.LineSpacing = Info["LineSpacing"]
+        self.LineThickness = Info["LineThickness"]
+        self.Overline = Info["Overline"]
+        self.OverlineColor = Info["OverlineColor"]
+
+        if self.Overline or self.Underline:
             self.TextDimensions : float = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
-        if self.UnderLine:
+        if self.Underline:
             self.LineBegin : Vector2 = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
             self.LineEnd : Vector2 = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)
-        return None
-    
-    def SetUnderLine(self, LineColor : Color, LineSpacing : float, LineThickness : float) -> None:
-        """
-        Set the parameters for the line under the text.
-        
-        :param LineColor: Color of the line
-        :type LineColor: Color
-        :param LineSpacing: Space between the line and the text on the y axis
-        :type LineSpacing: float
-        :param LineThickness: Thickness of the line in pixels
-        :type LineThickness: float
-        :return: None
-
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
-        """
-        self.UnderLine = True
-        self.LineColor = LineColor
-        self.LineSpacing = LineSpacing
-        self.LineThickness = LineThickness
-        return None
-    
-    def SetOverLine(self, OverLineColor : Color) -> None:
-        """
-        Set the parameters for the rectangle on the text.
-        
-        :param OverLineColor: Color of the rectangle
-        :type OverLineColor: Color
-        :return: None
-
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
-        """
-        self.OverLine = True
-        self.OverLineColor = OverLineColor
-        return None
-    
-    def EditPos(self, Position : Vector2) -> None:
-        """
-        Edit the position of the text upper left corner.
-        
-        :param Position: The position of the upper left corner of the text
-        :type Position: Vector2
-        :return: None
-
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
-        """
-        self.Position = Position
-        return None
-    
-    def EditText(self, Text : str, TextSize : int, TextColor : Color) -> None:
-        """
-        Edit the text displayed by the label.
-        
-        :param Text: The text to display
-        :type Text: str
-        :param TextSize: The size of the text
-        :type TextSize: int
-        :param TextColor: The color of the text
-        :type TextColor: Color
-        :return: None
-
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
-        """
-        self.Text = Text
-        self.TextSize = TextSize
-        self.TextColor = TextColor
-        return None
-    
-    def EditAdvancedText(self, Font : Font, Rotation : float, Origin : Vector2, Spacing : float) -> None:
-        """
-        Give advanced parameters to the text.
-        
-        :param Font: The font to use
-        :type Font: Font
-        :param Rotation: The rotation in degrees of the text
-        :type Rotation: float
-        :param Origin: The origin of the text
-        :type Origin: Vector2
-        :param Spacing: The space between each character
-        :type Spacing: float
-        :return: None
-
-        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
-        Extras: - Font is a raylib structure holding a font file. \n
-        Extras: - The rotation must be in degrees. \n
-        Extras: - Rotated text can't be underlined or overlined.
-        """
-        self.Font = Font
-        self.Rotation = Rotation
-        self.Origin = Origin
-        self.CharacterSpacing = Spacing
         return None
     
     def Draw(self) -> None:
@@ -155,8 +88,8 @@ class Label:
         Extras: - 1 is added to the dimensions to avoid rounding imperfection.
         """
         draw_text_pro(self.Font, self.Text, self.Position, self.Origin, self.Rotation, self.TextSize, self.CharacterSpacing, self.TextColor)
-        if self.UnderLine:
+        if self.Underline:
             draw_line_ex(self.LineBegin, self.LineEnd, self.LineThickness, self.LineColor)
-        if self.OverLine:
-            draw_rectangle(int(self.Position.x), int(self.Position.y), int(self.TextDimensions.x) + 1, int(self.TextDimensions.y) + 1, self.OverLineColor)
+        if self.Overline:
+            draw_rectangle(int(self.Position.x), int(self.Position.y), int(self.TextDimensions.x) + 1, int(self.TextDimensions.y) + 1, self.OverlineColor)
         return None

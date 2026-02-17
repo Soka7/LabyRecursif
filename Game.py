@@ -1,20 +1,15 @@
 from pyray import *
 from Labyrinth import *
 from Ui.Menus import Menu
-from Data import UiData
+from Data import UiData, SpritesData
 
 class Game :
     def __init__(self):
         self.Atlas : Texture = None                                     # The texture holding all the sprites
-        self.BaseButtonLocation : Rectangle = Rectangle(0, 0, 61, 18)   # Where the button sprite is in the Atlas
-        self.HoverButtonLocation : Rectangle = Rectangle(0, 18, 62, 20) # Where the hover button sprite is in the Atlas
-        self.PressedButtonLocation : Rectangle = Rectangle(0, 38, 62, 20) # Where the pressed button sprite is in the Atlas
-        self.InputBoxLocation : Rectangle = Rectangle(62, 0, 62, 23)    # Where the input box sprite is in the Atlas
 
         self.Maze : Labyrinth = Labyrinth()                         
-        self.MainMenu : Menu = Menu((5, 0), self.BaseButtonLocation, self.HoverButtonLocation, self.PressedButtonLocation)
-        self.SettingsMenu : Menu = Menu((2, 2), self.BaseButtonLocation, self.HoverButtonLocation,
-                                                self.PressedButtonLocation, self.InputBoxLocation)
+        self.MainMenu : Menu = Menu(5, 0, 0, 0)
+        self.SettingsMenu : Menu = Menu(2, 2, 0, 0)
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False
@@ -24,48 +19,11 @@ class Game :
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
 
-        self.MainMenu.EditPosAll(UiData["MainMenu"]["StartButton"]["Position"],
-                                 UiData["MainMenu"]["QuitButton"]["Position"],
-                                 UiData["MainMenu"]["CreditsButton"]["Position"],
-                                 UiData["MainMenu"]["SettingsButton"]["Position"],
-                                 UiData["MainMenu"]["CreationButton"]["Position"])
-        
-        self.MainMenu.EditTextAll(UiData["MainMenu"]["StartButton"]["Text"],
-                                  UiData["MainMenu"]["QuitButton"]["Text"],
-                                  UiData["MainMenu"]["CreditsButton"]["Text"],
-                                  UiData["MainMenu"]["SettingsButton"]["Text"],
-                                  UiData["MainMenu"]["CreationButton"]["Text"])
-        
-        self.MainMenu.EditTexturesAll()
-        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, None, self.ShowSettings, None)
-        self.MainMenu.Prepare()
+        self.MainMenu.Prepare(UiData, "MainMenu", SpritesData)
+        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, None)
 
-        self.SettingsMenu.EditPosAll(UiData["SettingsMenu"]["ApplyButton"]["Position"],
-                                     UiData["SettingsMenu"]["BackButton"]["Position"],
-                                     UiData["SettingsMenu"]["WidthInputBox"]["Position"],
-                                     UiData["SettingsMenu"]["HeightInputBox"]["Position"])
-        
-        self.SettingsMenu.EditTextAll(UiData["SettingsMenu"]["ApplyButton"]["Text"],
-                                      UiData["SettingsMenu"]["BackButton"]["Text"])
-        
-        WidthInputBox : dict = UiData["SettingsMenu"]["WidthInputBox"]
-        HeightInputBox : dict = UiData["SettingsMenu"]["HeightInputBox"]
-
-        self.SettingsMenu.EditInputBoxMessages((WidthInputBox["WelcomeText"], WidthInputBox["WarningText"],
-                                                WidthInputBox["WarningSize"], WidthInputBox["WarningColor"]),
-                                               (HeightInputBox["WelcomeText"], HeightInputBox["WarningText"],
-                                                HeightInputBox["WarningSize"], HeightInputBox["WarningColor"]))
-        
-        self.SettingsMenu.EditInputBoxContent((WidthInputBox["MaxCharacters"], WidthInputBox["CharacterRange"],
-                                               WidthInputBox["LineOffset"], WidthInputBox["LineCooldown"], WidthInputBox["LineColor"],
-                                               WidthInputBox["TextSize"], WidthInputBox["TextColor"]),
-                                              (HeightInputBox["MaxCharacters"], HeightInputBox["CharacterRange"],
-                                               HeightInputBox["LineOffset"], HeightInputBox["LineCooldown"], HeightInputBox["LineColor"],
-                                               HeightInputBox["TextSize"], HeightInputBox["TextColor"]))
-        
-        self.SettingsMenu.EditTexturesAll()
+        self.SettingsMenu.Prepare(UiData, "SettingsMenu", SpritesData)
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack)
-        self.SettingsMenu.Prepare()
 
         return None
 

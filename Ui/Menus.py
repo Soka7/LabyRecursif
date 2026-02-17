@@ -20,7 +20,6 @@ class Menu:
         :type Labels: int
         :return: None
 
-        Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
         self.Buttons : list = []                                    # List holding all the buttons and input boxes
@@ -36,10 +35,10 @@ class Menu:
         for _ in range(Labels):                                     # Create the labels
             self.Buttons.append(Label())
 
-        # Buttons texture
-        self.BaseButtonTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Where the base button texture is located in the Atlas
-        self.HoverButtonTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Where the hover button texture is located in the Atlas
-        self.PressedButtonTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Where the pressed button texture is located in the Atlas
+        self.HasBackground : bool = False                           # If a background texture should be displayed
+        self.BackgroundPos : Rectangle = Rectangle(0, 0, 0, 0)      # Position of the back ground
+        self.BackgroundTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Position of the texture in the Atlas
+        self.BaseSize : Vector2 = Vector2(0, 0)                     # The original size the menu was meant to be on
         return None
     
     def Update(self) -> None:
@@ -65,7 +64,14 @@ class Menu:
         Extras: - Texture is a structure of raylib holding an image. \n
         Extras: - In this project, Atlas is Sprites.png
         """
+        if self.HasBackground:
+            Origin : Vector2 = Vector2(0, 0)
+            Rotation : float = 0
+            draw_texture_pro(Atlas, self.BackgroundTexture, self.BackgroundPos, Origin, Rotation, WHITE)
         for button in self.Buttons:
+            if type(button) == Label:
+                button.Draw()
+                continue
             button.Draw(Atlas)
         return None
     
@@ -86,16 +92,26 @@ class Menu:
         Counter : int = 0
         Info : dict = Source[MenuName]
         for ButtonName in Source[MenuName].keys():
+            if ButtonName == "Background":
+                continue
             if Info[ButtonName]["Type"] == "Label":
                 self.Buttons[Counter].Prepare(Source, MenuName, ButtonName)
             else:
                 self.Buttons[Counter].Prepare(Source, MenuName, ButtonName, SpriteSource)
             Counter += 1
+
+        self.HasBackground = Info["Background"]["HasBackground"]
+        if self.HasBackground:
+            self.BackgroundPos = Info["Background"]["Position"]
+            self.BackgroundTexture = SpriteSource["Background"][MenuName]
+            self.BaseSize = Info["Background"]["OriginalScreenSize"]
+            print("Basic size : ", self.BaseSize.x, " , ", self.BaseSize.y)
         return None
     
     def ScaleMenu(self, ScreenSize : Vector2) -> None:
         """
-        Call the scale method of each element of the menu to adapt to the given screen size.
+        Call the scale method of each element of the menu to adapt to the given screen size. \n
+        Also scale the menu background if it has one.
         
         :param ScreenSize: The size of the screen
         :type ScreenSize: Vector2
@@ -105,6 +121,15 @@ class Menu:
         """
         for element in self.Buttons:
             element.Scale(ScreenSize)
+
+        if self.HasBackground:
+            XFactor : float = ScreenSize.x / self.BaseSize.x
+            YFactor : float = ScreenSize.y / self.BaseSize.y
+            self.BackgroundPos = Rectangle(self.BackgroundPos.x * XFactor,
+                                           self.BackgroundPos.y * YFactor,
+                                           self.BackgroundPos.width * XFactor,
+                                           self.BackgroundPos.height * YFactor)
+            self.BaseSize = ScreenSize
         return None
     
     def BindAll(self, *args) -> None:
@@ -117,10 +142,16 @@ class Menu:
 
         Extras: - Each function must be argumentless and must return None
         """
-        for i in range(len(args)):
-            if type(self.Buttons[i]) != Button:
+        Counter : int = 0
+        FuncCounter : int = 0
+        while Counter < len(self.Buttons):
+            if type(self.Buttons[Counter]) != Button and type(self.Buttons[Counter]) != CheckBox:
+                Counter += 1
                 continue
-            self.Buttons[i].Bind(args[i])
+            self.Buttons[Counter].Bind(args[FuncCounter])
+            Counter += 1
+            FuncCounter += 1
+
         return None
     
     def GetInputBoxesContent(self) -> list:

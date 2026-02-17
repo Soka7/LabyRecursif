@@ -3,19 +3,37 @@ from pyray import *
 SpritesData : dict = {
     "Button" : 
     {
-        "Base" : Rectangle(0, 0, 61, 18),
-        "Hover" : Rectangle(0, 18, 62, 20),
+        "Base" : Rectangle(0, 0, 62, 18),
+        "Hover" : Rectangle(0, 18, 63, 20),
         "Pressed" : Rectangle(0, 38, 62, 20)
     },
     "InputBox" :
     {
         "Base" : Rectangle(62, 0, 62, 23)
+    },
+    "CheckBox" :
+    {
+        "Base" : Rectangle(186, 0, 30, 30),
+        "Hover" : Rectangle(216, 0, 32, 32),
+        "Checked" : Rectangle(186, 30, 30, 30),
+        "CheckedHover" : Rectangle(216, 32, 32, 32)
+    },
+    "Background" :
+    {
+        "SettingsMenu" : Rectangle(124, 0, 62, 62)
     }
 }
 
 UiData : dict = {
     "MainMenu" : 
     {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : False,
+            "Position" : Rectangle(0, 0, 0, 0),
+        },
         "StartButton" :
         {
             "Type" : "Button",
@@ -69,33 +87,40 @@ UiData : dict = {
     },
     "SettingsMenu" :
     {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(300, 60, 600, 600),
+        },
         "ApplyButton":
         {
             "Type" : "Button",
             "RefTexture" : "Button",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(445, 300, 150, 50),
+            "Position" : Rectangle(460, 320, 150, 50),
             "Text" : "Apply",
             "TextSize" : 24,
-            "TextColor" : BLACK
+            "TextColor" : Color(141, 220, 220, 255)
         },
         "BackButton" :
         {
             "Type" : "Button",
             "RefTexture" : "Button",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(445, 600, 150, 50),
+            "Position" : Rectangle(525, 580, 150, 50),
             "Text" : "Back",
             "TextSize" : 24,
-            "TextColor" : BLACK
+            "TextColor" : Color(141, 220, 220, 255)
         },
         "WidthInputBox" :
         {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(300, 200, 210, 70),
-            "WelcomeText" : "Width :",
+            "Position" : Rectangle(550, 125, 210, 70),
+            "WelcomeText" : "1200",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
             "WarningColor" : RED,
@@ -112,8 +137,8 @@ UiData : dict = {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(520, 200, 210, 70),
-            "WelcomeText" : "Height :",
+            "Position" : Rectangle(550, 225, 210, 70),
+            "WelcomeText" : "720",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
             "WarningColor" : RED,
@@ -124,6 +149,85 @@ UiData : dict = {
             "LineColor" : BLACK,
             "TextSize" : 24,
             "TextColor" : BLACK
+        },
+        "FPSCheckBox" :
+        {
+            "Type" : "CheckBox",
+            "RefTexture" : "CheckBox",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(570, 395, 39, 39)
+        },
+        "WindowSizeLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(360, 80),
+            "Text" : "Window settings :",
+            "TextSize" : 26,
+            "TextColor" : Color(141, 220, 220, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "WidthLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(430, 150),
+            "Text" : "Width :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "HeightLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(430, 250),
+            "Text" : "Height :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "FPSLabel" : 
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(430, 400),
+            "Text" : "Draw FPS :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
         }
     }
 }

@@ -23,7 +23,7 @@ class Label:
         self.CharacterSpacing : float = 2                # Space between each character
         self.Font : Font = get_font_default()            # Font to use
 
-        self.UnderLine : bool = False                    # If the text should be underlined
+        self.Underline : bool = False                    # If the text should be underlined
         self.LineColor : Color = Color(0, 0, 0, 0)       # Color of the underline
         self.LineSpacing : float = 0                     # Space between the line and the text on the y axis
         self.LineThickness : float = 0                   # Thickness of the line
@@ -31,7 +31,7 @@ class Label:
         self.LineEnd : Vector2 = Vector2(0, 0)           # End point of the underline
         self.TextDimensions : Vector2 = Vector2(0, 0)    # Width and height of the text.
 
-        self.OverLine = False                            # If the text should be overlined
+        self.Overline = False                            # If the text should be overlined
         self.OverLineColor : Color = Color(0, 0, 0, 0)   # Color of the overline
 
         self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
@@ -52,6 +52,7 @@ class Label:
         :return: None
 
         Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        Extras: - get_font_default() is a raylib method to get the font used by default by raylib. \n
         Extras: - Source refers to Data.py
         """
         Info : dict = Source[MenuName][ButtonName]
@@ -61,7 +62,7 @@ class Label:
         self.Text = Info["Text"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
-        self.Font = Info["Font"]
+        self.Font = get_font_default()
         self.Rotation = Info["Rotation"]
         self.Origin = Info["Origin"]
         self.CharacterSpacing = Info["CharacterSpacing"]
@@ -73,7 +74,7 @@ class Label:
         self.OverlineColor = Info["OverlineColor"]
 
         if self.Overline or self.Underline:
-            self.TextDimensions : Vector2 = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
+            self.TextDimensions = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
         if self.Underline:
             self.LineBegin : Vector2 = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
             self.LineEnd : Vector2 = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)

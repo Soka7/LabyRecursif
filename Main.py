@@ -29,9 +29,6 @@ close_window()
 # Set-up : pip3 install raylib==5.5.0.3 --break-system-packages
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
 
-# On the work (do it) : 
-# - Finish the settings menu
-
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)
 # - PressedHover Texture for the button (button)
@@ -39,3 +36,5 @@ close_window()
 # - Check doctsrings (potential mistakes / extra informations)
 # - Make the apply button usable with enter (settings menu)
 # - Rename the position argument (containing x,y,width,height) to one same thing across all classes
+# - Make the possibility to have custom fonts (Label)
+# - Make the fps drawing an actual function and make it clearer

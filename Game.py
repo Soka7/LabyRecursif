@@ -9,10 +9,11 @@ class Game :
 
         self.Maze : Labyrinth = Labyrinth()                         
         self.MainMenu : Menu = Menu(5, 0, 0, 0)
-        self.SettingsMenu : Menu = Menu(2, 2, 0, 0)
+        self.SettingsMenu : Menu = Menu(2, 2, 1, 4)
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False
+        self.DisplayFps : bool = False                                  # If the Fps should be displayed
 
     def Prepare(self) -> None:
         self.LoadMaze("dedales.txt")
@@ -23,7 +24,7 @@ class Game :
         self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, None)
 
         self.SettingsMenu.Prepare(UiData, "SettingsMenu", SpritesData)
-        self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack)
+        self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
 
         return None
 
@@ -57,7 +58,8 @@ class Game :
         :type FilePath: str
         :return: None
 
-        Extras: - In this project, the FilePath is Textures/Sprites.png
+        Extras: - In this project, the FilePath is Textures/Sprites.png \n
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
         self.Atlas = load_texture(FilePath)
         return None
@@ -67,11 +69,16 @@ class Game :
         Call the update method of the current menu.
         
         :return: None
+
+        Extras: - draw_fps() is a raylib function used to show fps.
         """
         if self.CurrentMenu[-1] == "MainMenu":
             self.MainMenu.Update()
         elif self.CurrentMenu[-1] == "SettingsMenu":
             self.SettingsMenu.Update()
+        
+        if self.DisplayFps:
+            draw_fps(0, 0)
         return None
     
     def Draw(self) -> None:
@@ -119,6 +126,15 @@ class Game :
         :return: None
         """
         self.CurrentMenu.pop(-1)
+        return None
+    
+    def ToggleFps(self) -> None:
+        """
+        Toggle the fps shower, to display or hide the fps.
+        
+        :return: None
+        """
+        self.DisplayFps = not self.DisplayFps
         return None
     
     def ApplySizeChanges(self) -> None:

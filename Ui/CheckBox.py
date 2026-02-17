@@ -11,6 +11,7 @@ class CheckBox:
         """
         self.CheckBoxLoc : Rectangle = Rectangle(0, 0, 0, 0)            # Dimensions of the Check Box
         self.IsChecked : bool = False                                   # If the Check Box is checked
+        self.function = None                                            # Function to call when checked
 
         self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)            # Location of the base Check Box texture in the Atlas
         self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)           # Location of the hover Check Box texture in the Atlas
@@ -29,6 +30,20 @@ class CheckBox:
         :rtype: bool
         """
         return self.IsChecked
+    
+    def Bind(self, function) -> None:
+        """
+        Give a function to the checkbox that will be called when it is checked.
+        
+        :param function: A function to call
+        :type function: function
+        :return: None
+
+        Extras: - Function must be argumentless and return None. \n
+        Extras: - Since it's a check box, function should be switching a boolean on and off.
+        """
+        self.function = function
+        return None
     
     def IsHovered(self) -> bool:
         """
@@ -123,7 +138,6 @@ class CheckBox:
                                     self.CheckBoxLoc.width * XFactor,
                                     self.CheckBoxLoc.height * YFactor)
         self.BaseSize = ScreenSize
-        self.TextSize = int(self.TextSize * YFactor)
         return None
     
     def Update(self) -> None:
@@ -135,6 +149,7 @@ class CheckBox:
         if self.IsHovered() and self.IsClicked():
             self.CurrentTexture = self.CheckedHoverTexture
             self.IsChecked = not self.IsChecked
+            self.function()
         elif self.IsChecked and self.IsHovered():
             self.CurrentTexture = self.CheckedHoverTexture
         elif self.IsClicked() and not self.IsChecked:

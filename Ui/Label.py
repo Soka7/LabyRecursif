@@ -34,6 +34,8 @@ class Label:
         self.OverLine = False                            # If the text should be overlined
         self.OverLineColor : Color = Color(0, 0, 0, 0)   # Color of the overline
 
+        self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
+
         return None
     
     def Prepare(self, Source : dict, MenuName : str, ButtonName : str) -> None:
@@ -55,6 +57,7 @@ class Label:
         Info : dict = Source[MenuName][ButtonName]
 
         self.Position = Info["Position"]
+        self.BaseSize = Info["OriginalScreenSize"]
         self.Text = Info["Text"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
@@ -70,10 +73,31 @@ class Label:
         self.OverlineColor = Info["OverlineColor"]
 
         if self.Overline or self.Underline:
-            self.TextDimensions : float = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
+            self.TextDimensions : Vector2 = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
         if self.Underline:
             self.LineBegin : Vector2 = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
             self.LineEnd : Vector2 = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)
+        return None
+    
+    def Scale(self, ScreenSize : Vector2) -> None:
+        """
+        Scale the label to the given screen size.
+        
+        :param ScreenSize: The size of the screen
+        :type ScreenSize: Vector2
+        :return: None
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        XFactor : float = ScreenSize.x / self.BaseSize.x
+        YFactor : float = ScreenSize.y / self.BaseSize.y
+
+        self.Position = Vector2(self.Position.x * XFactor,
+                                self.Position.y * YFactor)
+        self.TextDimensions = Vector2(self.TextDimensions.x * XFactor,
+                                      self.TextDimensions.y * YFactor)
+        self.BaseSize = ScreenSize
+        self.TextSize = int(self.TextSize * YFactor)
         return None
     
     def Draw(self) -> None:

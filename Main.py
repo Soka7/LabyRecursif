@@ -31,7 +31,6 @@ close_window()
 
 # On the work (do it) : 
 # - Finish the settings menu
-# - Make the ui elements scales to the screen size
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)
@@ -39,3 +38,4 @@ close_window()
 # - Make the warning appear when the user tries to type more than the max character (input box)
 # - Check doctsrings (potential mistakes / extra informations)
 # - Make the apply button usable with enter (settings menu)
+# - Rename the position argument (containing x,y,width,height) to one same thing across all classes

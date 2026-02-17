@@ -13,7 +13,9 @@ class Button:
         self.Dimensions = Rectangle(0, 0, 0, 0)     # Rectangle being the button's dimmensions
         self.Text : str = ""                        # Text displayed by the button
         self.TextSize : int = 0                     # Size of the text with default font
-        self.TextColor : Color = (0, 0, 0, 0)       # Color of the text (Red, Green, Blue, Alpha(Opacity))
+        self.TextColor : Color = (0, 0, 0, 0)       # Color of the text 
+
+        self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
 
         # Textures
         self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing
@@ -42,6 +44,7 @@ class Button:
         SpriteInfo = SpriteSource[Info["RefTexture"]]
 
         self.Dimensions = Info["Position"]
+        self.BaseSize = Info["OriginalScreenSize"]
         self.Text = Info["Text"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
@@ -133,17 +136,42 @@ class Button:
             self.CurrentTexture = self.BaseTexture
         return None
     
+    def Scale(self, ScreenSize : Vector2) -> None:
+        """
+        Scale the button to the given screen size.
+        
+        :param ScreenSize: The size of the screen
+        :type ScreenSize: Vector2
+        :return: None
+
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        XFactor : float = ScreenSize.x / self.BaseSize.x
+        YFactor : float = ScreenSize.y / self.BaseSize.y
+
+        self.Dimensions = Rectangle(self.Dimensions.x * XFactor,
+                                    self.Dimensions.y * YFactor,
+                                    self.Dimensions.width * XFactor,
+                                    self.Dimensions.height * YFactor)
+        self.BaseSize = ScreenSize
+        self.TextSize = int(self.TextSize * YFactor)
+        return None
+    
     def Draw(self, Atlas : Texture) -> None:
         """
         Draw the button with the adequate texture.
 
         :param Atlas: The texture holding all the sprites of the game.
         :type Atlas: Texture
+        :param ScreenSize: The current size of the screen
+        :type ScreenSize: Vector2
         :return: None
 
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility.
         """
+
         Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)
         Rotation : int = 0 # Rotation of the button's texture (0)
 

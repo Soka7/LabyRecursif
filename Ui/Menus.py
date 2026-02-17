@@ -93,6 +93,20 @@ class Menu:
             Counter += 1
         return None
     
+    def ScaleMenu(self, ScreenSize : Vector2) -> None:
+        """
+        Call the scale method of each element of the menu to adapt to the given screen size.
+        
+        :param ScreenSize: The size of the screen
+        :type ScreenSize: Vector2
+        :return: None
+        
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        for element in self.Buttons:
+            element.Scale(ScreenSize)
+        return None
+    
     def BindAll(self, *args) -> None:
         """
         Define which functions the buttons should call when clicked.

@@ -40,6 +40,7 @@ class InputBox:
         self.WarningColor : Color = (0, 0, 0, 0)            # Color of the warning message
 
         self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)# The location of the texture to use in the Atlas
+        self.BaseSize : Vector2 = Vector2(0, 0)             # The screen size it was made on.
         return None
     
     def IsReady(self, Cooldown : float) -> bool:
@@ -211,6 +212,31 @@ class InputBox:
         self.GetPlayerInput()
         return None
     
+    def Scale(self, ScreenSize : Vector2) -> None:
+        """
+        Scale the input box to the given screen size. \n
+        Also center the warning text.
+        
+        :param ScreenSize: The size of the screen
+        :type ScreenSize: Vector2
+        :return: None
+        
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        XFactor : float = ScreenSize.x / self.BaseSize.x
+        YFactor : float = ScreenSize.y / self.BaseSize.y
+
+        self.ButtonLoc= Rectangle(self.ButtonLoc.x * XFactor,
+                                    self.ButtonLoc.y * YFactor,
+                                    self.ButtonLoc.width * XFactor,
+                                    self.ButtonLoc.height * YFactor)
+        self.BaseSize = ScreenSize
+        self.TextSize = int(self.TextSize * YFactor)
+        self.CenterText(self.WelcomeText)
+        self.CenterWarning()
+        return None
+    
     def DrawContent(self) -> None:
         """
         Draw the text of the Input Box.
@@ -277,6 +303,7 @@ class InputBox:
         SpriteInfo = SpriteSource[Info["RefTexture"]]
 
         self.ButtonLoc = Info["Position"]
+        self.BaseSize = Info["OriginalScreenSize"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
         self.MaxCharacters = Info["MaxCharacters"]

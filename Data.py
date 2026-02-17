@@ -20,6 +20,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(550, 400, 120, 40), 
             "Text" : "Start",
             "TextSize" : 24,
@@ -29,6 +30,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(550, 670, 120, 40),
             "Text" : "Quit",
             "TextSize" : 24,
@@ -38,6 +40,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(1070, 5, 120, 40),
             "Text" : "Options",
             "TextSize" : 24,
@@ -47,6 +50,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(5, 670, 120, 40),
             "Text" : "Credits",
             "TextSize" : 24,
@@ -56,6 +60,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(550, 500, 120, 40),
             "Text" : "Create",
             "TextSize" : 24,
@@ -68,6 +73,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(445, 300, 150, 50),
             "Text" : "Apply",
             "TextSize" : 24,
@@ -77,6 +83,7 @@ UiData : dict = {
         {
             "Type" : "Button",
             "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(445, 600, 150, 50),
             "Text" : "Back",
             "TextSize" : 24,
@@ -86,6 +93,7 @@ UiData : dict = {
         {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(300, 200, 210, 70),
             "WelcomeText" : "Width :",
             "WarningText" : "Limit reached !",
@@ -103,6 +111,7 @@ UiData : dict = {
         {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(520, 200, 210, 70),
             "WelcomeText" : "Height :",
             "WarningText" : "Limit reached !",

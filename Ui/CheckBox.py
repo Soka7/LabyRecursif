@@ -17,6 +17,8 @@ class CheckBox:
         self.CheckedTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the checked Check Box texture in the Atlas
         self.CheckedHoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hoverchecked Check Box texture in the Atlas
         self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the current texture to use in the Atlas
+
+        self.BaseSize : Vector2 = Vector2(0, 0)                         # The screen size it was made on.
         return None
     
     def GetChecked(self) -> bool:
@@ -77,6 +79,7 @@ class CheckBox:
         SpriteInfo : dict = SpriteSource[Info["RefTexture"]]
 
         self.CheckBoxLoc = Info["Position"]
+        self.BaseSize = Info["OriginalScreenSize"]
         self.BaseTexture = SpriteInfo["Base"]
         self.HoverTexture = SpriteInfo["Hover"]
         self.CheckedTexture = SpriteInfo["Checked"]
@@ -99,6 +102,28 @@ class CheckBox:
         Origin : Vector2 = Vector2(0, 0)
         Rotation : int = 0
         draw_texture_pro(Atlas, self.CurrentTexture, self.CheckBoxLoc, Origin, Rotation, WHITE)
+        return None
+    
+    def Scale(self, ScreenSize : Vector2) -> None:
+        """
+        Scale the check box to the given screen size.
+        
+        :param ScreenSize: The size of the screen
+        :type ScreenSize: Vector2
+        :return: None
+        
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        XFactor : float = ScreenSize.x / self.BaseSize.x
+        YFactor : float = ScreenSize.y / self.BaseSize.y
+
+        self.CheckBoxLoc = Rectangle(self.CheckBoxLoc.x * XFactor,
+                                    self.CheckBoxLoc.y * YFactor,
+                                    self.CheckBoxLoc.width * XFactor,
+                                    self.CheckBoxLoc.height * YFactor)
+        self.BaseSize = ScreenSize
+        self.TextSize = int(self.TextSize * YFactor)
         return None
     
     def Update(self) -> None:

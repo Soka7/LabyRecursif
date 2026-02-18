@@ -73,11 +73,22 @@ class Label:
         self.Overline = Info["Overline"]
         self.OverlineColor = Info["OverlineColor"]
 
+        self.UpdateLinePos()
+        return None
+    
+    def UpdateLinePos(self) -> None:
+        """
+        Resize the parameters for over and under line accordingly to the screen size.
+        
+        :return: None
+
+        Extras: - measure_text_ex() is a raylib function to measure a text dimensions with a special font.
+        """
         if self.Overline or self.Underline:
             self.TextDimensions = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
         if self.Underline:
-            self.LineBegin : Vector2 = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
-            self.LineEnd : Vector2 = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)
+            self.LineBegin = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
+            self.LineEnd = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)
         return None
     
     def Scale(self, ScreenSize : Vector2) -> None:
@@ -99,6 +110,8 @@ class Label:
                                       self.TextDimensions.y * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
+
+        self.UpdateLinePos()
         return None
     
     def Draw(self) -> None:

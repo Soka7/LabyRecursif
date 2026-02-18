@@ -105,7 +105,6 @@ class Menu:
             self.BackgroundPos = Info["Background"]["Position"]
             self.BackgroundTexture = SpriteSource["Background"][MenuName]
             self.BaseSize = Info["Background"]["OriginalScreenSize"]
-            print("Basic size : ", self.BaseSize.x, " , ", self.BaseSize.y)
         return None
     
     def ScaleMenu(self, ScreenSize : Vector2) -> None:

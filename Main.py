@@ -29,6 +29,11 @@ close_window()
 # Set-up : pip3 install raylib==5.5.0.3 --break-system-packages
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
 
+# On the work (You better do it) :
+# - Creation Pop up
+# - Close button texture and the sub textures that comes with it
+# - Make it work
+
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)
 # - PressedHover Texture for the button (button)
@@ -38,3 +43,4 @@ close_window()
 # - Rename the position argument (containing x,y,width,height) to one same thing across all classes
 # - Make the possibility to have custom fonts (Label)
 # - Make the fps drawing an actual function and make it clearer
+# - Make the welcome text be the default value of the input box (input box)

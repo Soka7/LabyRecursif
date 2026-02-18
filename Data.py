@@ -229,5 +229,37 @@ UiData : dict = {
             "Overline" : False,
             "OverlineColor" : Color(0, 0, 0, 0)
         }
+    },
+    "CreationPopUp" :
+    {
+        "ApplyButton" :
+        {
+
+        },
+        "BackButton" :
+        {
+
+        },
+        "LenghtInputBox" :
+        {
+
+        },
+        "HeightInputBox" :
+        {
+            
+        },
+        "CreationLabel" :
+        {
+
+        },
+        "LenghtLabel" :
+        {
+
+        },
+        "HeightLabel" : 
+        {
+            
+        }
     }
+    
 }

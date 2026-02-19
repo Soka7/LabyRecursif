@@ -14,7 +14,7 @@ class InputBox:
         self.WrittenCharacters : str = ""                   # Characters displayed by the box
         self.MaxCharacters : int = 0                        # The maximum amount of characters on the Input Box
         self.CharacterRange : tuple = (0, 0)                # The unicode character range that can be displayed
-        self.ButtonLoc : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the the input box
+        self.Position : Rectangle = Rectangle(0, 0, 0, 0)   # Location of the the input box
 
         self.LastUpdateTime : float = 0                     # Time since the last time the line changed state
         self.ShowLine : bool = False                        # If the line should appear
@@ -70,8 +70,8 @@ class InputBox:
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
         Extras: - get_mouse_position() is a raylib function returning a Vector2 holding the x and y position of the mouse.
         """
-        if check_collision_point_rec(get_mouse_position(), (self.ButtonLoc.x, self.ButtonLoc.y,
-                                                            self.ButtonLoc.width, self.ButtonLoc.height)):
+        if check_collision_point_rec(get_mouse_position(), (self.Position.x, self.Position.y,
+                                                            self.Position.width, self.Position.height)):
             return True
         return False
     
@@ -101,8 +101,8 @@ class InputBox:
         Extras: - measure_text() is a raylib function returning the width of the text with the default font.
         """
         TextWidth : int = measure_text(Text, self.TextSize)
-        self.TextPos = Vector2(self.ButtonLoc.x + (self.ButtonLoc.width - TextWidth) / 2,
-                               self.ButtonLoc.y + (self.ButtonLoc.height - self.TextSize) / 2)
+        self.TextPos = Vector2(self.Position.x + (self.Position.width - TextWidth) / 2,
+                               self.Position.y + (self.Position.height - self.TextSize) / 2)
         return None
     
     def CenterWarning(self) -> None:
@@ -114,8 +114,8 @@ class InputBox:
         Extras: - measure_text() is a raylib function returning the width of the text with the default font.
         """
         TextWidth : int = measure_text(self.WarningText, self.WarningTextSize)
-        self.WarningPos.x = self.ButtonLoc.x + (self.ButtonLoc.width - TextWidth) / 2
-        self.WarningPos.y = self.ButtonLoc.y + self.ButtonLoc.height
+        self.WarningPos.x = self.Position.x + (self.Position.width - TextWidth) / 2
+        self.WarningPos.y = self.Position.y + self.Position.height
         return None
 
     def UpdateLinePlace(self) -> None:
@@ -127,12 +127,12 @@ class InputBox:
         Extras: - measure_text() is a raylib function returning the width of the text with the default font.
         Extras: - The texture is 23 pixels height and 11 of them are for the text, so 9 will be used to draw text on it.
         """
-        LineLenght : int = int(self.ButtonLoc.height * (9 / 23))
+        LineLenght : int = int(self.Position.height * (9 / 23))
         TextWidth = measure_text(self.WrittenCharacters, self.TextSize)
-        self.LineBegin.x = self.ButtonLoc.x + (self.ButtonLoc.width / 2) + TextWidth / 2 + self.LineOffset.x
+        self.LineBegin.x = self.Position.x + (self.Position.width / 2) + TextWidth / 2 + self.LineOffset.x
         self.LineEnd.x = self.LineBegin.x
 
-        self.LineBegin.y = self.ButtonLoc.y + self.LineOffset.y + (self.ButtonLoc.height - LineLenght) / 2
+        self.LineBegin.y = self.Position.y + self.LineOffset.y + (self.Position.height - LineLenght) / 2
         self.LineEnd.y = self.LineBegin.y + LineLenght
         return None
     
@@ -198,10 +198,7 @@ class InputBox:
         if self.HasBeenClicked and self.IsReady(self.LineCooldown):
             self.ShowLine = not self.ShowLine
 
-        if len(self.WrittenCharacters) == 0:
-            self.ShowWelcomeText = True
-            self.CenterText(self.WelcomeText)
-        else:
+        if self.ShowWelcomeText:
             self.ShowWelcomeText = False
 
         if len(self.WrittenCharacters) == self.MaxCharacters:
@@ -227,10 +224,10 @@ class InputBox:
         XFactor : float = ScreenSize.x / self.BaseSize.x
         YFactor : float = ScreenSize.y / self.BaseSize.y
 
-        self.ButtonLoc= Rectangle(self.ButtonLoc.x * XFactor,
-                                    self.ButtonLoc.y * YFactor,
-                                    self.ButtonLoc.width * XFactor,
-                                    self.ButtonLoc.height * YFactor)
+        self.Position= Rectangle(self.Position.x * XFactor,
+                                    self.Position.y * YFactor,
+                                    self.Position.width * XFactor,
+                                    self.Position.height * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
         self.CenterText(self.WelcomeText)
@@ -271,7 +268,7 @@ class InputBox:
         """
         Origin : Vector2 = Vector2(0, 0)
         Rotation : int = 0
-        draw_texture_pro(Atlas, self.BaseTexture, self.ButtonLoc, Origin, Rotation, WHITE)
+        draw_texture_pro(Atlas, self.BaseTexture, self.Position, Origin, Rotation, WHITE)
         self.DrawContent()
 
         if not self.HasBeenClicked:
@@ -302,7 +299,7 @@ class InputBox:
         Info = Source[MenuName][ButtonName]
         SpriteInfo = SpriteSource[Info["RefTexture"]]
 
-        self.ButtonLoc = Info["Position"]
+        self.Position = Info["Position"]
         self.BaseSize = Info["OriginalScreenSize"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
@@ -319,6 +316,8 @@ class InputBox:
 
         self.CenterWarning()
         self.CenterText(self.WelcomeText)
+
+        self.WrittenCharacters = self.WelcomeText
         return None
     
     def GetInput(self) -> str:

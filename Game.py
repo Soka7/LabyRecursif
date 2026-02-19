@@ -178,6 +178,7 @@ class Game :
 
         self.MainMenu.ScaleMenu(Vector2(width, height))
         self.SettingsMenu.ScaleMenu(Vector2(width, height))
+        self.CreationPopUp.ScaleMenu(Vector2(width, height))
 
         # Center window on the screen
         CurrentMonitor : int = get_current_monitor()

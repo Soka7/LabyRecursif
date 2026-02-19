@@ -10,7 +10,7 @@ class Button:
         Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
         """
         self.function = None                        # Function called by the button when its clicked
-        self.Dimensions = Rectangle(0, 0, 0, 0)     # Rectangle being the button's dimmensions
+        self.Position = Rectangle(0, 0, 0, 0)       # Rectangle being the button's dimmensions
         self.Text : str = ""                        # Text displayed by the button
         self.TextSize : int = 0                     # Size of the text with default font
         self.TextColor : Color = (0, 0, 0, 0)       # Color of the text 
@@ -22,6 +22,7 @@ class Button:
         self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button's texture in the Atlas
         self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button's texture in the Atlas
         self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button's texture in the Atlas
+        self.HoverPressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the hover pressed button's texture in the Atlas
         return None
     
     def Prepare(self, Source : dict, MenuName : str, ButtonName : str, SpriteSource : dict) -> None:
@@ -43,7 +44,7 @@ class Button:
         Info = Source[MenuName][ButtonName]
         SpriteInfo = SpriteSource[Info["RefTexture"]]
 
-        self.Dimensions = Info["Position"]
+        self.Position = Info["Position"]
         self.BaseSize = Info["OriginalScreenSize"]
         self.Text = Info["Text"]
         self.TextSize = Info["TextSize"]
@@ -52,6 +53,7 @@ class Button:
         self.BaseTexture = SpriteInfo["Base"]
         self.HoverTexture = SpriteInfo["Hover"]
         self.PressedTexture = SpriteInfo["Pressed"]
+        self.HoverPressedTexture = SpriteInfo["HoverPressed"]
 
         return None
         
@@ -65,7 +67,7 @@ class Button:
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
         Extras: - get_mouse_position() is a raylib function returning a Vector2 holding the x and y position of the mouse.
         """
-        if check_collision_point_rec(get_mouse_position(), (self.Dimensions.x, self.Dimensions.y, self.Dimensions.width, self.Dimensions.height)):
+        if check_collision_point_rec(get_mouse_position(), (self.Position.x, self.Position.y, self.Position.width, self.Position.height)):
             return True
         return False
     
@@ -93,8 +95,8 @@ class Button:
         """
         TextWidth : int = measure_text(self.Text, self.TextSize)
         # Find where the text should be to be centered.
-        TextPosition : Vector2 = Vector2(self.Dimensions.x + (self.Dimensions.width - TextWidth) / 2,
-                                         self.Dimensions.y + (self.Dimensions.height - self.TextSize) / 2)
+        TextPosition : Vector2 = Vector2(self.Position.x + (self.Position.width - TextWidth) / 2,
+                                         self.Position.y + (self.Position.height - self.TextSize) / 2)
         draw_text(self.Text, int(TextPosition.x), int(TextPosition.y), self.TextSize, self.TextColor)
         return None
     
@@ -150,10 +152,10 @@ class Button:
         XFactor : float = ScreenSize.x / self.BaseSize.x
         YFactor : float = ScreenSize.y / self.BaseSize.y
 
-        self.Dimensions = Rectangle(self.Dimensions.x * XFactor,
-                                    self.Dimensions.y * YFactor,
-                                    self.Dimensions.width * XFactor,
-                                    self.Dimensions.height * YFactor)
+        self.Position = Rectangle(self.Position.x * XFactor,
+                                  self.Position.y * YFactor,
+                                  self.Position.width * XFactor,
+                                  self.Position.height * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
         return None
@@ -177,6 +179,6 @@ class Button:
 
         # Take a region of Atlas, being TextureLocation, to draw the button
         # Draw it at its hitbox place with a WHITE tint (default)
-        draw_texture_pro(Atlas, self.CurrentTexture, self.Dimensions, Origin, Rotation, WHITE)
+        draw_texture_pro(Atlas, self.CurrentTexture, self.Position, Origin, Rotation, WHITE)
         self.DrawText()
         return None

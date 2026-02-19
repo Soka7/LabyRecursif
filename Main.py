@@ -11,7 +11,6 @@ game : Game = Game()
 init_window(ScreenWidth, ScreenHeight, Title) # Create the window
 
 game.Prepare()
-
 while not window_should_close():
     game.Update()
     if game.ShouldClose:
@@ -30,17 +29,12 @@ close_window()
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
 
 # On the work (You better do it) :
-# - Creation Pop up
-# - Close button texture and the sub textures that comes with it
 # - Make it work
+# - Make the warning appear when the user tries to type more than the max character (input box)
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)
-# - PressedHover Texture for the button (button)
-# - Make the warning appear when the user tries to type more than the max character (input box)
 # - Check doctsrings (potential mistakes / extra informations)
 # - Make the apply button usable with enter (settings menu)
-# - Rename the position argument (containing x,y,width,height) to one same thing across all classes
 # - Make the possibility to have custom fonts (Label)
 # - Make the fps drawing an actual function and make it clearer
-# - Make the welcome text be the default value of the input box (input box)

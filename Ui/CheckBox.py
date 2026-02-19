@@ -9,7 +9,7 @@ class CheckBox:
 
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
-        self.CheckBoxLoc : Rectangle = Rectangle(0, 0, 0, 0)            # Dimensions of the Check Box
+        self.Position : Rectangle = Rectangle(0, 0, 0, 0)               # Dimensions of the Check Box
         self.IsChecked : bool = False                                   # If the Check Box is checked
         self.function = None                                            # Function to call when checked
 
@@ -55,7 +55,7 @@ class CheckBox:
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
         Extras: - get_mouse_position() is a raylib function returning a Vector2 holding the x and y position of the mouse.
         """
-        if check_collision_point_rec(get_mouse_position(), Rectangle(self.CheckBoxLoc.x, self.CheckBoxLoc.y, self.CheckBoxLoc.width, self.CheckBoxLoc.height)):
+        if check_collision_point_rec(get_mouse_position(), Rectangle(self.Position.x, self.Position.y, self.Position.width, self.Position.height)):
             return True
         return False
     
@@ -93,7 +93,7 @@ class CheckBox:
         Info : dict = Source[MenuName][ButtonName]
         SpriteInfo : dict = SpriteSource[Info["RefTexture"]]
 
-        self.CheckBoxLoc = Info["Position"]
+        self.Position = Info["Position"]
         self.BaseSize = Info["OriginalScreenSize"]
         self.BaseTexture = SpriteInfo["Base"]
         self.HoverTexture = SpriteInfo["Hover"]
@@ -116,7 +116,7 @@ class CheckBox:
         """
         Origin : Vector2 = Vector2(0, 0)
         Rotation : int = 0
-        draw_texture_pro(Atlas, self.CurrentTexture, self.CheckBoxLoc, Origin, Rotation, WHITE)
+        draw_texture_pro(Atlas, self.CurrentTexture, self.Position, Origin, Rotation, WHITE)
         return None
     
     def Scale(self, ScreenSize : Vector2) -> None:
@@ -133,10 +133,10 @@ class CheckBox:
         XFactor : float = ScreenSize.x / self.BaseSize.x
         YFactor : float = ScreenSize.y / self.BaseSize.y
 
-        self.CheckBoxLoc = Rectangle(self.CheckBoxLoc.x * XFactor,
-                                    self.CheckBoxLoc.y * YFactor,
-                                    self.CheckBoxLoc.width * XFactor,
-                                    self.CheckBoxLoc.height * YFactor)
+        self.Position = Rectangle(self.Position.x * XFactor,
+                                  self.Position.y * YFactor,
+                                  self.Position.width * XFactor,
+                                  self.Position.height * YFactor)
         self.BaseSize = ScreenSize
         return None
     

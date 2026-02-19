@@ -3,24 +3,33 @@ from pyray import *
 SpritesData : dict = {
     "Button" : 
     {
-        "Base" : Rectangle(0, 0, 62, 18),
-        "Hover" : Rectangle(0, 18, 63, 20),
-        "Pressed" : Rectangle(0, 38, 62, 20)
+        "Base" : Rectangle(1, 0, 62, 18),
+        "Hover" : Rectangle(0, 18, 64, 20),
+        "Pressed" : Rectangle(0, 38, 62, 18),
+        "HoverPressed" : Rectangle(0, 57, 64, 20)
     },
     "InputBox" :
     {
-        "Base" : Rectangle(62, 0, 62, 23)
+        "Base" : Rectangle(63, 0, 62, 23)
     },
     "CheckBox" :
     {
-        "Base" : Rectangle(186, 0, 30, 30),
-        "Hover" : Rectangle(216, 0, 32, 32),
-        "Checked" : Rectangle(186, 30, 30, 30),
-        "CheckedHover" : Rectangle(216, 32, 32, 32)
+        "Base" : Rectangle(187, 0, 30, 30),
+        "Hover" : Rectangle(217, 0, 32, 32),
+        "Checked" : Rectangle(187, 30, 30, 30),
+        "CheckedHover" : Rectangle(217, 32, 32, 32)
+    },
+    "CloseButton" :
+    {
+        "Base" : Rectangle(187, 64, 28, 28),
+        "Hover" : Rectangle(215, 64, 30, 30),
+        "Pressed" : Rectangle(187, 92, 28, 28),
+        "HoverPressed" : Rectangle(215, 94, 30, 30)
     },
     "Background" :
     {
-        "SettingsMenu" : Rectangle(124, 0, 62, 62)
+        "SettingsMenu" : Rectangle(125, 0, 62, 62),
+        "CreationPopUp" : Rectangle(125, 0, 62, 62)
     }
 }
 
@@ -232,34 +241,122 @@ UiData : dict = {
     },
     "CreationPopUp" :
     {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(350, 200, 500, 320),
+        },
         "ApplyButton" :
         {
-
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(535, 460, 150, 50),
+            "Text" : "Apply",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
         },
         "BackButton" :
         {
-
+            "Type" : "Button",
+            "RefTexture" : "CloseButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(780, 210, 42, 42),
+            "Text" : "",
+            "TextSize" : 0,
+            "TextColor" : Color(0, 0, 0, 0)
         },
         "LenghtInputBox" :
         {
-
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(520, 275, 180, 60),
+            "WelcomeText" : "10",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 3,
+            "CharacterRange" : (48, 57),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
         },
         "HeightInputBox" :
         {
-            
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(520, 365, 180, 60),
+            "WelcomeText" : "10",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 3,
+            "CharacterRange" : (48, 57),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
         },
         "CreationLabel" :
         {
-
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(535, 215),
+            "Text" : "Parameters",
+            "TextSize" : 26,
+            "TextColor" : Color(141, 220, 220, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
         },
         "LenghtLabel" :
         {
-
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(400, 290),
+            "Text" : "Lenght :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 1,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
         },
         "HeightLabel" : 
         {
-            
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(400, 380),
+            "Text" : "Height :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 1,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
         }
     }
-    
 }

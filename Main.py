@@ -30,7 +30,6 @@ close_window()
 
 # On the work (You better do it) :
 # - Make it work
-# - Make the warning appear when the user tries to type more than the max character (input box)
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)

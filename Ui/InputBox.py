@@ -41,6 +41,8 @@ class InputBox:
 
         self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)# The location of the texture to use in the Atlas
         self.BaseSize : Vector2 = Vector2(0, 0)             # The screen size it was made on.
+
+        self.TriedInput : bool = False                      # If the user tried to input a character despite reaching the max amount
         return None
     
     def IsReady(self, Cooldown : float) -> bool:
@@ -165,6 +167,7 @@ class InputBox:
         # Handle character deletion
         if is_key_pressed(KEY_BACKSPACE):
             self.WrittenCharacters = self.WrittenCharacters[:-1]
+            self.TriedInput = False
             return None
         elif is_key_pressed(KEY_ENTER):
             self.HasBeenClicked = False
@@ -176,7 +179,7 @@ class InputBox:
         if UnicodeCharacter == 0:
             return None
         elif len(self.WrittenCharacters) == self.MaxCharacters:
-            self.MaxCharacterWarning = True
+            self.TriedInput = True
             return None
         elif not self.IsCharacterValid(UnicodeCharacter):
             return None
@@ -201,7 +204,7 @@ class InputBox:
         if self.ShowWelcomeText:
             self.ShowWelcomeText = False
 
-        if len(self.WrittenCharacters) == self.MaxCharacters:
+        if self.TriedInput:
             self.MaxCharacterWarning = True
         else:
             self.MaxCharacterWarning = False

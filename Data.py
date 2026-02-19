@@ -108,7 +108,7 @@ UiData : dict = {
             "Type" : "Button",
             "RefTexture" : "Button",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(460, 320, 150, 50),
+            "Position" : Rectangle(460, 330, 150, 50),
             "Text" : "Apply",
             "TextSize" : 24,
             "TextColor" : Color(141, 220, 220, 255)
@@ -128,7 +128,7 @@ UiData : dict = {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(550, 125, 210, 70),
+            "Position" : Rectangle(550, 140, 210, 70),
             "WelcomeText" : "1200",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
@@ -146,7 +146,7 @@ UiData : dict = {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(550, 225, 210, 70),
+            "Position" : Rectangle(550, 250, 210, 70),
             "WelcomeText" : "720",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
@@ -164,13 +164,13 @@ UiData : dict = {
             "Type" : "CheckBox",
             "RefTexture" : "CheckBox",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Rectangle(570, 395, 39, 39)
+            "Position" : Rectangle(570, 490, 39, 39)
         },
         "WindowSizeLabel" :
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(360, 80),
+            "Position" : Vector2(365, 80),
             "Text" : "Window settings :",
             "TextSize" : 26,
             "TextColor" : Color(141, 220, 220, 255),
@@ -188,7 +188,7 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 150),
+            "Position" : Vector2(430, 165),
             "Text" : "Width :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
@@ -206,7 +206,7 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 250),
+            "Position" : Vector2(430, 275),
             "Text" : "Height :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
@@ -224,7 +224,7 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 400),
+            "Position" : Vector2(430, 500),
             "Text" : "Draw FPS :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
@@ -233,6 +233,24 @@ UiData : dict = {
             "CharacterSpacing" : 2,
             "Underline" : True,
             "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "MiscLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(365, 415),
+            "Text" : "Miscellaneous :",
+            "TextSize" : 26,
+            "TextColor" : Color(141, 220, 220, 255),
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
             "LineSpacing" : 2,
             "LineThickness" : 1,
             "Overline" : False,

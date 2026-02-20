@@ -376,5 +376,55 @@ UiData : dict = {
             "Overline" : False,
             "OverlineColor" : Color(0, 0, 0, 0)
         }
+    },
+    "EditorHUDMenu" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : False,
+            "Position" : Rectangle(0, 0, 0, 0),
+        },
+        "WallPlacerButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(100, 660, 150, 50), 
+            "Text" : "W",
+            "TextSize" : 40,
+            "TextColor" : BLACK
+        },
+        "EntrancePlacerButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(280, 660, 150, 50), 
+            "Text" : "E",
+            "TextSize" : 40,
+            "TextColor" : BLACK
+        },
+        "ExitPlacerButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(460, 660, 150, 50), 
+            "Text" : "E",
+            "TextSize" : 40,
+            "TextColor" : BLACK
+        },
+        "EraseButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(640, 660, 150, 50), 
+            "Text" : "D",
+            "TextSize" : 40,
+            "TextColor" : BLACK
+        },
     }
 }

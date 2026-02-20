@@ -29,7 +29,8 @@ close_window()
 # Sources : https://electronstudio.github.io/raylib-python-cffi/README.html
 
 # On the work (You better do it) :
-# - Make it work
+# - Creation menu  
+
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)

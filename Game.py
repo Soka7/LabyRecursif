@@ -8,9 +8,9 @@ class Game :
         self.Atlas : Texture = None                                     # The texture holding all the sprites
 
         self.Maze : Labyrinth = Labyrinth()                         
-        self.MainMenu : Menu = Menu(5, 0, 0, 0)
-        self.SettingsMenu : Menu = Menu(2, 2, 1, 5)
-        self.CreationPopUp : Menu = Menu(2, 2, 0, 3)
+        self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)
+        self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
+        self.CreationPopUp : Menu = Menu(1, 1, 2, 0, 3)
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False

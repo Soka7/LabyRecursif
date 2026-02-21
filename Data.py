@@ -19,7 +19,7 @@ SpritesData : dict = {
         "Checked" : Rectangle(187, 30, 30, 30),
         "CheckedHover" : Rectangle(217, 32, 32, 32)
     },
-    "CloseButton" :
+    "IconButton" :
     {
         "Base" : Rectangle(187, 64, 28, 28),
         "Hover" : Rectangle(215, 64, 30, 30),
@@ -30,6 +30,21 @@ SpritesData : dict = {
     {
         "SettingsMenu" : Rectangle(125, 0, 62, 62),
         "CreationPopUp" : Rectangle(125, 0, 62, 62)
+    },
+    "Tiles" : 
+    {
+        "Wall" : Rectangle(0, 240, 16, 16),
+        "Ground" : Rectangle(16, 240, 16, 16),
+        "Entry" : Rectangle(32, 240, 16, 16),
+        "Exit" : Rectangle(48, 240, 16, 16)
+    },
+    "Icons" :
+    {
+        "Cross" : Rectangle(238, 238, 18, 18),
+        "Entry" : Rectangle(226, 240, 12, 16),
+        "Exit" : Rectangle(214, 241, 12, 15),
+        "Ground" : Rectangle(198, 240, 16, 16),
+        "Wall" : Rectangle(182, 240, 16, 16)
     }
 }
 
@@ -278,13 +293,12 @@ UiData : dict = {
         },
         "BackButton" :
         {
-            "Type" : "Button",
-            "RefTexture" : "CloseButton",
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(780, 210, 42, 42),
-            "Text" : "",
-            "TextSize" : 0,
-            "TextColor" : Color(0, 0, 0, 0)
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
         },
         "LenghtInputBox" :
         {
@@ -388,43 +402,39 @@ UiData : dict = {
         },
         "WallPlacerButton" :
         {
-            "Type" : "Button",
-            "RefTexture" : "Button",
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(100, 660, 150, 50), 
-            "Text" : "W",
-            "TextSize" : 40,
-            "TextColor" : BLACK
+            "Position" : Rectangle(1065, 70, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Wall"
         },
-        "EntrancePlacerButton" :
+        "EntryPlacerButton" :
         {
-            "Type" : "Button",
-            "RefTexture" : "Button",
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(280, 660, 150, 50), 
-            "Text" : "E",
-            "TextSize" : 40,
-            "TextColor" : BLACK
+            "Position" : Rectangle(1135, 5, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Entry"
         },
         "ExitPlacerButton" :
         {
-            "Type" : "Button",
-            "RefTexture" : "Button",
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(460, 660, 150, 50), 
-            "Text" : "E",
-            "TextSize" : 40,
-            "TextColor" : BLACK
+            "Position" : Rectangle(1135, 70, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Exit"
         },
-        "EraseButton" :
+        "GroundPlacerButton" :
         {
-            "Type" : "Button",
-            "RefTexture" : "Button",
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(640, 660, 150, 50), 
-            "Text" : "D",
-            "TextSize" : 40,
-            "TextColor" : BLACK
+            "Position" : Rectangle(1065, 5, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Ground"
         },
     }
 }

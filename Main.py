@@ -39,3 +39,4 @@ close_window()
 # - Make the possibility to have custom fonts (Label)
 # - Make the fps drawing an actual function and make it clearer
 # - Make the camera not center when you right click (editor screen)
+# - Better ui information (show what you have selected) (editor screen)

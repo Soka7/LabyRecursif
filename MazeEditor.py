@@ -34,11 +34,14 @@ class EditorScreen:
         self.MazeHeight : int = 0                                           # The height of the maze in pixels
         self.CellSize : int = 32                                            # The size of each cell
 
-        self.HUD : Menu = Menu(0, 4, 0, 0, 0)                               # The user interface, 4 buttons
+        self.HUD : Menu = Menu(0, 6, 0, 0, 0)                               # The user interface, 6 icon buttons
 
         self.MousePosition : Vector2 = Vector2(0, 0)                        # Mouse position when the user right clicked
         self.MouseSensitivity : float = 1                                   # Mouse sensitivity when dragging the camera
         self.MouseSensitivityIncrement : float = 0.1                        # By how much the sensitivity increment / decrement when changed
+
+        self.CurrentAction : str = ""                                       # The action the user is going to do
+        self.CanPlace : bool = False                                        # Make sure only action is placed each frame
         return None
     
     def RegisterMousePosition(self) -> None:
@@ -64,7 +67,7 @@ class EditorScreen:
         """
         self.HUD.Prepare(UiData, "EditorHUDMenu", SpriteData)
         self.LoadTexturesLocation(SpriteData)
-        self.HUD.BindAll(self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject)
+        self.HUD.BindAll(self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject, self.SetReplaceAll, self.Save)
         self.CreateMazeArray()
         self.ComputeMazeDimensions()
         self.ResetCam()
@@ -194,6 +197,69 @@ class EditorScreen:
         if is_key_pressed(KEY_R):
             self.ResetCam()
         return None
+    
+    def IsMouseInsideMaze(self, MousePosition : Vector2) -> bool:
+        """
+        Check if the mouse is inside the maze.
+
+        :param MousePosition: The mouse position in the world
+        :type MousePosition: Vector2
+        :return: True if it is, False otherwise
+        :rtype: bool
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        if MousePosition.x < 0 or MousePosition.x >= self.MazeLenght:
+            return False
+        if MousePosition.y < 0 or MousePosition.y >= self.MazeHeight:
+            return False
+        
+        return True
+
+    def ExecuteActions(self) -> None:
+        """
+        Execute actions related to ui actions, such as replace all.
+
+        :return: None
+
+        Extras: - is_mouse_button_pressed() is a raylib function checking if a button of the mouse has been pressed. \n
+        Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        Extras: - get_mouse_position() is a raylib function returning a Vector2 holding the x and y position of the mouse. \n
+        Extras: - get_screen_to_world_2d() is a raylib function to transform a screen position into a world position.
+        """
+        if not is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
+            return None
+        
+        WorldCoordinates : Vector2 = get_screen_to_world_2d(get_mouse_position(), self.Camera)
+
+        if not self.IsMouseInsideMaze(WorldCoordinates) or not self.CanPlace:
+            return None
+        
+        if self.CurrentAction == "ReplaceAll":
+            self.ReplaceAll()
+            self.CanPlace = False
+
+        return None
+
+    def GetCellClicked(self) -> Vector2:
+        """
+        Get the cell clicked by the mouse.
+
+        :return: The x and y coordinates of the cell
+        :rtype: Vector2
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n   
+        Extras: - get_screen_to_world_2d() is a raylib function to convert a position on the screen to a position on the world. \n
+        Extras: - get_mouse_position() is a raylib function to get the coordinates of the mouse.  
+        """
+        WorldCoordinates : Vector2 = get_screen_to_world_2d(get_mouse_position(), self.Camera)
+
+        if not self.IsMouseInsideMaze(WorldCoordinates):
+            return Vector2(-1, -1)
+        
+        Cell : Vector2 = Vector2(WorldCoordinates.x // self.CellSize, WorldCoordinates.y // self.CellSize)
+        return Cell
 
     def UpdateMaze(self) -> None:
         """
@@ -201,29 +267,25 @@ class EditorScreen:
 
         :return: None
 
-        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
         Extras: - is_mouse_button_down() is a raylib function checking if a button of the mouse is being held. \n
-        Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button. \n
-        Extras: - get_screen_to_world_2d() is a raylib function to convert a position on the screen to a position on the world. \n
-        Extras: - get_mouse_position() is a raylib function to get the coordinates of the mouse.
+        Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button.
         """
         if not is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
             return None
         
-        WorldCoordinates : Vector2 = get_screen_to_world_2d(get_mouse_position(), self.Camera)
+        Cell : Vector2 = self.GetCellClicked()
 
-        if WorldCoordinates.x < 0 or WorldCoordinates.x >= self.MazeLenght:
+        if Cell.x == -1 and Cell.y == -1 or not self.CanPlace:
             return None
-        if WorldCoordinates.y < 0 or WorldCoordinates.y >= self.MazeHeight:
-            return None
-        
-        ChangedCell : Vector2 = Vector2(WorldCoordinates.x / self.CellSize, WorldCoordinates.y / self.CellSize)
-        Column : int = int(ChangedCell.y)
-        Line : int = int(ChangedCell.x)
+
+        Column : int = int(Cell.y)
+        Line : int = int(Cell.x)
+
         if self.MazeArray[Column][Line] != self.CurrentObject:
             self.MazeArray[Column][Line] = self.CurrentObject
         else:
             self.MazeArray[Column][Line] = self.GroundObject
+        self.CanPlace = False
         return None
     
     def SetMazeGridSize(self, Lenght : int, Height : int) -> None:
@@ -312,10 +374,60 @@ class EditorScreen:
 
         :return: None
         """
+        self.CanPlace = True
         self.ExecuteInput()
         self.HUD.Update()
+        self.ExecuteActions()
         self.UpdateMaze()
         return None
+    
+    def Save(self) -> None:
+        """
+        Save the maze in a txt file.
+
+        :return: None
+        """
+        File = open("Mazes/Maze.txt", "w")
+        for column in self.MazeArray:
+            FileLine : str = ""
+            for line in column:
+                FileLine += line
+            FileLine += "\n"
+            File.write(FileLine)
+        return None
+    
+    def ReplaceAll(self) -> None:
+        """
+        Replace all the occurence of a selected object by the current object.
+
+        :return: None
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        """
+        Cell : Vector2 = self.GetCellClicked()
+        if Cell.x == -1 and Cell.y == -1 or not self.CanPlace:
+            return None
+        
+        ObjectToReplace : str = self.MazeArray[int(Cell.y)][int(Cell.x)]
+
+        for column in range(len(self.MazeArray)):
+            for line in range(len(self.MazeArray[column])):
+                if self.MazeArray[column][line] == ObjectToReplace:
+                    self.MazeArray[column][line] = self.CurrentObject
+        return None
+    
+    def SetReplaceAll(self) -> None:
+        """
+        Prepare the replace all action.
+
+        :return: None
+        """
+        if self.CurrentAction == "ReplaceAll":
+            self.CurrentAction = ""
+        else:
+            self.CurrentAction = "ReplaceAll"
+        return None
+
 
 init_window(1200, 720, "Creating a maze")
 
@@ -323,7 +435,7 @@ Background : Color = Color(128, 128, 128, 255)
 Atlas : Texture = load_texture("Textures/Sprites.png")
 
 cam : EditorScreen = EditorScreen()
-cam.SetMazeGridSize(20, 20)
+cam.SetMazeGridSize(10, 20)
 cam.Prepare(UiData, SpritesData)
 
 while not window_should_close():
@@ -340,7 +452,6 @@ close_window()
 
 # On the work : 
 # - Better editor tools (ctrl z, ctrl y, holding mouse button to draw line) Make a button for it as well
-# - Saving / Exporting the maze
 # - Integrating teh maze to the menu
 # - Importing a maze
 
@@ -348,3 +459,4 @@ close_window()
 # - Camera2D overview : https://youtu.be/zkjDU3zmk40
 # - Code example and additional details : https://www.raylib.com/examples/core/loader.html?name=core_2d_camera
 # - Software for pixel art : PixiEditor
+# - Help for the saving system : https://www.w3schools.com/python/python_file_write.asp

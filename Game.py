@@ -17,7 +17,7 @@ class Game :
         self.DisplayFps : bool = False                                  # If the Fps should be displayed
 
     def Prepare(self) -> None:
-        self.LoadMaze("dedales.txt")
+        self.LoadMaze("Mazes/dedales.txt")
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
 
@@ -39,7 +39,7 @@ class Game :
         :return: None
         """
         self.CurrentMenu.append("Maze")
-        self.LoadMaze("dedales.txt")
+        self.LoadMaze("Mazes/dedales.txt")
         return None
 
     def LoadMaze(self, MazePath : str) -> None:

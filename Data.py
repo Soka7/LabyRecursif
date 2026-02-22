@@ -46,7 +46,9 @@ SpritesData : dict = {
         "Ground" : Rectangle(198, 240, 16, 16),
         "Wall" : Rectangle(182, 240, 16, 16),
         "Save" : Rectangle(173, 242, 9, 14),
-        "Bucket" : Rectangle(161, 245, 12, 11)
+        "Bucket" : Rectangle(161, 245, 12, 11),
+        "NextArrow" : Rectangle(139, 246, 11, 10),
+        "PreviousArrow" : Rectangle(150, 246, 11, 10)
     }
 }
 
@@ -438,12 +440,30 @@ UiData : dict = {
             "IconScaleFactor" : Vector2(0.5, 0.5),
             "RefIconTexture" : "Ground"
         },
-        "ReplaceAllButton" :
+        "PreviousArrow" :
         {
             "Type" : "IconButton",
             "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720), 
             "Position" : Rectangle(1065, 135, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "PreviousArrow"
+        },
+        "NextArrow" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1065, 200, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "NextArrow"
+        },
+        "ReplaceAllButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1135, 135, 60, 60),
             "IconScaleFactor" : Vector2(0.5, 0.5),
             "RefIconTexture" : "Bucket"
         },
@@ -455,6 +475,6 @@ UiData : dict = {
             "Position" : Rectangle(1135, 655, 60, 60),
             "IconScaleFactor" : Vector2(0.5, 0.5),
             "RefIconTexture" : "Save"
-        }
+        },
     }
 }

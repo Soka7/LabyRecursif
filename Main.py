@@ -11,6 +11,7 @@ game : Game = Game()
 init_window(ScreenWidth, ScreenHeight, Title) # Create the window
 
 game.Prepare()
+
 while not window_should_close():
     game.Update()
     if game.ShouldClose:
@@ -34,9 +35,8 @@ close_window()
 
 # On the work (You better do it) :
 # - Importing a maze
-# - A button to quit the editor screen
-# - A button to test the labyrinth (not validate just bare few test (ie has entry, has exit)) 
-
+# - A button to test the labyrinth (not validate just bare few test (ie has entry, has exit)) (when appearing if something went wrong, show a pop up teling why etc)
+# - Add a back ground image
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)
@@ -48,3 +48,4 @@ close_window()
 # - Better ui information (show what you have selected) (editor screen)
 # - Add a way to hold ctrl z and ctrl y (editor screen)
 # - Add a way to hold the mouse to place (editor screen)
+# - Add a warning when the open button is pressed to tell the user than there is no maze or whatever

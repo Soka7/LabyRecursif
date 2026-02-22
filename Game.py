@@ -11,7 +11,7 @@ class Game :
         self.Maze : Labyrinth = Labyrinth()                         
         self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)
         self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
-        self.CreationPopUp : Menu = Menu(1, 1, 2, 0, 3)
+        self.CreationPopUp : Menu = Menu(2, 1, 2, 0, 3)
         self.EditionMenu : EditorScreen = EditorScreen()
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
@@ -30,9 +30,10 @@ class Game :
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
 
         self.CreationPopUp.Prepare(UiData, "CreationPopUp", SpritesData)
-        self.CreationPopUp.BindAll(self.PrepareEditionMenu, self.GoBack)
+        self.CreationPopUp.BindAll(self.OpenMaze, self.OpenNewMaze, self.GoBack)
 
         self.EditionMenu.PrepareHUDAndTextures(UiData, SpritesData)
+        self.EditionMenu.BindBackButton(self.GoBack)
 
         return None
 
@@ -133,7 +134,7 @@ class Game :
         self.ShouldClose = True
         return None
     
-    def PrepareEditionMenu(self) -> None:
+    def OpenMaze(self) -> None:
         """
         Set everything needed to go to the editor menu.
 
@@ -150,7 +151,26 @@ class Game :
         self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
         self.EditionMenu.Prepare()
         return None
+    
+    def OpenNewMaze(self) -> None:
+        """
+        Set everything needed to go to the editor menu.
 
+        :return: None
+        """
+        self.CurrentMenu.remove("CreationPopUp")
+        self.CurrentMenu.append("EditorMenu")
+
+        Content : list = self.CreationPopUp.GetInputBoxesContent()
+
+        MazeLenght : int = int(Content[0])
+        MazeHeight : int = int(Content[1])
+
+        self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.CreateMazeArray()
+        self.EditionMenu.Prepare()
+        return None
+    
     def ShowSettings(self) -> None:
         """
         Add the SettingsMenu to the stack to draw and update it.
@@ -212,6 +232,7 @@ class Game :
         self.MainMenu.ScaleMenu(Vector2(width, height))
         self.SettingsMenu.ScaleMenu(Vector2(width, height))
         self.CreationPopUp.ScaleMenu(Vector2(width, height))
+        self.EditionMenu.Scale(Vector2(width, height))
 
         # Center window on the screen
         CurrentMonitor : int = get_current_monitor()

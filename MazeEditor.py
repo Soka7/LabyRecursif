@@ -31,9 +31,10 @@ class EditorScreen:
         self.GridHeight : int = 0                                           # The number of cells on one column of the maze
         self.MazeLenght : int = 0                                           # The lenght of the maze in pixels
         self.MazeHeight : int = 0                                           # The height of the maze in pixels
-        self.CellSize : int = 32                                            # The size of each cell
+        self.CellSize : Vector2 = Vector2(32, 32)                           # The size of each cell
 
-        self.HUD : Menu = Menu(0, 8, 0, 0, 0)                               # The user interface, 8 icon buttons
+        self.HUD : Menu = Menu(1, 8, 0, 0, 0)                               # The user interface, 1 button and 8 icon buttons
+        self.BaseScreenSize : Vector2 = Vector2(1200, 720)                  # The screen size at which the editor screen was made
 
         self.MousePosition : Vector2 = Vector2(0, 0)                        # Mouse position when the user right clicked
         self.MouseSensitivity : float = 1                                   # Mouse sensitivity when dragging the camera
@@ -43,6 +44,8 @@ class EditorScreen:
         self.CanPlace : bool = False                                        # Make sure only action is placed each frame
         self.InputStack : list = []                                         # A stack to store all the input of the user
         self.ReversedInputStack : list = []                                 # A stack to store all the input the user reversed
+
+        self.BackFunction = None                                            # The function for the exit button
         return None
     
     def RegisterMousePosition(self) -> None:
@@ -81,7 +84,7 @@ class EditorScreen:
         if not self.IsMouseInsideMaze(WorldCoordinates):
             return Vector2(-1, -1)
         
-        Cell : Vector2 = Vector2(WorldCoordinates.x // self.CellSize, WorldCoordinates.y // self.CellSize)
+        Cell : Vector2 = Vector2(WorldCoordinates.x // self.CellSize.x, WorldCoordinates.y // self.CellSize.y)
         return Cell
     
     def SetCell(self, Coordinates : Vector2, Object : str) -> None:
@@ -123,6 +126,7 @@ class EditorScreen:
 
         :return: None
         """
+        self.MazeArray.clear()
         for i in range(self.GridHeight):
             line : list = []
             for j in range(self.GridLenght):
@@ -136,8 +140,8 @@ class EditorScreen:
 
         :return: None
         """
-        self.MazeLenght = self.GridLenght * self.CellSize
-        self.MazeHeight = self.GridHeight * self.CellSize
+        self.MazeLenght = self.GridLenght * self.CellSize.x
+        self.MazeHeight = self.GridHeight * self.CellSize.y
         return None
     
     def SetMazeGridSize(self, Lenght : int, Height : int) -> None:
@@ -318,12 +322,36 @@ class EditorScreen:
 
         self.Camera.offset = Vector2(ScreenWidth / 2, ScreenHeight / 2)
         self.Camera.rotation = 0
-        self.Camera.target = Vector2((self.GridLenght * self.CellSize) / 2, (self.GridHeight * self.CellSize) / 2)
+        self.Camera.target = Vector2((self.GridLenght * self.CellSize.x) / 2, (self.GridHeight * self.CellSize.y) / 2)
         self.Camera.zoom = 1
         self.MouseSensitivity = 1
         return None
 
     def ExecuteInput(self) -> None:
+        """
+        Check and Execute all potential keyboard and mouse related inputs.
+
+        :return: None
+
+        Extras: - get_mouse_position() is a raylib function that returns the x and y position of the mouse. \n
+        Extras: - get_mouse_wheel_move() is a raylib function to get how much time the scroller was moved. \n
+
+        Extras: - is_mouse_button_pressed() is a raylib function checking if a button of the mouse has been pressed. \n
+        Extras: - is_mouse_button_down() is a raylib function checking if a button is held. \n
+        Extras: - is_key_pressed() is a raylib function checking if a given key of the keyboard has been pressed. \n
+        Extras: - is_key_down() is a raylib function checking if a given key of the keyboard is being held. \n
+
+        Extras: - MouseButton.MOUSE_BUTTON_RIGHT is a raylib data that refers to the right mouse button. \n
+        Extras: - KEY_MINUS is a raylib data that refers to the minus key on qwerty keyboard. \n
+        Extras: - KEY_EQUAL is a raylib data that refers to the equal key on qwerty keyboard. \n
+        Extras: - KEY_R is a raylib data that refers to the r key on qwerty keyboard. \n
+        Extras: - KEY_S is a raylib data that refers to the s key on qwerty keyboard. \n
+        Extras: - KEY_W is a raylib data that refers to the w key on qwerty keyboard. \n
+        Extras: - KEY_Y is a raylib data that refers to the y key on qwerty keyboard. \n
+        Extras: - KEY_LEFT_CONTROL is a raylib function that refers to the left control on a keyboard. \n
+        Extras: - KEY_RIGHT_CONTROL is a raylib function that refers to the right control on a keyboard. \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        """
         if is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_RIGHT):
             self.RegisterMousePosition()
 
@@ -432,7 +460,7 @@ class EditorScreen:
         """
         for column in range(len(self.MazeArray)):
             for line in range(len(self.MazeArray[column])):
-                DestRec : Rectangle = Rectangle(self.CellSize * line, self.CellSize * column, self.CellSize, self.CellSize)
+                DestRec : Rectangle = Rectangle(self.CellSize.x * line, self.CellSize.y * column, self.CellSize.x, self.CellSize.y)
                 if self.MazeArray[column][line] == self.GroundObject:
                     self.DrawObject(Atlas, self.GroundTexture, DestRec)
 
@@ -497,6 +525,28 @@ class EditorScreen:
         self.UpdateMaze()
         return None
     
+    def Scale(self, ScreenSize : Vector2) -> None:
+        """
+        Scale the editor screen to the given ScreenSize.
+
+        :param ScreenSize: The width and height of the screen
+        :type ScreenSize: Vector2
+        :return: None
+
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        """
+        self.HUD.ScaleMenu(ScreenSize)
+
+        XFactor : float = ScreenSize.x / self.BaseScreenSize.x
+        YFactor : float = ScreenSize.y / self.BaseScreenSize.y
+
+        self.CellSize.x = self.CellSize.x * XFactor
+        self.CellSize.y = self.CellSize.y * YFactor
+
+        self.ComputeMazeDimensions()
+        self.BaseScreenSize = ScreenSize
+        return None
+    
     def LoadTexturesLocation(self, SpriteData : dict) -> None:
         """
         Load the location of all the needed textures.
@@ -525,6 +575,20 @@ class EditorScreen:
         self.HUD.Prepare(UiData, "EditorHUDMenu", SpriteData)
         self.LoadTexturesLocation(SpriteData)
         return None
+    
+    def BindBackButton(self, Function) -> None:
+        """
+        Bind the exit button's function.
+
+        :param Function: The function that the back button will call
+        :type Function: function
+        :return: None
+
+        Extras: - The function must have no arguments and return None. \n
+        Extras: - Call this before Prepare().
+        """
+        self.BackFunction = Function
+        return None
 
     def Prepare(self) -> None:
         """
@@ -532,9 +596,8 @@ class EditorScreen:
 
         :return: None
         """
-        self.HUD.BindAll(self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject,
+        self.HUD.BindAll(self.BackFunction, self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject,
                          self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save)
-        self.CreateMazeArray()
         self.ComputeMazeDimensions()
         self.ResetCam()
         return None

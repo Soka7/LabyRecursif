@@ -40,7 +40,7 @@ SpritesData : dict = {
     },
     "Icons" :
     {
-        "Cross" : Rectangle(238, 238, 18, 18),
+        "Cross" : Rectangle(239, 238, 17, 18),
         "Entry" : Rectangle(226, 240, 12, 16),
         "Exit" : Rectangle(214, 241, 12, 15),
         "Ground" : Rectangle(198, 240, 16, 16),
@@ -285,13 +285,23 @@ UiData : dict = {
             "HasBackground" : True,
             "Position" : Rectangle(350, 200, 500, 320),
         },
-        "ApplyButton" :
+        "OpenButton" :
         {
             "Type" : "Button",
             "RefTexture" : "Button",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(535, 460, 150, 50),
-            "Text" : "Apply",
+            "Position" : Rectangle(425, 460, 150, 50),
+            "Text" : "Open",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
+        },
+        "OpenNewButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(625, 460, 150, 50),
+            "Text" : "Create",
             "TextSize" : 24,
             "TextColor" : Color(141, 220, 220, 255)
         },
@@ -403,6 +413,16 @@ UiData : dict = {
             "OriginalScreenSize" : Vector2(1200, 720), 
             "HasBackground" : False,
             "Position" : Rectangle(0, 0, 0, 0),
+        },
+        "BackButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(10, 670, 120, 40), 
+            "Text" : "Exit",
+            "TextSize" : 24,
+            "TextColor" : BLACK
         },
         "WallPlacerButton" :
         {

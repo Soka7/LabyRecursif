@@ -1,5 +1,6 @@
 from pyray import *
 from Labyrinth import *
+from MazeEditor import EditorScreen
 from Ui.Menus import Menu
 from Data import UiData, SpritesData
 
@@ -11,6 +12,7 @@ class Game :
         self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)
         self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
         self.CreationPopUp : Menu = Menu(1, 1, 2, 0, 3)
+        self.EditionMenu : EditorScreen = EditorScreen()
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False
@@ -28,7 +30,9 @@ class Game :
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
 
         self.CreationPopUp.Prepare(UiData, "CreationPopUp", SpritesData)
-        self.CreationPopUp.BindAll(None, self.GoBack)
+        self.CreationPopUp.BindAll(self.PrepareEditionMenu, self.GoBack)
+
+        self.EditionMenu.PrepareHUDAndTextures(UiData, SpritesData)
 
         return None
 
@@ -82,6 +86,8 @@ class Game :
             self.SettingsMenu.Update()
         elif self.CurrentMenu[-1] == "CreationPopUp":
             self.CreationPopUp.Update()
+        elif self.CurrentMenu[-1] == "EditorMenu":
+            self.EditionMenu.Update()
         
         if self.DisplayFps:
             draw_fps(0, 0)
@@ -93,6 +99,10 @@ class Game :
         Draw the main menu if nothing can be drawn.
         
         :return: None
+
+        Extras: - begin_mode_2d() is a raylib function to draw with a camera. \n
+        Extras: - end_mode_2d() is a raylib function to quit this mode. \n
+        Extras: - Enter and quit the 2d mode for the edition menu.
         """
         if self.CurrentMenu[-1] == "MainMenu":
             self.MainMenu.Draw(self.Atlas)
@@ -102,6 +112,11 @@ class Game :
             self.Maze.Draw()
         elif self.CurrentMenu[-1] == "CreationPopUp":
             self.CreationPopUp.Draw(self.Atlas)
+        elif self.CurrentMenu[-1] == "EditorMenu":
+            begin_mode_2d(self.EditionMenu.GetCamera())
+            self.EditionMenu.Draw(self.Atlas)
+            end_mode_2d()
+            self.EditionMenu.DrawHUD(self.Atlas)
         else:
             self.MainMenu.Draw(self.Atlas)
         return None
@@ -118,6 +133,24 @@ class Game :
         self.ShouldClose = True
         return None
     
+    def PrepareEditionMenu(self) -> None:
+        """
+        Set everything needed to go to the editor menu.
+
+        :return: None
+        """
+        self.CurrentMenu.remove("CreationPopUp")
+        self.CurrentMenu.append("EditorMenu")
+
+        Content : list = self.CreationPopUp.GetInputBoxesContent()
+
+        MazeLenght : int = int(Content[0])
+        MazeHeight : int = int(Content[1])
+
+        self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.Prepare()
+        return None
+
     def ShowSettings(self) -> None:
         """
         Add the SettingsMenu to the stack to draw and update it.

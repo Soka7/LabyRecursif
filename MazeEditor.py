@@ -2,7 +2,6 @@ from pyray import *
 from math import log, exp
 
 from Ui.Menus import Menu
-from Data import UiData, SpritesData
 
 class EditorScreen:
     def __init__(self) -> None:
@@ -56,6 +55,15 @@ class EditorScreen:
         """
         self.MousePosition = get_mouse_position()
         return None
+    
+    def GetCamera(self) -> Camera2D:
+        """
+        :return: The camera used by the editor.
+        :rtype: Camera2D
+
+        Extras: - Camera2D is a raylib struct to have a 2D camera (viewport).
+        """
+        return self.Camera
     
     def GetCellClicked(self) -> Vector2:
         """
@@ -504,9 +512,9 @@ class EditorScreen:
         self.GroundTexture = Sprites["Ground"]
         return None
     
-    def Prepare(self, UiData : dict, SpriteData : dict) -> None:
+    def PrepareHUDAndTextures(self, UiData : dict, SpriteData : dict) -> None:
         """
-        Call all the methods that need to be called once.
+        Prepare teh HUD menu by loading the sprites and the button informations.
 
         :param UiData: The dictionary containing each ui element information
         :type UiData: dict
@@ -516,42 +524,17 @@ class EditorScreen:
         """
         self.HUD.Prepare(UiData, "EditorHUDMenu", SpriteData)
         self.LoadTexturesLocation(SpriteData)
+        return None
+
+    def Prepare(self) -> None:
+        """
+        Call all the methods that need to be called once.
+
+        :return: None
+        """
         self.HUD.BindAll(self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject,
                          self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save)
         self.CreateMazeArray()
         self.ComputeMazeDimensions()
         self.ResetCam()
         return None
-
-
-init_window(1200, 720, "Creating a maze")
-
-Background : Color = Color(128, 128, 128, 255)
-Atlas : Texture = load_texture("Textures/Sprites.png")
-
-cam : EditorScreen = EditorScreen()
-cam.SetMazeGridSize(20, 20)
-cam.Prepare(UiData, SpritesData)
-
-while not window_should_close():
-    cam.Update()
-    begin_drawing()
-    clear_background(Background)
-    begin_mode_2d(cam.Camera)
-    cam.Draw(Atlas)
-    end_mode_2d()
-    cam.DrawHUD(Atlas)
-    end_drawing()
-
-close_window()
-
-# On the work : 
-# - Hold the mouse to place
-# - Integrating teh maze to the menu
-# - Importing a maze
-
-# Sources :
-# - Camera2D overview : https://youtu.be/zkjDU3zmk40
-# - Code example and additional details : https://www.raylib.com/examples/core/loader.html?name=core_2d_camera
-# - Software for pixel art : PixiEditor
-# - Help for the saving system : https://www.w3schools.com/python/python_file_write.asp

@@ -32,10 +32,11 @@ close_window()
 # - Camera Code example and additional details : https://www.raylib.com/examples/core/loader.html?name=core_2d_camera
 # - Software for pixel art : PixiEditor
 # - Help for the saving system : https://www.w3schools.com/python/python_file_write.asp
+# - try & except : https://www.w3schools.com/python/python_try_except.asp
 
 # On the work (You better do it) :
-# - Importing a maze
 # - Add a back ground image
+# - Main menu & Labyrinth menu
 
 # Optional fixes (if you don't know what to do ) :
 # - Make the user able to hold space to delete characters (input box)

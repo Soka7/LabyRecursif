@@ -31,7 +31,8 @@ SpritesData : dict = {
         "SettingsMenu" : Rectangle(125, 0, 62, 62),
         "CreationPopUp" : Rectangle(125, 0, 62, 62),
         "WarningTestPopUp" : Rectangle(125, 0, 62, 62),
-        "ValidationTestPopUp" : Rectangle(125, 0, 62, 62)
+        "ValidationTestPopUp" : Rectangle(125, 0, 62, 62),
+        "OpenFilePopUp" : Rectangle(125, 0, 62, 62)
     },
     "Tiles" : 
     {
@@ -51,7 +52,8 @@ SpritesData : dict = {
         "Bucket" : Rectangle(161, 245, 12, 11),
         "NextArrow" : Rectangle(139, 246, 11, 10),
         "PreviousArrow" : Rectangle(150, 246, 11, 10),
-        "Play" : Rectangle(131, 243, 8, 13)
+        "Play" : Rectangle(131, 243, 8, 13),
+        "OpenFile" : Rectangle(122, 242, 9, 14),
     }
 }
 
@@ -516,12 +518,22 @@ UiData : dict = {
             "RefIconTexture" : "Save"
         },
         "TestButton" :
-        {   "Type" : "IconButton",
+        {   
+            "Type" : "IconButton",
             "RefTexture" : "IconButton",
             "OriginalScreenSize" : Vector2(1200, 720),
             "Position" : Rectangle(1135, 590, 60, 60),
             "IconScaleFactor" : Vector2(0.5, 0.5),
             "RefIconTexture" : "Play"
+        },
+        "OpenFileButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(1065, 655, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "OpenFile"
         }
     },
     "WarningTestPopUp" :
@@ -531,7 +543,7 @@ UiData : dict = {
             "RefTexture" : "Background",
             "OriginalScreenSize" : Vector2(1200, 720), 
             "HasBackground" : True,
-            "Position" : Rectangle(450, 210, 300, 300),
+            "Position" : Rectangle(450, 210, 300, 300)
         },
         "BackButton" :
         {
@@ -638,6 +650,73 @@ UiData : dict = {
             "LineColor" : Color(0, 0, 0, 0),
             "LineSpacing" : 0,
             "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "OpenFilePopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(350, 210, 500, 300)
+        },
+        "OpenButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(540, 420, 120, 40), 
+            "Text" : "Open",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(780, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "FileInputBox" :
+        {
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(380, 300, 440, 90),
+            "WelcomeText" : "Relative File Path :",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 256,
+            "CharacterRange" : (32, 127),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
+        },
+        "FileLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(430, 240),
+            "Text" : "Enter the File Path :",
+            "TextSize" : 28,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 400,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 5,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
             "Overline" : False,
             "OverlineColor" : Color(0, 0, 0, 0)
         }

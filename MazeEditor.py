@@ -17,7 +17,7 @@ class EditorScreen:
         self.CurrentObject : str = " "                                      # The current object held by the user
         self.MazeArray : list = []                                          # The array containing the maze
 
-        self.WallObject : str = "W"                                         # Character used to represents wall
+        self.WallObject : str = "X"                                         # Character used to represents wall
         self.EntryObject : str = "E"                                        # Character used to represents entry
         self.ExitObject : str = "S"                                         # Character used to represents exit
         self.GroundObject : str = " "                                       # Character used to represents Ground
@@ -33,11 +33,14 @@ class EditorScreen:
         self.MazeHeight : int = 0                                           # The height of the maze in pixels
         self.CellSize : Vector2 = Vector2(32, 32)                           # The size of each cell
 
-        self.HUD : Menu = Menu(1, 9, 0, 0, 0)                               # The user interface, 1 button and 9 icon buttons
+        self.HUD : Menu = Menu(1, 10, 0, 0, 0)                              # The user interface, 1 button and 10 icon buttons
+
         self.WarningTestPopUp : Menu = Menu(0, 1, 0, 0, 2)                  # The pop up that appears after testing the maze, 1 icon button and 2 label
         self.ShowWarningTestPopUp : bool = False                            # If the warning Pop Up should be shown or not
         self.ValidationTestPopUp : Menu = Menu(0, 1, 0, 0, 2)               # The pop up that appears after testing the maze, 1 icon button and 2 label
         self.ShowValidationTestPopUp : bool = False                         # if the validation Pop Up should be shown or not
+        self.OpenFilePopUp : Menu = Menu(1, 1, 1, 0, 1)                     # The pop up that appears when trying to open a file
+        self.ShowOpenFilePopUp : bool = False
         
         self.BaseScreenSize : Vector2 = Vector2(1200, 720)                  # The screen size at which the editor screen was made
 
@@ -239,6 +242,7 @@ class EditorScreen:
             FileLine += "\n"
             File.write(FileLine)
         self.CanPlace = False
+        File.close()
         return None
     
     def ReplaceAll(self) -> None:
@@ -353,6 +357,53 @@ class EditorScreen:
         self.ShowWarningTestPopUp = False
         self.ShowValidationTestPopUp = False
         return None
+    
+    def OpenMaze(self) -> None:
+        """
+        Open a new maze from a relative path.
+
+        :return: None
+
+        Extras: - If the program can't open the file, the pop up will close.
+        """
+        Content : list = self.OpenFilePopUp.GetInputBoxesContent()
+        try:
+            File = open(Content[0], "r")
+            self.MazeArray.clear()
+            MazeString = File.read()
+            File.close()
+            for line in MazeString.splitlines():
+                self.MazeArray.append(list(line))
+                
+            MazeWidth : int = len(self.MazeArray[0])
+            MazeHeight : int = len(self.MazeArray)
+
+            self.SetMazeGridSize(MazeWidth, MazeHeight)
+            self.ComputeMazeDimensions()
+            self.ResetCam()
+
+            self.ShowOpenFilePopUp = False
+        except:
+            self.ShowOpenFilePopUp = False
+            return None
+        
+    def ShowOpenPopUp(self) -> None:
+        """
+        Show the open file menu.
+
+        :return: None
+        """
+        self.ShowOpenFilePopUp = True
+        return None
+    
+    def HideOpenPopUp(self) -> None:
+        """
+        Hide the pop up of the open file menu.
+
+        :return: None
+        """
+        self.ShowOpenFilePopUp = False
+        return None
 
     def ResetCam(self) -> None:
         """
@@ -395,6 +446,7 @@ class EditorScreen:
         Extras: - KEY_S is a raylib data that refers to the s key on qwerty keyboard. \n
         Extras: - KEY_W is a raylib data that refers to the w key on qwerty keyboard. \n
         Extras: - KEY_Y is a raylib data that refers to the y key on qwerty keyboard. \n
+        Extras: - KEY_O is a raylib data that refers to the o key on qwerty keyboard. \n
         Extras: - KEY_LEFT_CONTROL is a raylib function that refers to the left control on a keyboard. \n
         Extras: - KEY_RIGHT_CONTROL is a raylib function that refers to the right control on a keyboard. \n
         Extras: - Vector2 is a raylib structure holding a x and a y position. \n
@@ -424,6 +476,9 @@ class EditorScreen:
 
         if (is_key_down(KEY_LEFT_CONTROL) or is_key_down(KEY_RIGHT_CONTROL)) and is_key_pressed(KEY_Y):
             self.ReverseLastReversedAction()
+
+        if (is_key_down(KEY_LEFT_CONTROL) or is_key_down(KEY_RIGHT_CONTROL)) and is_key_pressed(KEY_O):
+            self.ShowOpenFilePopUp = True
 
         if is_key_pressed(KEY_R):
             self.ResetCam()
@@ -494,6 +549,8 @@ class EditorScreen:
             self.ValidationTestPopUp.Draw(Atlas)
         elif self.ShowWarningTestPopUp:
             self.WarningTestPopUp.Draw(Atlas)
+        elif self.ShowOpenFilePopUp:
+            self.OpenFilePopUp.Draw(Atlas)
         return None
 
     def Draw(self, Atlas : Texture) -> None:
@@ -575,6 +632,9 @@ class EditorScreen:
         elif self.ShowWarningTestPopUp:
             self.CanPlace = False
             self.WarningTestPopUp.Update()
+        elif self.ShowOpenFilePopUp:
+            self.CanPlace = False
+            self.OpenFilePopUp.Update()
         self.ExecuteInput()
         self.HUD.Update()
         self.ExecuteActions()
@@ -594,6 +654,7 @@ class EditorScreen:
         self.HUD.ScaleMenu(ScreenSize)
         self.ValidationTestPopUp.ScaleMenu(ScreenSize)
         self.WarningTestPopUp.ScaleMenu(ScreenSize)
+        self.OpenFilePopUp.ScaleMenu(ScreenSize)
 
         XFactor : float = ScreenSize.x / self.BaseScreenSize.x
         YFactor : float = ScreenSize.y / self.BaseScreenSize.y
@@ -633,6 +694,7 @@ class EditorScreen:
         self.HUD.Prepare(UiData, "EditorHUDMenu", SpriteData)
         self.ValidationTestPopUp.Prepare(UiData, "ValidationTestPopUp", SpriteData)
         self.WarningTestPopUp.Prepare(UiData, "WarningTestPopUp", SpriteData)
+        self.OpenFilePopUp.Prepare(UiData, "OpenFilePopUp", SpriteData)
         self.LoadTexturesLocation(SpriteData)
         return None
     
@@ -657,9 +719,10 @@ class EditorScreen:
         :return: None
         """
         self.HUD.BindAll(self.BackFunction, self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject,
-                         self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save, self.TestAndFeedBack)
+                         self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save, self.TestAndFeedBack, self.ShowOpenPopUp)
         self.ValidationTestPopUp.BindAll(self.HideTestPopUp)
         self.WarningTestPopUp.BindAll(self.HideTestPopUp)
+        self.OpenFilePopUp.BindAll(self.OpenMaze, self.HideOpenPopUp)
         self.ComputeMazeDimensions()
         self.ResetCam()
         return None

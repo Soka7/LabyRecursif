@@ -1,5 +1,4 @@
 from pyray import *
-from math import log, exp
 
 from Ui.Menus import Menu
 
@@ -14,6 +13,7 @@ class EditorScreen:
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         self.Camera : Camera2D = Camera2D()                                 # Camera used to show the maze
+        self.CameraZoomFactor : float = 1.08                                # The camera factor / divisor applied when zooming in and out
         self.CurrentObject : str = " "                                      # The current object held by the user
         self.MazeArray : list = []                                          # The array containing the maze
 
@@ -33,7 +33,12 @@ class EditorScreen:
         self.MazeHeight : int = 0                                           # The height of the maze in pixels
         self.CellSize : Vector2 = Vector2(32, 32)                           # The size of each cell
 
-        self.HUD : Menu = Menu(1, 8, 0, 0, 0)                               # The user interface, 1 button and 8 icon buttons
+        self.HUD : Menu = Menu(1, 9, 0, 0, 0)                               # The user interface, 1 button and 9 icon buttons
+        self.WarningTestPopUp : Menu = Menu(0, 1, 0, 0, 2)                  # The pop up that appears after testing the maze, 1 icon button and 2 label
+        self.ShowWarningTestPopUp : bool = False                            # If the warning Pop Up should be shown or not
+        self.ValidationTestPopUp : Menu = Menu(0, 1, 0, 0, 2)               # The pop up that appears after testing the maze, 1 icon button and 2 label
+        self.ShowValidationTestPopUp : bool = False                         # if the validation Pop Up should be shown or not
+        
         self.BaseScreenSize : Vector2 = Vector2(1200, 720)                  # The screen size at which the editor screen was made
 
         self.MousePosition : Vector2 = Vector2(0, 0)                        # Mouse position when the user right clicked
@@ -307,6 +312,48 @@ class EditorScreen:
         self.InputStack.append(Input)
         return None
     
+    def TestMaze(self) -> bool:
+        """
+        Make a quick test of the maze by checking if there is one entry and one exit.
+
+        :return: Whether or not the maze pass these 2 conditions
+        :rtype: bool
+        """
+        EntryCount : int = 0
+        ExitCount : int = 0
+
+        for column in range(len(self.MazeArray)):
+            for line in range(len(self.MazeArray[column])):
+                if self.MazeArray[column][line] == self.EntryObject:
+                    EntryCount += 1
+                elif self.MazeArray[column][line] == self.ExitObject:
+                    ExitCount += 1
+        
+        return EntryCount == 1 and ExitCount == 1   
+    
+    def TestAndFeedBack(self) -> None:
+        """
+        Test the maze and show a warning if the maze isn't valid.
+
+        :return: None
+        """
+        Valid : bool = self.TestMaze()
+        if Valid:
+            self.ShowValidationTestPopUp = True
+        else:
+            self.ShowWarningTestPopUp = True
+        return None
+    
+    def HideTestPopUp(self) -> None:
+        """
+        Hide both test pop ups.
+
+        :return: None
+        """
+        self.ShowWarningTestPopUp = False
+        self.ShowValidationTestPopUp = False
+        return None
+
     def ResetCam(self) -> None:
         """
         Reset the camera parameters and center it.
@@ -360,9 +407,9 @@ class EditorScreen:
             self.Camera.target = Vector2((self.MousePosition.x - CurrentMousePosition.x + self.MazeLenght / 2) * self.MouseSensitivity,
                                          (self.MousePosition.y - CurrentMousePosition.y + self.MazeHeight / 2) * self.MouseSensitivity)
         if get_mouse_wheel_move() > 0:
-            self.Camera.zoom = exp(log(self.Camera.zoom, 8) + (float(get_mouse_wheel_move())*0.35))
+            self.Camera.zoom *= self.CameraZoomFactor
         elif get_mouse_wheel_move() < 0:
-            self.Camera.zoom = exp(log(self.Camera.zoom, 8) + (float(get_mouse_wheel_move())*0.05))
+            self.Camera.zoom /= self.CameraZoomFactor
 
         if is_key_pressed(KEY_MINUS):
             self.MouseSensitivity -= self.MouseSensitivityIncrement
@@ -407,7 +454,6 @@ class EditorScreen:
             self.CanPlace = False
 
         return None
-
     
     def DrawObject(self, Atlas : Texture, Source : Rectangle, Destination : Rectangle) -> None:
         """
@@ -444,6 +490,10 @@ class EditorScreen:
         Extras: - Texture is raylib structure holding an image.
         """
         self.HUD.Draw(Atlas)
+        if self.ShowValidationTestPopUp:
+            self.ValidationTestPopUp.Draw(Atlas)
+        elif self.ShowWarningTestPopUp:
+            self.WarningTestPopUp.Draw(Atlas)
         return None
 
     def Draw(self, Atlas : Texture) -> None:
@@ -519,6 +569,12 @@ class EditorScreen:
         :return: None
         """
         self.CanPlace = True
+        if self.ShowValidationTestPopUp:
+            self.CanPlace = False
+            self.ValidationTestPopUp.Update()
+        elif self.ShowWarningTestPopUp:
+            self.CanPlace = False
+            self.WarningTestPopUp.Update()
         self.ExecuteInput()
         self.HUD.Update()
         self.ExecuteActions()
@@ -536,6 +592,8 @@ class EditorScreen:
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         self.HUD.ScaleMenu(ScreenSize)
+        self.ValidationTestPopUp.ScaleMenu(ScreenSize)
+        self.WarningTestPopUp.ScaleMenu(ScreenSize)
 
         XFactor : float = ScreenSize.x / self.BaseScreenSize.x
         YFactor : float = ScreenSize.y / self.BaseScreenSize.y
@@ -573,6 +631,8 @@ class EditorScreen:
         :return: None
         """
         self.HUD.Prepare(UiData, "EditorHUDMenu", SpriteData)
+        self.ValidationTestPopUp.Prepare(UiData, "ValidationTestPopUp", SpriteData)
+        self.WarningTestPopUp.Prepare(UiData, "WarningTestPopUp", SpriteData)
         self.LoadTexturesLocation(SpriteData)
         return None
     
@@ -597,7 +657,9 @@ class EditorScreen:
         :return: None
         """
         self.HUD.BindAll(self.BackFunction, self.TakeWallObject, self.TakeEntryObject, self.TakeExitObject, self.TakeGroundObject,
-                         self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save)
+                         self.ReverseLastAction, self.ReverseLastReversedAction, self.SetReplaceAll, self.Save, self.TestAndFeedBack)
+        self.ValidationTestPopUp.BindAll(self.HideTestPopUp)
+        self.WarningTestPopUp.BindAll(self.HideTestPopUp)
         self.ComputeMazeDimensions()
         self.ResetCam()
         return None

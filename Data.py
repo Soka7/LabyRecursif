@@ -29,7 +29,9 @@ SpritesData : dict = {
     "Background" :
     {
         "SettingsMenu" : Rectangle(125, 0, 62, 62),
-        "CreationPopUp" : Rectangle(125, 0, 62, 62)
+        "CreationPopUp" : Rectangle(125, 0, 62, 62),
+        "WarningTestPopUp" : Rectangle(125, 0, 62, 62),
+        "ValidationTestPopUp" : Rectangle(125, 0, 62, 62)
     },
     "Tiles" : 
     {
@@ -48,7 +50,8 @@ SpritesData : dict = {
         "Save" : Rectangle(173, 242, 9, 14),
         "Bucket" : Rectangle(161, 245, 12, 11),
         "NextArrow" : Rectangle(139, 246, 11, 10),
-        "PreviousArrow" : Rectangle(150, 246, 11, 10)
+        "PreviousArrow" : Rectangle(150, 246, 11, 10),
+        "Play" : Rectangle(131, 243, 8, 13)
     }
 }
 
@@ -193,6 +196,8 @@ UiData : dict = {
             "Text" : "Window settings :",
             "TextSize" : 26,
             "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -211,6 +216,8 @@ UiData : dict = {
             "Text" : "Width :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -229,6 +236,8 @@ UiData : dict = {
             "Text" : "Height :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -247,6 +256,8 @@ UiData : dict = {
             "Text" : "Draw FPS :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -265,6 +276,8 @@ UiData : dict = {
             "Text" : "Miscellaneous :",
             "TextSize" : 26,
             "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -358,6 +371,8 @@ UiData : dict = {
             "Text" : "Parameters",
             "TextSize" : 26,
             "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -376,6 +391,8 @@ UiData : dict = {
             "Text" : "Lenght :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -394,6 +411,8 @@ UiData : dict = {
             "Text" : "Height :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -496,5 +515,131 @@ UiData : dict = {
             "IconScaleFactor" : Vector2(0.5, 0.5),
             "RefIconTexture" : "Save"
         },
+        "TestButton" :
+        {   "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(1135, 590, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Play"
+        }
+    },
+    "WarningTestPopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(450, 210, 300, 300),
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(680, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "Title" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(500, 230),
+            "Text" : "WARNING:",
+            "TextSize" : 28,
+            "TextColor" : Color(255, 165, 0, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 4,
+            "Underline" : True,
+            "LineColor" : Color(255, 165, 0, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "CreationLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(470, 325),
+            "Text" : "Your maze must have one and only one entry and exit.",
+            "TextSize" : 24,
+            "TextColor" : Color(255, 165, 0, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "ValidationTestPopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(450, 210, 300, 300),
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(680, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "Title" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(500, 230),
+            "Text" : "VALIDATION:",
+            "TextSize" : 24,
+            "TextColor" : Color(52, 178, 51, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 4,
+            "Underline" : True,
+            "LineColor" : Color(52, 178, 51, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "CreationLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(470, 325),
+            "Text" : "Your maze is fully ready to go, you can test it now !",
+            "TextSize" : 24,
+            "TextColor" : Color(52, 178, 51, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
     }
 }

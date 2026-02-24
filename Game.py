@@ -21,6 +21,7 @@ class Game :
     def Prepare(self) -> None:
         self.LoadMaze("Mazes/dedales.txt")
         self.Maze.FindEntry()
+        self.Maze.Solve(self.Maze.coos, [])
         self.LoadTextures("Textures/Sprites.png")
 
         self.MainMenu.Prepare(UiData, "MainMenu", SpritesData)
@@ -45,6 +46,7 @@ class Game :
         """
         self.CurrentMenu.append("Maze")
         self.LoadMaze("Mazes/dedales.txt")
+        self.Maze.Solve(self.Maze.Entry, [])
         return None
 
     def LoadMaze(self, MazePath : str) -> None:

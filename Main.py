@@ -47,7 +47,6 @@ close_window()
 # - Make the camera not center when you right click (editor screen)                             # REALLY IMPORTANT #
 # - Better ui information (show what you have selected) (editor screen)
 # - Add a way to hold ctrl z and ctrl y (editor screen)
-# - Add a way to hold the mouse to place (editor screen)
 # - Add a warning when the open button is pressed to tell the user than there is no maze or whatever
 # - Music ?
 # - Make underlining multiple lines of text possible (label)

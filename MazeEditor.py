@@ -590,7 +590,7 @@ class EditorScreen:
         Extras: - is_mouse_button_down() is a raylib function checking if a button of the mouse is being held. \n
         Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button.
         """
-        if not is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT):
+        if not is_mouse_button_pressed(MouseButton.MOUSE_BUTTON_LEFT) and not is_mouse_button_down(MouseButton.MOUSE_BUTTON_LEFT):
             return None
         
         Cell : Vector2 = self.GetCellClicked()
@@ -606,14 +606,26 @@ class EditorScreen:
 
         if self.MazeArray[Column][Line] != self.CurrentObject:
             self.MazeArray[Column][Line] = self.CurrentObject
-        else:
-            self.MazeArray[Column][Line] = self.GroundObject
-
         NewObject : str = self.MazeArray[Column][Line]
 
         Input.append(ReplacedObject)
         Input.append(NewObject)
         Input.append([Vector2(Column, Line)])
+
+        # Explanation of this horrible mess :
+        # It first checks if teh list isn't empty to avoid crashes
+        # Then it checks if first element of the new input is the same as the first element of the last registered input
+        # Same for the 2nd element
+        # Then, the 3rd element is a list of Vector2, but there is just 1 vector2
+        # So it checks the first element of the list (the only Vector2) and check if the x and y coordinates are the same
+        # In the end, if everything was right, it doesn't register the input because it is the exact same input
+        if (self.InputStack != []) \
+            and (Input[0] == self.InputStack[-1][0]) \
+            and (Input[1] == self.InputStack[-1][1]) \
+            and (Input[2][0].x == self.InputStack[-1][2][0].x) \
+            and (self.InputStack[-1][2][0].y == Input[2][0].y):
+            self.CanPlace = False
+            return None
         self.InputStack.append(Input)
         self.CanPlace = False
         return None

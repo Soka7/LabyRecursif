@@ -31,7 +31,7 @@ class Labyrinth:
         self.LabyrinthArray.clear()                 # Reset the previous labyrinth to avoid duplication
         LabyrinthString = open(Filepath, "r")
         LabyrinthString = LabyrinthString.read()
-        for line in LabyrinthString.splitlines():
+        for line in LabyrinthString.splitlines():           # don't forget to close teh file when updating this part of the code
             self.LabyrinthArray.append(list(line))
         return None
 

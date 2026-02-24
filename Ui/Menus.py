@@ -1,17 +1,20 @@
 from pyray import *
 
 from Ui.Buttons import Button
+from Ui.IconButton import IconButton
 from Ui.InputBox import InputBox
 from Ui.Label import Label
 from Ui.CheckBox import CheckBox
 
 class Menu:
-    def __init__(self, Buttons : int, InputBoxes : int, CheckBoxes : int, Labels : int) -> None:
+    def __init__(self, Buttons : int, IconButtons : int, InputBoxes : int, CheckBoxes : int, Labels : int) -> None:
         """
         Create a Menu object with a specified amount of buttons.
 
         :param Buttons: The amount of buttons in the menu
         :type Buttons: int
+        :param IconButtons: The amount of icon buttons in the menu
+        :type IconButtons: int
         :param InputBoxes: The amount of input boxes in the menu
         :type InputBoxes: int
         :param CheckBoxes: The amount of chck boxes in the menu
@@ -25,6 +28,9 @@ class Menu:
         self.Buttons : list = []                                    # List holding all the buttons and input boxes
         for _ in range(Buttons):                                    # Create the buttons        
             self.Buttons.append(Button())
+
+        for _ in range(IconButtons):                                # Create the icon buttons
+            self.Buttons.append(IconButton())
 
         for _ in range(InputBoxes):                                 # Create the input boxes
             self.Buttons.append(InputBox())
@@ -105,7 +111,6 @@ class Menu:
             self.BackgroundPos = Info["Background"]["Position"]
             self.BackgroundTexture = SpriteSource["Background"][MenuName]
             self.BaseSize = Info["Background"]["OriginalScreenSize"]
-            print("Basic size : ", self.BaseSize.x, " , ", self.BaseSize.y)
         return None
     
     def ScaleMenu(self, ScreenSize : Vector2) -> None:
@@ -145,7 +150,7 @@ class Menu:
         Counter : int = 0
         FuncCounter : int = 0
         while Counter < len(self.Buttons):
-            if type(self.Buttons[Counter]) != Button and type(self.Buttons[Counter]) != CheckBox:
+            if type(self.Buttons[Counter]) != Button and type(self.Buttons[Counter]) != CheckBox and type(self.Buttons[Counter]) != IconButton:
                 Counter += 1
                 continue
             self.Buttons[Counter].Bind(args[FuncCounter])

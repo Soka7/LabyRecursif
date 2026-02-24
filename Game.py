@@ -1,5 +1,6 @@
 from pyray import *
 from Labyrinth import *
+from MazeEditor import EditorScreen
 from Ui.Menus import Menu
 from Data import UiData, SpritesData
 
@@ -8,23 +9,31 @@ class Game :
         self.Atlas : Texture = None                                     # The texture holding all the sprites
 
         self.Maze : Labyrinth = Labyrinth()                         
-        self.MainMenu : Menu = Menu(5, 0, 0, 0)
-        self.SettingsMenu : Menu = Menu(2, 2, 1, 4)
+        self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)
+        self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
+        self.CreationPopUp : Menu = Menu(2, 1, 2, 0, 3)
+        self.EditionMenu : EditorScreen = EditorScreen()
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False
         self.DisplayFps : bool = False                                  # If the Fps should be displayed
 
     def Prepare(self) -> None:
-        self.LoadMaze("dedales.txt")
+        self.LoadMaze("Mazes/dedales.txt")
         self.Maze.FindEntry()
         self.LoadTextures("Textures/Sprites.png")
 
         self.MainMenu.Prepare(UiData, "MainMenu", SpritesData)
-        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, None)
+        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, self.ShowCreationPopUp)
 
         self.SettingsMenu.Prepare(UiData, "SettingsMenu", SpritesData)
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
+
+        self.CreationPopUp.Prepare(UiData, "CreationPopUp", SpritesData)
+        self.CreationPopUp.BindAll(self.OpenMaze, self.OpenNewMaze, self.GoBack)
+
+        self.EditionMenu.PrepareHUDAndTextures(UiData, SpritesData)
+        self.EditionMenu.BindBackButton(self.GoBack)
 
         return None
 
@@ -35,7 +44,7 @@ class Game :
         :return: None
         """
         self.CurrentMenu.append("Maze")
-        self.LoadMaze("dedales.txt")
+        self.LoadMaze("Mazes/dedales.txt")
         return None
 
     def LoadMaze(self, MazePath : str) -> None:
@@ -76,6 +85,10 @@ class Game :
             self.MainMenu.Update()
         elif self.CurrentMenu[-1] == "SettingsMenu":
             self.SettingsMenu.Update()
+        elif self.CurrentMenu[-1] == "CreationPopUp":
+            self.CreationPopUp.Update()
+        elif self.CurrentMenu[-1] == "EditorMenu":
+            self.EditionMenu.Update()
         
         if self.DisplayFps:
             draw_fps(0, 0)
@@ -87,6 +100,10 @@ class Game :
         Draw the main menu if nothing can be drawn.
         
         :return: None
+
+        Extras: - begin_mode_2d() is a raylib function to draw with a camera. \n
+        Extras: - end_mode_2d() is a raylib function to quit this mode. \n
+        Extras: - Enter and quit the 2d mode for the edition menu.
         """
         if self.CurrentMenu[-1] == "MainMenu":
             self.MainMenu.Draw(self.Atlas)
@@ -94,6 +111,13 @@ class Game :
             self.SettingsMenu.Draw(self.Atlas)
         elif self.CurrentMenu[-1] == "Maze":
             self.Maze.Draw()
+        elif self.CurrentMenu[-1] == "CreationPopUp":
+            self.CreationPopUp.Draw(self.Atlas)
+        elif self.CurrentMenu[-1] == "EditorMenu":
+            begin_mode_2d(self.EditionMenu.GetCamera())
+            self.EditionMenu.Draw(self.Atlas)
+            end_mode_2d()
+            self.EditionMenu.DrawHUD(self.Atlas)
         else:
             self.MainMenu.Draw(self.Atlas)
         return None
@@ -110,6 +134,43 @@ class Game :
         self.ShouldClose = True
         return None
     
+    def OpenMaze(self) -> None:
+        """
+        Set everything needed to go to the editor menu.
+
+        :return: None
+        """
+        self.CurrentMenu.remove("CreationPopUp")
+        self.CurrentMenu.append("EditorMenu")
+
+        Content : list = self.CreationPopUp.GetInputBoxesContent()
+
+        MazeLenght : int = int(Content[0])
+        MazeHeight : int = int(Content[1])
+
+        self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.Prepare()
+        return None
+    
+    def OpenNewMaze(self) -> None:
+        """
+        Set everything needed to go to the editor menu.
+
+        :return: None
+        """
+        self.CurrentMenu.remove("CreationPopUp")
+        self.CurrentMenu.append("EditorMenu")
+
+        Content : list = self.CreationPopUp.GetInputBoxesContent()
+
+        MazeLenght : int = int(Content[0])
+        MazeHeight : int = int(Content[1])
+
+        self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.CreateMazeArray()
+        self.EditionMenu.Prepare()
+        return None
+    
     def ShowSettings(self) -> None:
         """
         Add the SettingsMenu to the stack to draw and update it.
@@ -117,6 +178,15 @@ class Game :
         :return: None
         """
         self.CurrentMenu.append("SettingsMenu")
+        return None
+    
+    def ShowCreationPopUp(self) -> None:
+        """
+        Add the CreationPopUp to the stack to draw and update it.
+        
+        :return: None
+        """
+        self.CurrentMenu.append("CreationPopUp")
         return None
     
     def GoBack(self) -> None:
@@ -161,6 +231,8 @@ class Game :
 
         self.MainMenu.ScaleMenu(Vector2(width, height))
         self.SettingsMenu.ScaleMenu(Vector2(width, height))
+        self.CreationPopUp.ScaleMenu(Vector2(width, height))
+        self.EditionMenu.Scale(Vector2(width, height))
 
         # Center window on the screen
         CurrentMonitor : int = get_current_monitor()

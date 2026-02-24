@@ -3,24 +3,57 @@ from pyray import *
 SpritesData : dict = {
     "Button" : 
     {
-        "Base" : Rectangle(0, 0, 62, 18),
-        "Hover" : Rectangle(0, 18, 63, 20),
-        "Pressed" : Rectangle(0, 38, 62, 20)
+        "Base" : Rectangle(1, 0, 62, 18),
+        "Hover" : Rectangle(0, 18, 64, 20),
+        "Pressed" : Rectangle(0, 38, 62, 18),
+        "HoverPressed" : Rectangle(0, 57, 64, 20)
     },
     "InputBox" :
     {
-        "Base" : Rectangle(62, 0, 62, 23)
+        "Base" : Rectangle(63, 0, 62, 23)
     },
     "CheckBox" :
     {
-        "Base" : Rectangle(186, 0, 30, 30),
-        "Hover" : Rectangle(216, 0, 32, 32),
-        "Checked" : Rectangle(186, 30, 30, 30),
-        "CheckedHover" : Rectangle(216, 32, 32, 32)
+        "Base" : Rectangle(187, 0, 30, 30),
+        "Hover" : Rectangle(217, 0, 32, 32),
+        "Checked" : Rectangle(187, 30, 30, 30),
+        "CheckedHover" : Rectangle(217, 32, 32, 32)
+    },
+    "IconButton" :
+    {
+        "Base" : Rectangle(187, 64, 28, 28),
+        "Hover" : Rectangle(215, 64, 30, 30),
+        "Pressed" : Rectangle(187, 92, 28, 28),
+        "HoverPressed" : Rectangle(215, 94, 30, 30)
     },
     "Background" :
     {
-        "SettingsMenu" : Rectangle(124, 0, 62, 62)
+        "SettingsMenu" : Rectangle(125, 0, 62, 62),
+        "CreationPopUp" : Rectangle(125, 0, 62, 62),
+        "WarningTestPopUp" : Rectangle(125, 0, 62, 62),
+        "ValidationTestPopUp" : Rectangle(125, 0, 62, 62),
+        "OpenFilePopUp" : Rectangle(125, 0, 62, 62)
+    },
+    "Tiles" : 
+    {
+        "Wall" : Rectangle(0, 240, 16, 16),
+        "Ground" : Rectangle(16, 240, 16, 16),
+        "Entry" : Rectangle(32, 240, 16, 16),
+        "Exit" : Rectangle(48, 240, 16, 16)
+    },
+    "Icons" :
+    {
+        "Cross" : Rectangle(239, 238, 17, 18),
+        "Entry" : Rectangle(226, 240, 12, 16),
+        "Exit" : Rectangle(214, 241, 12, 15),
+        "Ground" : Rectangle(198, 240, 16, 16),
+        "Wall" : Rectangle(182, 240, 16, 16),
+        "Save" : Rectangle(173, 242, 9, 14),
+        "Bucket" : Rectangle(161, 245, 12, 11),
+        "NextArrow" : Rectangle(139, 246, 11, 10),
+        "PreviousArrow" : Rectangle(150, 246, 11, 10),
+        "Play" : Rectangle(131, 243, 8, 13),
+        "OpenFile" : Rectangle(122, 242, 9, 14),
     }
 }
 
@@ -99,7 +132,7 @@ UiData : dict = {
             "Type" : "Button",
             "RefTexture" : "Button",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(460, 320, 150, 50),
+            "Position" : Rectangle(460, 330, 150, 50),
             "Text" : "Apply",
             "TextSize" : 24,
             "TextColor" : Color(141, 220, 220, 255)
@@ -119,7 +152,7 @@ UiData : dict = {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(550, 125, 210, 70),
+            "Position" : Rectangle(550, 140, 210, 70),
             "WelcomeText" : "1200",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
@@ -137,7 +170,7 @@ UiData : dict = {
             "Type" : "InputBox",
             "RefTexture" : "InputBox",
             "OriginalScreenSize" : Vector2(1200, 720), 
-            "Position" : Rectangle(550, 225, 210, 70),
+            "Position" : Rectangle(550, 250, 210, 70),
             "WelcomeText" : "720",
             "WarningText" : "Limit reached !",
             "WarningSize" : 16,
@@ -155,16 +188,18 @@ UiData : dict = {
             "Type" : "CheckBox",
             "RefTexture" : "CheckBox",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Rectangle(570, 395, 39, 39)
+            "Position" : Rectangle(570, 490, 39, 39)
         },
         "WindowSizeLabel" :
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(360, 80),
+            "Position" : Vector2(365, 80),
             "Text" : "Window settings :",
             "TextSize" : 26,
             "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -179,10 +214,12 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 150),
+            "Position" : Vector2(430, 165),
             "Text" : "Width :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -197,10 +234,12 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 250),
+            "Position" : Vector2(430, 275),
             "Text" : "Height :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
@@ -215,15 +254,467 @@ UiData : dict = {
         {
             "Type" : "Label",
             "OriginalScreenSize" : Vector2(1200, 720),
-            "Position" : Vector2(430, 400),
+            "Position" : Vector2(430, 500),
             "Text" : "Draw FPS :",
             "TextSize" : 24,
             "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
             "Rotation" : 0,
             "Origin" : Vector2(0, 0),
             "CharacterSpacing" : 2,
             "Underline" : True,
             "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "MiscLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(365, 415),
+            "Text" : "Miscellaneous :",
+            "TextSize" : 26,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "CreationPopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(350, 200, 500, 320),
+        },
+        "OpenButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(425, 460, 150, 50),
+            "Text" : "Open",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
+        },
+        "OpenNewButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(625, 460, 150, 50),
+            "Text" : "Create",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(780, 210, 42, 42),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "LenghtInputBox" :
+        {
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(520, 275, 180, 60),
+            "WelcomeText" : "10",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 3,
+            "CharacterRange" : (48, 57),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
+        },
+        "HeightInputBox" :
+        {
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(520, 365, 180, 60),
+            "WelcomeText" : "10",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 3,
+            "CharacterRange" : (48, 57),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
+        },
+        "CreationLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(535, 215),
+            "Text" : "Parameters",
+            "TextSize" : 26,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "LenghtLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(400, 290),
+            "Text" : "Lenght :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 1,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "HeightLabel" : 
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(400, 380),
+            "Text" : "Height :",
+            "TextSize" : 24,
+            "TextColor" : Color(226, 114, 91, 255),
+            "TextWidth" : 500,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : True,
+            "LineColor" : Color(226, 114, 91, 255),
+            "LineSpacing" : 1,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "EditorHUDMenu" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : False,
+            "Position" : Rectangle(0, 0, 0, 0),
+        },
+        "BackButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(10, 670, 120, 40), 
+            "Text" : "Exit",
+            "TextSize" : 24,
+            "TextColor" : BLACK
+        },
+        "WallPlacerButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1065, 70, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Wall"
+        },
+        "EntryPlacerButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1135, 5, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Entry"
+        },
+        "ExitPlacerButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1135, 70, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Exit"
+        },
+        "GroundPlacerButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1065, 5, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Ground"
+        },
+        "PreviousArrow" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1065, 135, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "PreviousArrow"
+        },
+        "NextArrow" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1065, 200, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "NextArrow"
+        },
+        "ReplaceAllButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(1135, 135, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Bucket"
+        },
+        "SaveButton" : 
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(1135, 655, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Save"
+        },
+        "TestButton" :
+        {   
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(1135, 590, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Play"
+        },
+        "OpenFileButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Rectangle(1065, 655, 60, 60),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "OpenFile"
+        }
+    },
+    "WarningTestPopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(450, 210, 300, 300)
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(680, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "Title" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(500, 230),
+            "Text" : "WARNING:",
+            "TextSize" : 28,
+            "TextColor" : Color(255, 165, 0, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 4,
+            "Underline" : True,
+            "LineColor" : Color(255, 165, 0, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "CreationLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(470, 325),
+            "Text" : "Your maze must have one and only one entry and exit.",
+            "TextSize" : 24,
+            "TextColor" : Color(255, 165, 0, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "ValidationTestPopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(450, 210, 300, 300),
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(680, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "Title" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(500, 230),
+            "Text" : "VALIDATION:",
+            "TextSize" : 24,
+            "TextColor" : Color(52, 178, 51, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 4,
+            "Underline" : True,
+            "LineColor" : Color(52, 178, 51, 255),
+            "LineSpacing" : 2,
+            "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "CreationLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(470, 325),
+            "Text" : "Your maze is fully ready to go, you can test it now !",
+            "TextSize" : 24,
+            "TextColor" : Color(52, 178, 51, 255),
+            "TextWidth" : 250,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 2,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "OpenFilePopUp" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(350, 210, 500, 300)
+        },
+        "OpenButton" :
+        {
+            "Type" : "Button",
+            "RefTexture" : "Button",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(540, 420, 120, 40), 
+            "Text" : "Open",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255)
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(780, 225, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "FileInputBox" :
+        {
+            "Type" : "InputBox",
+            "RefTexture" : "InputBox",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(380, 300, 440, 90),
+            "WelcomeText" : "Relative File Path :",
+            "WarningText" : "Limit reached !",
+            "WarningSize" : 16,
+            "WarningColor" : RED,
+            "MaxCharacters" : 256,
+            "CharacterRange" : (32, 127),
+            "LineOffset" : Vector2(5, 0),
+            "LineCooldown" : 0.5,
+            "LineColor" : BLACK,
+            "TextSize" : 24,
+            "TextColor" : BLACK
+        },
+        "FileLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(430, 240),
+            "Text" : "Enter the File Path :",
+            "TextSize" : 28,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 400,
+            "TextSpacing" : 5,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 5,
+            "Underline" : True,
+            "LineColor" : Color(141, 220, 220, 255),
             "LineSpacing" : 2,
             "LineThickness" : 1,
             "Overline" : False,

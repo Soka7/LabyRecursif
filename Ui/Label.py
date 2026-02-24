@@ -17,6 +17,9 @@ class Label:
         self.Text : str = ""                             # Text to display
         self.TextSize : int = 0                          # Size of the text
         self.TextColor : Color = Color(0, 0, 0, 0)       # Color of the text
+        self.TextWidth : int = 0                         # The maximum width of one line of text
+        self.TextSpacing : int = 0                       # The space in pixels between each line of text
+        self.SplittedText : list = []                    # A list storing each line of text
 
         self.Rotation : float = 0                        # Rotation of the text
         self.Origin : Vector2 = Vector2(0, 0)            # Origin point of the text
@@ -29,12 +32,12 @@ class Label:
         self.LineThickness : float = 0                   # Thickness of the line
         self.LineBegin : Vector2 = Vector2(0, 0)         # Begin point of the underline
         self.LineEnd : Vector2 = Vector2(0, 0)           # End point of the underline
-        self.TextDimensions : Vector2 = Vector2(0, 0)    # Width and height of the text.
+        self.TextDimensions : list = []                  # List of the dimensions of each line of text
 
         self.Overline = False                            # If the text should be overlined
         self.OverLineColor : Color = Color(0, 0, 0, 0)   # Color of the overline
 
-        self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
+        self.BaseSize : Vector2 = Vector2(0, 0)          # The screen size it was made on.
 
         return None
     
@@ -62,6 +65,8 @@ class Label:
         self.Text = Info["Text"]
         self.TextSize = Info["TextSize"]
         self.TextColor = Info["TextColor"]
+        self.TextWidth = Info["TextWidth"]
+        self.TextSpacing = Info["TextSpacing"]
         self.Font = get_font_default()
         self.Rotation = Info["Rotation"]
         self.Origin = Info["Origin"]
@@ -73,11 +78,47 @@ class Label:
         self.Overline = Info["Overline"]
         self.OverlineColor = Info["OverlineColor"]
 
+        self.UpdateText()
+        return None
+    
+    def UpdateText(self) -> None:
+        """
+        Resize the parameters for over and under line accordingly to the screen size, and update the lines of the text.
+        
+        :return: None
+
+        Extras: - measure_text_ex() is a raylib function to measure a text dimensions with a special font.
+        """
+        self.SpliText()
         if self.Overline or self.Underline:
-            self.TextDimensions = measure_text_ex(self.Font, self.Text, self.TextSize, self.CharacterSpacing)
+            for line in self.SplittedText:
+                LineDimension : Vector2 = measure_text_ex(self.Font, line, self.TextSize, self.CharacterSpacing)
+                self.TextDimensions.append(LineDimension)
         if self.Underline:
-            self.LineBegin : Vector2 = Vector2(self.Position.x, self.Position.y + self.TextDimensions.y + self.LineSpacing)
-            self.LineEnd : Vector2 = Vector2(self.LineBegin.x + self.TextDimensions.x, self.LineBegin.y)
+            self.LineBegin = Vector2(self.Position.x, self.Position.y + self.TextDimensions[0].y + self.LineSpacing)
+            self.LineEnd = Vector2(self.LineBegin.x + self.TextDimensions[0].x, self.LineBegin.y)
+        return None
+    
+    def SpliText(self) -> None:
+        """
+        Split the text accros multiple lines.
+
+        :return: None
+
+        Extras: - measure_text() is a raylib function to measure the width of a text.
+        """
+        line : str = ""
+        self.SplittedText.clear()
+        for letter in self.Text:
+            line += letter
+            if(measure_text(line, self.TextSize) > self.TextWidth):
+                AdditionalLetter : str = line[-1]
+                line = line[:-1]
+                self.SplittedText.append(line)
+                line = AdditionalLetter
+
+        if line != "":
+            self.SplittedText.append(line)
         return None
     
     def Scale(self, ScreenSize : Vector2) -> None:
@@ -95,10 +136,13 @@ class Label:
 
         self.Position = Vector2(self.Position.x * XFactor,
                                 self.Position.y * YFactor)
-        self.TextDimensions = Vector2(self.TextDimensions.x * XFactor,
-                                      self.TextDimensions.y * YFactor)
+        for line in range(len(self.TextDimensions)):
+            self.TextDimensions[line] = Vector2(self.TextDimensions[line].x * XFactor,
+                                                self.TextDimensions[line].y * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
+
+        self.UpdateLinePos()
         return None
     
     def Draw(self) -> None:
@@ -110,11 +154,21 @@ class Label:
         Extras: - draw_text_pro() is a raylib function to draw text with additionnal parameters. \n
         Extras: - draw_line_ex() is a raylib function to draw a line with additional parameters. \n
         Extras: - draw_rectangle() is a raylib function to draw a rectangle. \n
-        Extras: - 1 is added to the dimensions to avoid rounding imperfection.
+        Extras: - 1 is added to the dimensions to avoid rounding imperfection. \n
+        Extras: - Vector2 is a raylib structure holding a x and a y position.
+
+        :BUG: Drawing multiples lines of text with an under line will not work, though, overline does work.
         """
-        draw_text_pro(self.Font, self.Text, self.Position, self.Origin, self.Rotation, self.TextSize, self.CharacterSpacing, self.TextColor)
-        if self.Underline:
-            draw_line_ex(self.LineBegin, self.LineEnd, self.LineThickness, self.LineColor)
-        if self.Overline:
-            draw_rectangle(int(self.Position.x), int(self.Position.y), int(self.TextDimensions.x) + 1, int(self.TextDimensions.y) + 1, self.OverlineColor)
+        UnderLineBegin : Vector2 = self.LineBegin
+        UnderLineEnd : Vector2 = self.LineEnd
+
+        for line in range(len(self.SplittedText)):
+            TextPos : Vector2 = Vector2(self.Position.x, self.Position.y + (self.TextSpacing + self.TextSize) * line)
+            draw_text_pro(self.Font, self.SplittedText[line], TextPos, self.Origin, self.Rotation, self.TextSize, self.CharacterSpacing, self.TextColor)
+            if self.Underline:
+                UnderLineBegin.y += self.TextSpacing * line
+                UnderLineEnd.y += self.TextSpacing * line
+                draw_line_ex(UnderLineBegin, UnderLineEnd, self.LineThickness, self.LineColor)
+            if self.Overline:
+                draw_rectangle(int(TextPos.x), int(TextPos.y), int(self.TextDimensions[line].x) + 1, int(self.TextDimensions[line].y) + 1, self.OverlineColor)
         return None

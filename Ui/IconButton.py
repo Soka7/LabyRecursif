@@ -1,9 +1,9 @@
 from pyray import *
 
-class Button:
+class IconButton:
     def __init__(self) -> None:
         """
-        Create a button object. \n
+        Create a icon button object. \n
         All attributes are defaulted to 0 or null.
 
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
@@ -11,9 +11,9 @@ class Button:
         """
         self.function = None                        # Function called by the button when its clicked
         self.Position = Rectangle(0, 0, 0, 0)       # Rectangle being the button's dimmensions
-        self.Text : str = ""                        # Text displayed by the button
-        self.TextSize : int = 0                     # Size of the text with default font
-        self.TextColor : Color = (0, 0, 0, 0)       # Color of the text 
+        self.IconPosition = Rectangle(0, 0, 0, 0)   # Rectangle being the icon's dimensions
+
+        self.IconScaleFactor : Vector2 = Vector2(0, 0) # % of the width and height of the button that the icon will have
 
         self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
 
@@ -23,19 +23,20 @@ class Button:
         self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button's texture in the Atlas
         self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button's texture in the Atlas
         self.HoverPressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the hover pressed button's texture in the Atlas
+        self.IconTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the icon texture displayed by the button in the Atlas
         return None
     
     def Prepare(self, Source : dict, MenuName : str, ButtonName : str, SpriteSource : dict) -> None:
         """
-        Load everything the button need to work.
+        Load everything the icon button need to work.
 
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing all Data.
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
         :param ButtonName: The name of the button inside Data.py
         :type ButtonName: str
-        :param SpriteSource: The dictionarry containing all the sprites location
+        :param SpriteSource: The dictionary containing all the sprites location
         :type SpriteSource: dict
         :return: None
 
@@ -45,16 +46,28 @@ class Button:
         SpriteInfo = SpriteSource[Info["RefTexture"]]
 
         self.Position = Info["Position"]
+        self.IconScaleFactor = Info["IconScaleFactor"]
         self.BaseSize = Info["OriginalScreenSize"]
-        self.Text = Info["Text"]
-        self.TextSize = Info["TextSize"]
-        self.TextColor = Info["TextColor"]
 
         self.BaseTexture = SpriteInfo["Base"]
         self.HoverTexture = SpriteInfo["Hover"]
         self.PressedTexture = SpriteInfo["Pressed"]
         self.HoverPressedTexture = SpriteInfo["HoverPressed"]
+        self.IconTexture = SpriteSource["Icons"][Info["RefIconTexture"]]
 
+        self.IconPosition.width = self.Position.width * self.IconScaleFactor.x
+        self.IconPosition.height = self.Position.height * self.IconScaleFactor.y
+        self.CenterIcon()
+        return None
+    
+    def CenterIcon(self) -> None:
+        """
+        Center the icon at the center of the button.
+
+        :return: None
+        """
+        self.IconPosition.x = self.Position.x + (self.Position.width - self.IconPosition.width) / 2
+        self.IconPosition.y = self.Position.y + (self.Position.height - self.IconPosition.height) / 2
         return None
         
     def IsHovered(self) -> bool:
@@ -82,22 +95,6 @@ class Button:
         Extras: - Function must be argumentless and return None.
         """
         self.function = function
-        return None
-    
-    def DrawText(self) -> None:
-        """
-        Draw the text of the button at its center.
-        
-        :return: None
-
-        Extras: - measure_text() is a raylib function returning the width of the text with the default font. \n
-        Extras: - draw_text() is a raylib function to draw text.
-        """
-        TextWidth : int = measure_text(self.Text, self.TextSize)
-        # Find where the text should be to be centered.
-        TextPosition : Vector2 = Vector2(self.Position.x + (self.Position.width - TextWidth) / 2,
-                                         self.Position.y + (self.Position.height - self.TextSize) / 2)
-        draw_text(self.Text, int(TextPosition.x), int(TextPosition.y), self.TextSize, self.TextColor)
         return None
     
     def IsClicked(self) -> bool:
@@ -156,8 +153,13 @@ class Button:
                                   self.Position.y * YFactor,
                                   self.Position.width * XFactor,
                                   self.Position.height * YFactor)
+        
+        self.IconPosition = Rectangle(self.IconPosition.x * XFactor,
+                                      self.IconPosition.y * YFactor,
+                                      self.IconPosition.width * XFactor,
+                                      self.IconPosition.height * YFactor)
+        self.CenterIcon()
         self.BaseSize = ScreenSize
-        self.TextSize = int(self.TextSize * YFactor)
         return None
     
     def Draw(self, Atlas : Texture) -> None:
@@ -180,5 +182,5 @@ class Button:
         # Take a region of Atlas, being TextureLocation, to draw the button
         # Draw it at its hitbox place with a WHITE tint (default)
         draw_texture_pro(Atlas, self.CurrentTexture, self.Position, Origin, Rotation, WHITE)
-        self.DrawText()
+        draw_texture_pro(Atlas, self.IconTexture, self.IconPosition, Origin, Rotation, WHITE)
         return None

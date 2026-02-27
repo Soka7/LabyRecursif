@@ -13,6 +13,7 @@ class Game :
         self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
         self.CreationPopUp : Menu = Menu(2, 1, 2, 0, 3)
         self.EditionMenu : EditorScreen = EditorScreen()
+        self.CreditsMenu : Menu = Menu(0, 1, 0, 0, 3)
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
         self.ShouldClose : bool = False
@@ -25,7 +26,7 @@ class Game :
         self.LoadTextures("Textures/Sprites.png")
 
         self.MainMenu.Prepare(UiData, "MainMenu", SpritesData)
-        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, self.ShowCreationPopUp)
+        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, self.ShowCredits, self.ShowCreationPopUp)
 
         self.SettingsMenu.Prepare(UiData, "SettingsMenu", SpritesData)
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
@@ -35,6 +36,9 @@ class Game :
 
         self.EditionMenu.PrepareHUDAndTextures(UiData, SpritesData)
         self.EditionMenu.BindBackButton(self.GoBack)
+
+        self.CreditsMenu.Prepare(UiData, "CreditsMenu", SpritesData)
+        self.CreditsMenu.BindAll(self.GoBack)
 
         return None
 
@@ -91,6 +95,8 @@ class Game :
             self.CreationPopUp.Update()
         elif self.CurrentMenu[-1] == "EditorMenu":
             self.EditionMenu.Update()
+        elif self.CurrentMenu[-1] == "CreditsMenu":
+            self.CreditsMenu.Update()
         
         if self.DisplayFps:
             draw_fps(0, 0)
@@ -120,6 +126,8 @@ class Game :
             self.EditionMenu.Draw(self.Atlas)
             end_mode_2d()
             self.EditionMenu.DrawHUD(self.Atlas)
+        elif self.CurrentMenu[-1] == "CreditsMenu":
+            self.CreditsMenu.Draw(self.Atlas)
         else:
             self.MainMenu.Draw(self.Atlas)
         return None
@@ -191,6 +199,15 @@ class Game :
         self.CurrentMenu.append("CreationPopUp")
         return None
     
+    def ShowCredits(self) -> None:
+        """
+        Add the CreditsMenu to the stack to draw and update it.
+
+        :return: None
+        """
+        self.CurrentMenu.append("CreditsMenu")
+        return None
+    
     def GoBack(self) -> None:
         """
         Remove the last element from the stack to go back one menu.
@@ -235,6 +252,7 @@ class Game :
         self.SettingsMenu.ScaleMenu(Vector2(width, height))
         self.CreationPopUp.ScaleMenu(Vector2(width, height))
         self.EditionMenu.Scale(Vector2(width, height))
+        self.CreditsMenu.ScaleMenu(Vector2(width, height))
 
         # Center window on the screen
         CurrentMonitor : int = get_current_monitor()

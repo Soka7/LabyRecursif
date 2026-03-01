@@ -234,7 +234,7 @@ class EditorScreen:
 
         :return: None
         """
-        File = open("Mazes/Maze.txt", "w")
+        File = open("Mazes/dedales.txt", "w")
         for column in self.MazeArray:
             FileLine : str = ""
             for line in column:

@@ -33,6 +33,7 @@ close_window()
 # - Software for pixel art : PixiEditor
 # - Help for the saving system : https://www.w3schools.com/python/python_file_write.asp
 # - try & except : https://www.w3schools.com/python/python_try_except.asp
+# - default case for switch statements : https://www.datacamp.com/tutorial/python-switch-case
 
 # On the work (You better do it) :
 # - Add a back ground image
@@ -49,3 +50,5 @@ close_window()
 # - Add a warning when the open button is pressed to tell the user than there is no maze or whatever
 # - Music ?
 # - Make underlining multiple lines of text possible (label)
+# - maze must have at most 1 tile between walls and there shouldn't be wall isolate
+# - if Mazes/dedales.txt is empty program crashes

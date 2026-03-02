@@ -36,7 +36,7 @@ Chaque étape est **visualisée graphiquement** :
 - chemins explorés
 - chemin final trouvé
 
-<img src="sad-seal.mp4" width="250"/>
+<img src="sad-seal.jpg" width="250"/>
 
 ---
 

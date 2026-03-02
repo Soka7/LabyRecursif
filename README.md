@@ -122,3 +122,5 @@ pip3 install raylib==5.5.0.3 --break-system-packages
 ```
 ---
 ## 📁 Structure du projet (exemple)
+
+<img src="Upvote.PNG" width="250"/>

@@ -49,25 +49,24 @@ Chaque étape est **visualisée graphiquement** :
 
 ## Commandes (notamment **éditeur**)
 
-- Cliquer pour:
+- Cliquer pour: <br>
     ¤ utiliser les boutons <br>
     ¤ placer une case **éditeur** <br>
-      - Maintenir **éditeur**
+      - Maintenir **éditeur** <br>
     ¤ selectionner une zone de texte <br>
-- Taper (délicatement) sur les touches de votre clavier pour:
+- Taper (délicatement) sur les touches de votre clavier pour: <br>
     ¤ écrire dans une zone de texte <br>
       \ cela requiert d'avoir sélectionné une zone de texte au préalable <br>
-- Taper '+' et '-' (sur un clavier qwerty) **éditeur**
+- Taper '+' et '-' (sur un clavier qwerty) **éditeur** <br>
     ¤ augmenter ou diminuer la sensibilité de la caméra **éditeur** <br>
-- Taper la combinaison suivante: *Ctrl + 'o'* **éditeur**
+- Taper la combinaison suivante: *Ctrl + 'o'* **éditeur** <br>
     ¤ pour ouvrir un labyrinth **éditeur** <br>
-- Taper les combinaisons suivante: *Ctrl + 'z' et Ctrl + 'y'* **éditeur**
+- Taper les combinaisons suivante: *Ctrl + 'z' et Ctrl + 'y'* **éditeur** <br>
     ¤ Revenir dans le temps *Ctrl + 'z'* **éditeur** <br>
     ¤ Avancer dans le temps *Ctrl + 'y'* **éditeur** <br>
-- Scroller avec la souris **éditeur**
+- Scroller avec la souris **éditeur** <br>
     ¤ pour zoomer / dezoomer **éditeur** <br>
-<img src="Dumbass.jpg" width="250"/> <br>
-- 
+<img src="Dumbass.jpg" width="250"/>
 
 ---
 

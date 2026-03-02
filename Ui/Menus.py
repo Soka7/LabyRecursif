@@ -23,7 +23,8 @@ class Menu:
         :type Labels: int
         :return: None
 
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Vector2 is a raylib structure holding 2 floats, being x and y coordinates.
         """
         self.Buttons : list = []                                    # List holding all the buttons and input boxes
         for _ in range(Buttons):                                    # Create the buttons        
@@ -49,7 +50,7 @@ class Menu:
     
     def Update(self) -> None:
         """
-        Call the update method of each elements.
+        Call the update method of each element.
 
         :return: None
         """
@@ -68,7 +69,9 @@ class Menu:
         :return: None
 
         Extras: - Texture is a structure of raylib holding an image. \n
-        Extras: - In this project, Atlas is Sprites.png
+        Extras: - In this project, Atlas is Sprites.png \n
+        Extras: - Vector2 is a raylib structure holding 2 floats, being x and y coordinates. \n
+        Extras: - draw_texture_pro() is a raylib funcion to draw only a part of texture.
         """
         if self.HasBackground:
             Origin : Vector2 = Vector2(0, 0)
@@ -85,11 +88,11 @@ class Menu:
         """
         Call the prepare method of each element.
 
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing all Data.
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
-        :param SpriteSource: The dictionarry containing all the sprites location
+        :param SpriteSource: The dictionary containing all the sprites location
         :type SpriteSource: dict
         :return: None
 
@@ -122,7 +125,8 @@ class Menu:
         :type ScreenSize: Vector2
         :return: None
         
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
         """
         for element in self.Buttons:
             element.Scale(ScreenSize)
@@ -145,7 +149,8 @@ class Menu:
         :type *args: function
         :return: None
 
-        Extras: - Each function must be argumentless and must return None
+        Extras: - Each function must be argumentless and must return None. \n
+        Extras: - You must put the function in the same order you made the buttons in Data.py
         """
         Counter : int = 0
         FuncCounter : int = 0

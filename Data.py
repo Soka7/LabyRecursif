@@ -32,7 +32,8 @@ SpritesData : dict = {
         "CreationPopUp" : Rectangle(125, 0, 62, 62),
         "WarningTestPopUp" : Rectangle(125, 0, 62, 62),
         "ValidationTestPopUp" : Rectangle(125, 0, 62, 62),
-        "OpenFilePopUp" : Rectangle(125, 0, 62, 62)
+        "OpenFilePopUp" : Rectangle(125, 0, 62, 62),
+        "CreditsMenu" : Rectangle(125, 0, 62, 62)
     },
     "Tiles" : 
     {
@@ -717,6 +718,85 @@ UiData : dict = {
             "LineColor" : Color(141, 220, 220, 255),
             "LineSpacing" : 2,
             "LineThickness" : 1,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        }
+    },
+    "CreditsMenu" :
+    {
+        "Background" :
+        {
+            "RefTexture" : "Background",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "HasBackground" : True,
+            "Position" : Rectangle(300, 160, 600, 400),
+        },
+        "BackButton" :
+        {
+            "Type" : "IconButton",
+            "RefTexture" : "IconButton",
+            "OriginalScreenSize" : Vector2(1200, 720), 
+            "Position" : Rectangle(820, 185, 50, 50),
+            "IconScaleFactor" : Vector2(0.5, 0.5),
+            "RefIconTexture" : "Cross"
+        },
+        "MazeLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(350, 200),
+            "Text" : "Maze solver : Soka7",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 2,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 5,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "UiLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(350, 300),
+            "Text" : "User interface : Yolked64",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 2,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 5,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
+            "Overline" : False,
+            "OverlineColor" : Color(0, 0, 0, 0)
+        },
+        "TexturesLabel" :
+        {
+            "Type" : "Label",
+            "OriginalScreenSize" : Vector2(1200, 720),
+            "Position" : Vector2(350, 400),
+            "Text" : "Sprites & Textures : Yolked64",
+            "TextSize" : 24,
+            "TextColor" : Color(141, 220, 220, 255),
+            "TextWidth" : 600,
+            "TextSpacing" : 2,
+            "Rotation" : 0,
+            "Origin" : Vector2(0, 0),
+            "CharacterSpacing" : 5,
+            "Underline" : False,
+            "LineColor" : Color(0, 0, 0, 0),
+            "LineSpacing" : 0,
+            "LineThickness" : 0,
             "Overline" : False,
             "OverlineColor" : Color(0, 0, 0, 0)
         }

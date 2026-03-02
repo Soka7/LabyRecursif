@@ -234,7 +234,7 @@ class EditorScreen:
 
         :return: None
         """
-        File = open("Mazes/Maze.txt", "w")
+        File = open("Mazes/dedales.txt", "w")
         for column in self.MazeArray:
             FileLine : str = ""
             for line in column:
@@ -358,15 +358,21 @@ class EditorScreen:
         self.ShowValidationTestPopUp = False
         return None
     
-    def OpenMaze(self) -> None:
+    def OpenMaze(self, FilePath : str = "") -> None:
         """
         Open a new maze from a relative path.
 
+        :param FilePath: The relative path of the file
+        :type FilePath: str
         :return: None
 
-        Extras: - If the program can't open the file, the pop up will close.
+        Extras: - If the program can't open the file, the pop up will close. \n
+        Extras: - The argument is only used when the user tries to open a maze before creating one.
         """
-        Content : list = self.OpenFilePopUp.GetInputBoxesContent()
+        if FilePath == "":
+            Content : list = self.OpenFilePopUp.GetInputBoxesContent()
+        else:
+            Content : list = [FilePath]
         try:
             File = open(Content[0], "r")
             self.MazeArray.clear()

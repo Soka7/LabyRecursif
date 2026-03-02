@@ -49,7 +49,7 @@ class InputBox:
         """
         Check if the line timer is finished or not.
         
-        :param Cooldown: The timer's coolwon in seconds
+        :param Cooldown: The timer's cooldown in seconds
         :type Cooldown: float
         :return: If the timer is over or not
         :rtype: bool
@@ -81,7 +81,7 @@ class InputBox:
         """
         Check if the left mouse button has been clicked.
         
-        :return: If the left mouse button has been clicked.
+        :return: If the left mouse button has been clicked
         :rtype: bool
 
         Extras: - is_mouse_button_pressed() is a raylib function checking if a button of the mouse has been pressed. \n
@@ -95,7 +95,7 @@ class InputBox:
         """
         Center the text in the Input Box.
         
-        :param Text: The text to center inside the Input Box.
+        :param Text: The text to center inside the Input Box
         :type Text: str
         :return: None
 
@@ -126,7 +126,7 @@ class InputBox:
         
         :return: None
 
-        Extras: - measure_text() is a raylib function returning the width of the text with the default font.
+        Extras: - measure_text() is a raylib function returning the width of the text with the default font. \n
         Extras: - The texture is 23 pixels height and 11 of them are for the text, so 9 will be used to draw text on it.
         """
         LineLenght : int = int(self.Position.height * (9 / 23))
@@ -159,7 +159,9 @@ class InputBox:
 
         Extras: - is_key_pressed() is a raylib function that check if a keyboard key has been pressed. \n
         Extras: - KEY_BACKSPACE refers to the key to delete characters. \n
-        Extras: - get_char_pressed() returns the unicode of the character pressed on the keyboard.
+        Extras: - get_char_pressed() returns the unicode of the character pressed on the keyboard. \n
+        Extras: - KEY_BACKSPACE refers to the key to delete characters on a qwerty keyboard. \n
+        Extras: - KEY_ENTER refers to the enter key on the qwerty keyboard.
         """
         if not self.HasBeenClicked:
             return None
@@ -233,6 +235,7 @@ class InputBox:
                                     self.Position.height * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
+
         self.CenterText(self.WelcomeText)
         self.CenterWarning()
         return None
@@ -287,13 +290,13 @@ class InputBox:
         Call the functions that should be called once after creating the object. \n
         Load everything the input box need to work.
 
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing all Data.
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
         :param ButtonName: The name of the button inside Data.py
         :type ButtonName: str
-        :param SpriteSource: The dictionarry containing all the sprites location
+        :param SpriteSource: The dictionary containing all the sprites location
         :type SpriteSource: dict
         :return: None
 

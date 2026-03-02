@@ -7,7 +7,8 @@ class CheckBox:
         
         :return: None
 
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
+        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
+        Extras: - Vector2 is a raylib structure storing 2 floats, being x and y coordinates.
         """
         self.Position : Rectangle = Rectangle(0, 0, 0, 0)               # Dimensions of the Check Box
         self.IsChecked : bool = False                                   # If the Check Box is checked
@@ -49,7 +50,7 @@ class CheckBox:
         """
         Check if the mouse is hovering the check box.
         
-        :return: True if the mouse hover the check box, False otherwise.
+        :return: True if the mouse hover the check box, False otherwise
         :rtype: bool
 
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
@@ -77,13 +78,13 @@ class CheckBox:
         """
         Load everything the button needs to work.
         
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing all Data.
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
         :param ButtonName: The name of the button inside Data.py
         :type ButtonName: str
-        :param SpriteSource: The dictionarry containing all the sprites location
+        :param SpriteSource: The dictionary containing all the sprites location
         :type SpriteSource: dict
         :return: None
 
@@ -106,16 +107,17 @@ class CheckBox:
         """
         Draw the text box with the right texture.
         
-        :param Atlas: The texture containing all the game's sprites.
+        :param Atlas: The texture containing all the game's sprites
         :type Atlas: Texture
         :return: None
 
         Extras: - Texture is a raylib structure used to hold images. \n
-        Extras: - In this project, Atlas is Sprites.png
+        Extras: - In this project, Atlas is Sprites.png \n
         Extras: - Vector2 is a raylib structure holding a x and a y position.
         """
         Origin : Vector2 = Vector2(0, 0)
         Rotation : int = 0
+
         draw_texture_pro(Atlas, self.CurrentTexture, self.Position, Origin, Rotation, WHITE)
         return None
     
@@ -150,14 +152,19 @@ class CheckBox:
             self.CurrentTexture = self.CheckedHoverTexture
             self.IsChecked = not self.IsChecked
             self.function()
+
         elif self.IsChecked and self.IsHovered():
             self.CurrentTexture = self.CheckedHoverTexture
+
         elif self.IsClicked() and not self.IsChecked:
             self.CurrentTexture = self.BaseTexture
+
         elif self.IsHovered():
             self.CurrentTexture = self.HoverTexture
+
         elif self.IsChecked:
             self.CurrentTexture = self.CheckedTexture
+            
         else:
             self.CurrentTexture = self.BaseTexture
         return None

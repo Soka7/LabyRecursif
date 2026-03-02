@@ -1,31 +1,44 @@
 from pyray import *
+
 from Labyrinth import *
 from MazeEditor import EditorScreen
 from Ui.Menus import Menu
 from Data import UiData, SpritesData
 
 class Game :
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Create a game object, settings are set inside the constructor.
+
+        :return: None
+
+        Extras: - Texture is a raylib data to store images.
+        """
         self.Atlas : Texture = None                                     # The texture holding all the sprites
 
-        self.Maze : Labyrinth = Labyrinth()                         
-        self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)
-        self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)
-        self.CreationPopUp : Menu = Menu(2, 1, 2, 0, 3)
-        self.EditionMenu : EditorScreen = EditorScreen()
+        self.Maze : Labyrinth = Labyrinth()                             # The labyrinth to test                 
+        self.MainMenu : Menu = Menu(5, 0, 0, 0, 0)                      # Main menu, has 5 buttons
+        self.SettingsMenu : Menu = Menu(2, 0, 2, 1, 5)                  # Settings menu, has 2 buttons, 2 input boxes, 1 check box and 5 labels
+        self.CreationPopUp : Menu = Menu(2, 1, 2, 0, 3)                 # Creation pop up (when creating a maze), 2 buttons, 1 icon buttons, 2 input boxes and 3 labels
+        self.EditionMenu : EditorScreen = EditorScreen()                # The editor menu for the maze creation
+        self.CreditsMenu : Menu = Menu(0, 1, 0, 0, 3)                   # Credits menu, 1 icon buttons and 3 labels
 
         self.CurrentMenu : list = ["MainMenu"]                          # Stack to know which menu you are in
-        self.ShouldClose : bool = False
+        self.ShouldClose : bool = False                                 # If the game should close or no
         self.DisplayFps : bool = False                                  # If the Fps should be displayed
+        return None
 
     def Prepare(self) -> None:
-        self.LoadMaze("Mazes/dedales.txt")
-        self.Maze.FindEntry()
-        self.Maze.Solve(self.Maze.coos, [])
+        """
+        Load the textures. \n
+        Also set up all the menus and the callback functions.
+
+        :return: None
+        """
         self.LoadTextures("Textures/Sprites.png")
 
         self.MainMenu.Prepare(UiData, "MainMenu", SpritesData)
-        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, None, self.ShowCreationPopUp)
+        self.MainMenu.BindAll(self.PrepareMaze, self.PrepareToQuit, self.ShowSettings, self.ShowCredits, self.ShowCreationPopUp)
 
         self.SettingsMenu.Prepare(UiData, "SettingsMenu", SpritesData)
         self.SettingsMenu.BindAll(self.ApplySizeChanges, self.GoBack, self.ToggleFps)
@@ -36,27 +49,33 @@ class Game :
         self.EditionMenu.PrepareHUDAndTextures(UiData, SpritesData)
         self.EditionMenu.BindBackButton(self.GoBack)
 
+        self.CreditsMenu.Prepare(UiData, "CreditsMenu", SpritesData)
+        self.CreditsMenu.BindAll(self.GoBack)
+
         return None
 
     def PrepareMaze(self) -> None:
         """
-        Prepare the change to the maze. By loading the maze and quitting the menu.
+        Prepare the change to the maze. By loading the maze and quitting the menu. \n
+        Also solves the maze so it's ready to be shown.
 
         :return: None
         """
         self.CurrentMenu.append("Maze")
         self.LoadMaze("Mazes/dedales.txt")
+        self.Maze.FindEntry()
         self.Maze.Solve(self.Maze.Entry, [])
         return None
 
     def LoadMaze(self, MazePath : str) -> None:
         """
         Load a maze based of a txt file. \n
-        :param MazePath: The relative path to the txt file.
-        :type MazePath: str
-        :rtype: None
 
-        Extras: - In this project the MazePath is dedales.txt
+        :param MazePath: The relative path to the txt file
+        :type MazePath: str
+        :return: None
+
+        Extras: - In this project the MazePath is Mazes/dedales.txt
         """
         self.Maze.LoadLabyrinth(MazePath)
         return None
@@ -65,12 +84,11 @@ class Game :
         """
         Load the file containing all the sprites.
         
-        :param FilePath: The relative path to the file, likely png.
+        :param FilePath: The relative path to the file, likely png
         :type FilePath: str
         :return: None
 
-        Extras: - In this project, the FilePath is Textures/Sprites.png \n
-        Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height.
+        Extras: - In this project, the FilePath is Textures/Sprites.png
         """
         self.Atlas = load_texture(FilePath)
         return None
@@ -91,6 +109,8 @@ class Game :
             self.CreationPopUp.Update()
         elif self.CurrentMenu[-1] == "EditorMenu":
             self.EditionMenu.Update()
+        elif self.CurrentMenu[-1] == "CreditsMenu":
+            self.CreditsMenu.Update()
         
         if self.DisplayFps:
             draw_fps(0, 0)
@@ -98,7 +118,7 @@ class Game :
     
     def Draw(self) -> None:
         """
-        Draw the adequate menu or elements depending on the current menu.
+        Draw the adequate menu or elements depending on the current menu. \n
         Draw the main menu if nothing can be drawn.
         
         :return: None
@@ -107,21 +127,25 @@ class Game :
         Extras: - end_mode_2d() is a raylib function to quit this mode. \n
         Extras: - Enter and quit the 2d mode for the edition menu.
         """
-        if self.CurrentMenu[-1] == "MainMenu":
-            self.MainMenu.Draw(self.Atlas)
-        elif self.CurrentMenu[-1] == "SettingsMenu":
-            self.SettingsMenu.Draw(self.Atlas)
-        elif self.CurrentMenu[-1] == "Maze":
-            self.Maze.Draw()
-        elif self.CurrentMenu[-1] == "CreationPopUp":
-            self.CreationPopUp.Draw(self.Atlas)
-        elif self.CurrentMenu[-1] == "EditorMenu":
-            begin_mode_2d(self.EditionMenu.GetCamera())
-            self.EditionMenu.Draw(self.Atlas)
-            end_mode_2d()
-            self.EditionMenu.DrawHUD(self.Atlas)
-        else:
-            self.MainMenu.Draw(self.Atlas)
+        match self.CurrentMenu[-1]:
+            case "MainMenu":
+                self.MainMenu.Draw(self.Atlas)
+            case "SettingsMenu":
+                self.SettingsMenu.Draw(self.Atlas)
+            case "Maze":
+                self.Maze.Draw()
+            case "CreationPopUp":
+                self.CreationPopUp.Draw(self.Atlas)
+            case "EditorMenu":
+                begin_mode_2d(self.EditionMenu.GetCamera())
+                self.EditionMenu.Draw(self.Atlas)
+                end_mode_2d()
+                self.EditionMenu.DrawHUD(self.Atlas)
+            case "CreditsMenu":
+                self.CreditsMenu.Draw(self.Atlas)
+            case _:
+                self.MainMenu.Draw(self.Atlas)
+
         return None
     
     def PrepareToQuit(self) -> None:
@@ -138,7 +162,8 @@ class Game :
     
     def OpenMaze(self) -> None:
         """
-        Set everything needed to go to the editor menu.
+        Set everything needed to go to the editor menu. \n
+        And open the current maze (Mazes/dedales.txt).
 
         :return: None
         """
@@ -151,12 +176,14 @@ class Game :
         MazeHeight : int = int(Content[1])
 
         self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.OpenMaze("Mazes/dedales.txt")
         self.EditionMenu.Prepare()
         return None
     
     def OpenNewMaze(self) -> None:
         """
-        Set everything needed to go to the editor menu.
+        Set everything needed to go to the editor menu. \n
+        And create a new maze (clear Mazes/dedales.txt).
 
         :return: None
         """
@@ -191,6 +218,15 @@ class Game :
         self.CurrentMenu.append("CreationPopUp")
         return None
     
+    def ShowCredits(self) -> None:
+        """
+        Add the CreditsMenu to the stack to draw and update it.
+
+        :return: None
+        """
+        self.CurrentMenu.append("CreditsMenu")
+        return None
+    
     def GoBack(self) -> None:
         """
         Remove the last element from the stack to go back one menu.
@@ -202,7 +238,7 @@ class Game :
     
     def ToggleFps(self) -> None:
         """
-        Toggle the fps shower, to display or hide the fps.
+        Toggle the fps, to display or hide the fps.
         
         :return: None
         """
@@ -235,8 +271,9 @@ class Game :
         self.SettingsMenu.ScaleMenu(Vector2(width, height))
         self.CreationPopUp.ScaleMenu(Vector2(width, height))
         self.EditionMenu.Scale(Vector2(width, height))
+        self.CreditsMenu.ScaleMenu(Vector2(width, height))
 
-        # Center window on the screen
+        # Center window on the monitor
         CurrentMonitor : int = get_current_monitor()
 
         MonitorWidth : int = get_monitor_width(CurrentMonitor)

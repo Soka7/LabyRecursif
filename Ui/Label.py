@@ -9,8 +9,7 @@ class Label:
         
         Extras: - Vector2 is a raylib structure holding a x and a y position. \n
         Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity). \n
-        Extras: - Font is a raylib structure holding a font file. \n
-        Extras: - get_font_default() is a raylib method to get the font used by default by raylib.
+        Extras: - Font is a raylib structure holding a font file.
         """
         self.Position : Vector2 = Vector2(0, 0)          # Position of the text
 
@@ -24,7 +23,7 @@ class Label:
         self.Rotation : float = 0                        # Rotation of the text
         self.Origin : Vector2 = Vector2(0, 0)            # Origin point of the text
         self.CharacterSpacing : float = 2                # Space between each character
-        self.Font : Font = get_font_default()            # Font to use
+        self.Font : Font = None                          # Font to use
 
         self.Underline : bool = False                    # If the text should be underlined
         self.LineColor : Color = Color(0, 0, 0, 0)       # Color of the underline
@@ -46,7 +45,7 @@ class Label:
         Does the calculations for the under line and overline placement. \n
         Load all the info needed for the label.
         
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing all Data.
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
@@ -54,7 +53,6 @@ class Label:
         :type ButtonName: str
         :return: None
 
-        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
         Extras: - get_font_default() is a raylib method to get the font used by default by raylib. \n
         Extras: - Source refers to Data.py
         """
@@ -101,7 +99,7 @@ class Label:
     
     def SpliText(self) -> None:
         """
-        Split the text accros multiple lines.
+        Split the text accross multiple lines.
 
         :return: None
 
@@ -136,13 +134,14 @@ class Label:
 
         self.Position = Vector2(self.Position.x * XFactor,
                                 self.Position.y * YFactor)
+        # Resize each line of the label
         for line in range(len(self.TextDimensions)):
             self.TextDimensions[line] = Vector2(self.TextDimensions[line].x * XFactor,
                                                 self.TextDimensions[line].y * YFactor)
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
 
-        self.UpdateLinePos()
+        self.UpdateText()
         return None
     
     def Draw(self) -> None:

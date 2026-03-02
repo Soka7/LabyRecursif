@@ -4,33 +4,32 @@ class IconButton:
     def __init__(self) -> None:
         """
         Create a icon button object. \n
-        All attributes are defaulted to 0 or null.
+        All attributes are defaulted to 0 or None.
 
         Extras: - Rectangle is a raylib structure with 4 values, x, y, width, height. \n
         Extras: - Color is raylib structure with 4 values, a Red, Green, Blue tint and alpha (opacity).
         """
-        self.function = None                        # Function called by the button when its clicked
-        self.Position = Rectangle(0, 0, 0, 0)       # Rectangle being the button's dimmensions
-        self.IconPosition = Rectangle(0, 0, 0, 0)   # Rectangle being the icon's dimensions
+        self.function = None                            # Function called by the button when its clicked
+        self.Position = Rectangle(0, 0, 0, 0)           # Rectangle being the button's dimmensions
+        self.IconPosition = Rectangle(0, 0, 0, 0)       # Rectangle being the icon's dimensions
 
-        self.IconScaleFactor : Vector2 = Vector2(0, 0) # % of the width and height of the button that the icon will have
+        self.IconScaleFactor : Vector2 = Vector2(0, 0)  # % of the width and height of the button that the icon will have
 
-        self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
+        self.BaseSize : Vector2 = Vector2(0, 0)         # The screen size it was made on.
 
-        # Textures
-        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing
-        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button's texture in the Atlas
-        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button's texture in the Atlas
-        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button's texture in the Atlas
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)      # The location of the texture to use for drawing
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the base button's texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)        # Location of the hover button's texture in the Atlas
+        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)      # Location of the pressed button's texture in the Atlas
         self.HoverPressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the hover pressed button's texture in the Atlas
-        self.IconTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the icon texture displayed by the button in the Atlas
+        self.IconTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the icon texture displayed by the button in the Atlas
         return None
     
     def Prepare(self, Source : dict, MenuName : str, ButtonName : str, SpriteSource : dict) -> None:
         """
         Load everything the icon button need to work.
 
-        :param Source: The dictionary containing all Data.
+        :param Source: The dictionary containing all Data
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
@@ -55,6 +54,7 @@ class IconButton:
         self.HoverPressedTexture = SpriteInfo["HoverPressed"]
         self.IconTexture = SpriteSource["Icons"][Info["RefIconTexture"]]
 
+        # Scale the icon according to the scale factor
         self.IconPosition.width = self.Position.width * self.IconScaleFactor.x
         self.IconPosition.height = self.Position.height * self.IconScaleFactor.y
         self.CenterIcon()
@@ -74,7 +74,7 @@ class IconButton:
         """
         Check if the mouse is hovering the button.
         
-        :return: True if the mouse is hovering it, False otherwise.
+        :return: True if the mouse is hovering it, False otherwise
         :rtype: bool
 
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
@@ -120,7 +120,7 @@ class IconButton:
         Extras: - is_mouse_button_down() is a raylib function checking if a button of the mouse is being held. \n
         Extras: - MouseButton.MOUSE_BUTTON_LEFT is a raylib data that refers to the left mouse button
         """
-        # Check if the button is hovered by the mouse and if the left click of the mouse is pressed, call the function if it is the case
+
         if self.IsHovered():
             self.CurrentTexture = self.HoverTexture
             if self.IsClicked():
@@ -130,7 +130,7 @@ class IconButton:
                 self.CurrentTexture = self.PressedTexture
             return None
 
-        # Reset the texture 
+        # Reset the texture back to the base one
         if self.CurrentTexture != self.BaseTexture:
             self.CurrentTexture = self.BaseTexture
         return None
@@ -172,8 +172,9 @@ class IconButton:
         :type ScreenSize: Vector2
         :return: None
 
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
-        Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility.
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility.\n
+        Extras: - Texture is a raylib data to sotre images.
         """
 
         Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)

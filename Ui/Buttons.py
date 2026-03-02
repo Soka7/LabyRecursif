@@ -18,10 +18,10 @@ class Button:
         self.BaseSize : Vector2 = Vector2(0, 0)     # The screen size it was made on.
 
         # Textures
-        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)  # The location of the texture to use for drawing
-        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)     # Location of the base button's texture in the Atlas
-        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)    # Location of the hover button's texture in the Atlas
-        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)  # Location of the pressed button's texture in the Atlas
+        self.CurrentTexture : Rectangle = Rectangle(0, 0, 0, 0)      # The location of the texture to use for drawing
+        self.BaseTexture : Rectangle = Rectangle(0, 0, 0, 0)         # Location of the base button's texture in the Atlas
+        self.HoverTexture : Rectangle = Rectangle(0, 0, 0, 0)        # Location of the hover button's texture in the Atlas
+        self.PressedTexture : Rectangle = Rectangle(0, 0, 0, 0)      # Location of the pressed button's texture in the Atlas
         self.HoverPressedTexture : Rectangle = Rectangle(0, 0, 0, 0) # Location of the hover pressed button's texture in the Atlas
         return None
     
@@ -29,13 +29,13 @@ class Button:
         """
         Load everything the button need to work.
 
-        :param Source: The dictionarry containing all Data.
+        :param Source: The dictionary containing the data for the button
         :type Source: dict
         :param MenuName: The name of the menu inside Data.py
         :type MenuName: str
         :param ButtonName: The name of the button inside Data.py
         :type ButtonName: str
-        :param SpriteSource: The dictionarry containing all the sprites location
+        :param SpriteSource: The dictionary containing all the sprites location in Sprites.png
         :type SpriteSource: dict
         :return: None
 
@@ -61,7 +61,7 @@ class Button:
         """
         Check if the mouse is hovering the button.
         
-        :return: True if the mouse is hovering it, False otherwise.
+        :return: True if the mouse is hovering it, False otherwise
         :rtype: bool
 
         Extras: - check_collision_point_rec() is a raylib function checking if a point is inside a rectangle. \n
@@ -91,10 +91,11 @@ class Button:
         :return: None
 
         Extras: - measure_text() is a raylib function returning the width of the text with the default font. \n
-        Extras: - draw_text() is a raylib function to draw text.
+        Extras: - draw_text() is a raylib function to draw text. \n
+        Extras: - Vector2 is a raylib structure storing 2 floats, being x and y coordinates.
         """
         TextWidth : int = measure_text(self.Text, self.TextSize)
-        # Find where the text should be to be centered.
+        # Center the text inside the button
         TextPosition : Vector2 = Vector2(self.Position.x + (self.Position.width - TextWidth) / 2,
                                          self.Position.y + (self.Position.height - self.TextSize) / 2)
         draw_text(self.Text, int(TextPosition.x), int(TextPosition.y), self.TextSize, self.TextColor)
@@ -133,7 +134,7 @@ class Button:
                 self.CurrentTexture = self.PressedTexture
             return None
 
-        # Reset the texture 
+        # Reset the texture back to the normal one
         if self.CurrentTexture != self.BaseTexture:
             self.CurrentTexture = self.BaseTexture
         return None
@@ -170,15 +171,14 @@ class Button:
         :type ScreenSize: Vector2
         :return: None
 
-        Extras: - Vector2 is a raylib structure holding a x and a y position.
-        Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility.
+        Extras: - Vector2 is a raylib structure holding a x and a y position. \n
+        Extras: - draw_texture_pro() is a raylib method to draw a texture with more flexibility. \n
+        Extras: - Texture is a raylib data storing an image.
         """
 
-        Origin : Vector2 = Vector2(0, 0) # Origin of the button (top left corner)
-        Rotation : int = 0 # Rotation of the button's texture (0)
+        Origin : Vector2 = Vector2(0, 0)
+        Rotation : int = 0
 
-        # Take a region of Atlas, being TextureLocation, to draw the button
-        # Draw it at its hitbox place with a WHITE tint (default)
         draw_texture_pro(Atlas, self.CurrentTexture, self.Position, Origin, Rotation, WHITE)
         self.DrawText()
         return None

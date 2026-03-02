@@ -141,7 +141,7 @@ class Label:
         self.BaseSize = ScreenSize
         self.TextSize = int(self.TextSize * YFactor)
 
-        self.UpdateLinePos()
+        self.UpdateText()
         return None
     
     def Draw(self) -> None:

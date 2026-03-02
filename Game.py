@@ -176,6 +176,7 @@ class Game :
         MazeHeight : int = int(Content[1])
 
         self.EditionMenu.SetMazeGridSize(MazeLenght, MazeHeight)
+        self.EditionMenu.OpenMaze("Mazes/dedales.txt")
         self.EditionMenu.Prepare()
         return None
     

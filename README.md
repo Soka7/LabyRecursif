@@ -99,7 +99,7 @@ Raylib est utilisé pour sa **simplicité**, sa **légèreté** et ses **perform
 - **Langage** : Python
 - **Bibliothèque graphique** : [Raylib](https://www.raylib.com/)
 - **Paradigme** : Programmation récursive
-- **Algorithme** : Backtracking / DFS
+- **Algorithme** : DFS
 - **Texture** : PixiEditor
 
 ---

@@ -79,6 +79,24 @@ class Labyrinth:
             return 'X'
         return self.LabyrinthArray[y][x]
 
+    def Threaded(self, element, LISTE):
+        if self.PathFound:                                          # Inutile de continuer si la sortie est deja trouvee
+            return
+        state = self.FindState(element[0], element[1])
+        if state == 'S':                                            # Sortie trouvee
+            with self.Lock:                                         # On prend le verrou pour eviter les race conditions
+                if not self.PathFound:                              # Double verification apres acquisition du verrou
+                    self.PathFound = True
+                    self.PathStorage = LISTE
+                    
+                    # On trace le chemin le plus court et redessine l'entree une fois que la sortie est trouvee
+                    for coors in self.PathStorage:
+                        self.LabyrinthArray[coors[1]][coors[0]] = 'z'
+                    self.LabyrinthArray[self.Entry[1]][self.Entry[0]] = 'E'
+            return True
+        elif state == ' ':
+            self.Solve(element, LISTE)                              # Appel récursif, LISTE deja copiee dans Solve()
+
     def Solve(self, COOS : tuple, LISTE : list) -> None:
         """
         Recursively solves the labyrinth.
@@ -99,7 +117,7 @@ class Labyrinth:
             if self.LabyrinthArray[Y1][X1] == ' ':
                 with self.Lock:                                                 # On prend le verrou pour eviter les race conditions
                     if self.PathFound == False:                                 # Double verification apres acquisition du verrou
-                        self.LabyrinthArray[Y1][X1] = "."                       # On marque la case courante comme visitée
+                        self.LabyrinthArray[Y1][X1] = "."                      # On marque la case courante comme visitée
 
             droite = (X1 + 1, Y1)
             gauche = (X1 - 1, Y1)
@@ -108,27 +126,10 @@ class Labyrinth:
             ListeDir = [droite, bas, gauche, haut]
 
             for element in ListeDir:
-                def Threaded(element):
-                    if self.PathFound:                                          # Inutile de continuer si la sortie est deja trouvee
-                        return
-                    state = self.FindState(element[0], element[1])
-                    if state == 'S':                                            # Sortie trouvee
-                        with self.Lock:                                         # On prend le verrou pour eviter les race conditions
-                            if not self.PathFound:                              # Double verification apres acquisition du verrou
-                                self.PathFound = True
-                                self.PathStorage = LISTE
-                                
-                                # On trace le chemin le plus court et redessine l'entree une fois que la sortie est trouvee
-                                for coors in self.PathStorage:
-                                    self.LabyrinthArray[coors[1]][coors[0]] = 'z'
-                                self.LabyrinthArray[self.Entry[1]][self.Entry[0]] = 'E'
-                        return True
-                    elif state == ' ':
-                        self.Solve(element, LISTE.copy())                       # Appel récursif
-                th = Thread(target = Threaded, args=(element,))
-                th.start()                                                      # On utilise des threads pour explorer chaque direction
-                                                                                # simultanement, afin d'accelerer la resolution en parcourant
-                                                                                # plusieurs chemins en parallele
+                th = Thread(target=self.Threaded, args=(element, LISTE.copy()))  # Chaque thread a sa propre copie de LISTE
+                th.start()                                                       # On utilise des threads pour explorer chaque direction
+                                                                                 # simultanement, afin d'accelerer la resolution en parcourant
+                                                                                 # plusieurs chemins en parallele
             return None
 
     def Draw(self) -> None:

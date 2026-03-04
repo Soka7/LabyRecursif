@@ -471,6 +471,8 @@ class EditorScreen:
 
         if is_key_pressed(KEY_MINUS):
             self.MouseSensitivity -= self.MouseSensitivityIncrement
+            if self.MouseSensitivity <= 0.1:
+                self.MouseSensitivity = 0.1
         elif is_key_pressed(KEY_EQUAL):
             self.MouseSensitivity += self.MouseSensitivityIncrement
 

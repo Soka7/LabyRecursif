@@ -80,6 +80,15 @@ class Labyrinth:
         return self.LabyrinthArray[y][x]
 
     def Threaded(self, element, LISTE):
+        """The code used to solve the labyrinth and gettin processed in threads
+
+        Args:
+            element (tuple): The coordonates of the current position
+            LISTE (list): The list of coordonates
+
+        Returns:
+            bool: True
+        """
         if self.PathFound:                                          # Inutile de continuer si la sortie est deja trouvee
             return
         state = self.FindState(element[0], element[1])

@@ -65,6 +65,7 @@ class Game :
         self.LoadMaze("Mazes/dedales.txt")
         self.Maze.FindEntry()
         self.Maze.Solve(self.Maze.Entry, [])
+        self.Maze.BenchmarkComplexity()
         return None
 
     def LoadMaze(self, MazePath : str) -> None:

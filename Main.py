@@ -13,6 +13,7 @@ init_window(ScreenWidth, ScreenHeight, Title) # Create the window
 game.Prepare() # Prepare all the game's elements
 
 # game loop
+###### Si le chemin observe ne semble pas etre le meilleur il est conseille de relancer la resolution du labyrinthe
 while not window_should_close():
     game.Update()
     if game.ShouldClose:

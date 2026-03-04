@@ -3,33 +3,32 @@
 ## 📌 Présentation
 
 Ce projet implémente un **algorithme récursif de résolution de labyrinthe**, combiné à une **interface graphique interactive** réalisée avec **Raylib**.  
-L’objectif est de visualiser pas à pas le cheminement de l’algorithme à travers un labyrinthe, depuis l’entrée jusqu’à la sortie.
+L’objectif est de visualiser le cheminement de l’algorithme à travers un labyrinthe, depuis l’entrée jusqu’à la sortie.
 
 Ce projet met l’accent sur :
 - la **récursivité**
-- le **backtracking**
-- la **visualisation graphique des algorithmes**
+- la **visualisation graphique du labyrinthe**
 
 ---
 
 ## 🎯 Objectifs pédagogiques
 
 - Comprendre le fonctionnement d’un algorithme récursif
-- Manipuler les concepts de **pile d’appels** et de **retour arrière**
-- Visualiser l’exploration d’un labyrinthe en temps réel
+- Manipuler les concepts de **pile d’appels**
+- Visualiser la resolution d'un labyrinthe
 - Utiliser **Raylib** pour créer une interface graphique simple et efficace
+
+Si vous laguez assez pour ralentir l'algorithme vous pourrez voir le labyrinthe en plein cours de resolution.
 
 ---
 
 ## 🧠 Principe de l’algorithme
 
-L’algorithme repose sur une approche **DFS (Depth-First Search)** récursive :
-
 1. On part de la case de départ
 2. On marque la case comme visitée
 3. On explore récursivement les cases voisines possibles
-4. Si une impasse est atteinte, on revient en arrière (*backtracking*)
-5. Le processus s’arrête lorsque la sortie est trouvée
+4. Si une impasse est atteinte, on ne revient pas en arriere
+5. Le programme de resolution du labyrinthe s’arrête lorsque la sortie est trouvée
 
 Chaque étape est **visualisée graphiquement** :
 - cases visitées
@@ -42,17 +41,32 @@ Chaque étape est **visualisée graphiquement** :
 
 ## Limites
 
-- Les murs du labyrinth doivent pouvoir être formé sans avoir a levé le doigt (tout les murs doivent être liés).
+- Une entrée et une sortie
+- Un chemin resolvable
 - L'éditeur n'est pas très optimisé, meme sur une machine puissante, un labyrinthe de 100 x 100 pourra vous faire atteindre 30 fps.
 
 ---
 
-## Commandes (éditeur)
+## Commandes (notamment **éditeur**)
 
-- '+' et '-' (sur un clavier qwerty) pour augmenter ou diminuer la sensibilité de la caméra.
-- Ctrl + 'o' pour ouvrir un labyrinth.
-- Ctrl + 'z' et Ctrl + 'y' fonctionnent.
-- Le scroller de la souris pour zoomer / dezoomer.
+- Cliquer pour: <br>
+    ¤ utiliser les boutons <br>
+    ¤ placer une case **éditeur** <br>
+      - Maintenir **éditeur** <br>
+    ¤ selectionner une zone de texte <br>
+- Taper (délicatement) sur les touches de votre clavier pour: <br>
+    ¤ écrire dans une zone de texte <br>
+      \ cela requiert d'avoir sélectionné une zone de texte au préalable <br>
+- Taper '+' et '-' (sur un clavier qwerty) **éditeur** <br>
+    ¤ augmenter ou diminuer la sensibilité de la caméra **éditeur** <br>
+- Taper la combinaison suivante: *Ctrl + 'o'* **éditeur** <br>
+    ¤ pour ouvrir un labyrinth **éditeur** <br>
+- Taper les combinaisons suivante: *Ctrl + 'z' et Ctrl + 'y'* **éditeur** <br>
+    ¤ Revenir dans le temps *Ctrl + 'z'* **éditeur** <br>
+    ¤ Avancer dans le temps *Ctrl + 'y'* **éditeur** <br>
+- Scroller avec la souris **éditeur** <br>
+    ¤ pour zoomer / dezoomer **éditeur** <br>
+<img src="Dumbass.jpg" width="250"/>
 
 ---
 
@@ -68,12 +82,13 @@ Chaque étape est **visualisée graphiquement** :
 
 L’interface permet de :
 - afficher le labyrinthe sous forme de grille
-- visualiser l’exploration récursive en temps réel
 - distinguer :
-  - les murs
-  - les chemins
-  - les cases visitées
-  - la solution finale
+  - les murs (rouges)
+  - les chemins (verts)
+  - les cases visitées (grises)
+  - la solution finale (rose)
+  - l'entree (bleu)
+  - la sortie (cyan)
 
 Raylib est utilisé pour sa **simplicité**, sa **légèreté** et ses **performances en temps réel**.
 
@@ -84,7 +99,7 @@ Raylib est utilisé pour sa **simplicité**, sa **légèreté** et ses **perform
 - **Langage** : Python
 - **Bibliothèque graphique** : [Raylib](https://www.raylib.com/)
 - **Paradigme** : Programmation récursive
-- **Algorithme** : Backtracking / DFS
+- **Algorithme** : DFS
 - **Texture** : PixiEditor
 
 ---
@@ -106,4 +121,5 @@ Raylib est utilisé pour sa **simplicité**, sa **légèreté** et ses **perform
 pip3 install raylib==5.5.0.3 --break-system-packages
 ```
 ---
-## 📁 Structure du projet (exemple)
+
+<img src="Upvote.PNG" width="250"/>

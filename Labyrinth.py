@@ -218,3 +218,105 @@ class Labyrinth:
                 draw_rectangle_rec(DestRec, Current)
             LineCount += 1
         return None
+    
+############
+    def BenchmarkComplexity(self) -> None:
+            """
+            Compare la complexité temporelle et spatiale des deux versions de Solve
+            sur le labyrinthe déjà chargé. À appeler après la résolution.
+
+            :return: None
+            """
+            import copy
+            import tracemalloc
+            import matplotlib.pyplot as plt
+            from time import perf_counter
+            from threading import Thread, Lock
+
+            original_maze = copy.deepcopy(self.LabyrinthArray)
+
+            # ── Version Threaded ──────────────────────────────────────────────────
+            def run_threaded():
+                self.LabyrinthArray = copy.deepcopy(original_maze)
+                self.PathFound = False
+                self.PathStorage = []
+                self.Lock = Lock()
+                self.FindEntry()
+                x, y = self.Entry
+                self.LabyrinthArray[y][x] = ' '
+                threads = []
+                for element in [(x+1,y),(x,y+1),(x-1,y),(x,y-1)]:
+                    th = Thread(target=self.Threaded, args=(element, [(x,y)]))
+                    th.start()
+                    threads.append(th)
+                for th in threads:
+                    th.join(timeout=10)
+
+            # ── Version Récursive ─────────────────────────────────────────────────
+            def solve_recursive(COOS, LISTE):
+                import sys; sys.setrecursionlimit(100000)
+                X1, Y1 = COOS
+                state = self.FindState(X1, Y1)
+                if state == 'S':
+                    return LISTE
+                if state not in (' ', 'E'):
+                    return []
+                self.LabyrinthArray[Y1][X1] = '.'
+                for element in [(X1+1,Y1),(X1,Y1+1),(X1-1,Y1),(X1,Y1-1)]:
+                    result = solve_recursive(element, LISTE + [COOS])
+                    if result:
+                        return result
+                return []
+
+            def run_recursive():
+                self.LabyrinthArray = copy.deepcopy(original_maze)
+                self.FindEntry()
+                solve_recursive(self.Entry, [])
+
+            # ── Mesure ────────────────────────────────────────────────────────────
+            def measure(fn):
+                tracemalloc.start()
+                t0 = perf_counter()
+                fn()
+                elapsed = (perf_counter() - t0) * 1000
+                _, peak = tracemalloc.get_traced_memory()
+                tracemalloc.stop()
+                return elapsed, peak / 1024
+
+            REPEATS = 5
+            times_t, mems_t = zip(*[measure(run_threaded)  for _ in range(REPEATS)])
+            times_r, mems_r = zip(*[measure(run_recursive) for _ in range(REPEATS)])
+
+            # Restore le labyrinthe original
+            self.LabyrinthArray = copy.deepcopy(original_maze)
+
+            runs = list(range(1, REPEATS + 1))
+
+            # ── Tracé ─────────────────────────────────────────────────────────────
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4))
+            fig.suptitle("Complexité : Threaded vs Récursif", fontsize=13, fontweight="bold")
+
+            ax1.plot(runs, times_t, 'o-',  color="crimson",    label="Threaded")
+            ax1.plot(runs, times_r, 's--', color="royalblue",  label="Récursif")
+            ax1.set_title("Temps d'exécution")
+            ax1.set_xlabel("Exécution n°")
+            ax1.set_ylabel("Temps (ms)")
+            ax1.legend(); ax1.grid(True, linestyle=":")
+
+            ax2.plot(runs, mems_t, 'o-',  color="crimson",    label="Threaded")
+            ax2.plot(runs, mems_r, 's--', color="royalblue",  label="Récursif")
+            ax2.set_title("Mémoire utilisée")
+            ax2.set_xlabel("Exécution n°")
+            ax2.set_ylabel("Mémoire (KB)")
+            ax2.legend(); ax2.grid(True, linestyle=":")
+
+            plt.tight_layout()
+            import os
+            plt.tight_layout()
+            plt.savefig("benchmark.png", dpi=150, bbox_inches="tight")
+            plt.close()
+            os.system("xdg-open benchmark.png")  # Linux
+            # os.system("open benchmark.png")    # macOS
+            # os.startfile("benchmark.png")      # Windows
+            return None
+############ Claude

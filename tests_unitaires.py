@@ -29,10 +29,7 @@ sys.modules["pyray"] = pyray_stub
 
 from Labyrinth import Labyrinth   # adapte le nom si ton fichier s'appelle différemment
 
-
-# ─────────────────────────────────────────────────────────────────────────────
 # Helpers
-# ─────────────────────────────────────────────────────────────────────────────
 def make_maze_file(content: str) -> str:
     """Écrit un contenu dans un fichier temporaire et retourne son chemin."""
     tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
@@ -71,10 +68,7 @@ TRIVIAL_MAZE = (
     "XXX"
 )
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 1. Tests — LoadLabyrinth
-# ═════════════════════════════════════════════════════════════════════════════
 class TestLoadLabyrinth(unittest.TestCase):
 
     def setUp(self):
@@ -119,10 +113,7 @@ class TestLoadLabyrinth(unittest.TestCase):
         self.assertEqual(len(self.lab.LabyrinthArray[1]), 4)
         self.assertEqual(len(self.lab.LabyrinthArray[2]), 1)
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 2. Tests — FindEntry
-# ═════════════════════════════════════════════════════════════════════════════
 class TestFindEntry(unittest.TestCase):
 
     def setUp(self):
@@ -157,10 +148,7 @@ class TestFindEntry(unittest.TestCase):
         self.lab.FindEntry()
         self.assertEqual(self.lab.Entry, (0, 0))
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 3. Tests — FindState
-# ═════════════════════════════════════════════════════════════════════════════
 class TestFindState(unittest.TestCase):
 
     def setUp(self):
@@ -200,10 +188,8 @@ class TestFindState(unittest.TestCase):
         self.lab.LabyrinthArray = []
         self.assertEqual(self.lab.FindState(0, 0), 'X')
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 4. Tests — Solve / Threaded  (intégration)
-# ═════════════════════════════════════════════════════════════════════════════
+
 def _wait_for_solve(lab: Labyrinth, timeout: float = 5.0) -> None:
     """Attend que PathFound devienne True ou que le timeout expire."""
     deadline = time.time() + timeout
@@ -274,10 +260,8 @@ class TestSolve(unittest.TestCase):
         time.sleep(0.2)   # autres threads éventuels
         self.assertEqual(lab.PathStorage, first_path)
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 5. Tests de concurrence
-# ═════════════════════════════════════════════════════════════════════════════
+
 class TestConcurrency(unittest.TestCase):
 
     def _build(self, content):
@@ -320,10 +304,8 @@ class TestConcurrency(unittest.TestCase):
         draw_thread.join()
         self.assertEqual(errors, [], f"Draw() a levé des exceptions : {errors}")
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 6. Tests — Draw  (appels sans crash)
-# ═════════════════════════════════════════════════════════════════════════════
+
 class TestDraw(unittest.TestCase):
 
     def setUp(self):
@@ -369,10 +351,8 @@ class TestDraw(unittest.TestCase):
         except Exception as e:
             self.fail(f"Draw() a levé une exception après résolution : {e}")
 
-
-# ═════════════════════════════════════════════════════════════════════════════
 # 7. Tests — Cas limites
-# ═════════════════════════════════════════════════════════════════════════════
+
 class TestEdgeCases(unittest.TestCase):
 
     # Labyrinthe 1×1

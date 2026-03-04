@@ -1,5 +1,6 @@
 from pyray import *
 from threading import Thread, Lock
+from time import perf_counter
 
 class Labyrinth:
 
@@ -31,6 +32,8 @@ class Labyrinth:
         self.ErrorColor: Color = (0, 0, 0, 255)
         self.AlrdColor: Color = (50, 50, 50, 255)
         self.RightPathColor : Color = (255, 45, 69, 255)
+
+        self.ExecutionTime : float = 0
         return None
 
     def LoadLabyrinth(self, Filepath: str) -> None:
@@ -79,6 +82,19 @@ class Labyrinth:
             return 'X'
         return self.LabyrinthArray[y][x]
 
+    def ShowExecutionTime(self) -> None:
+        """
+        Show the time to solve the maze inside the terminal.
+
+        :return: None
+
+        Extras: - We lacked some time to make it in a proper element of the user interface.
+        """
+        print("===========================================================\n")
+        print("THE MAZE WAS SOLVED IN : ", self.ExecutionTime, " seconds. \n")
+        print("===========================================================\n")
+        return None
+
     def Threaded(self, element, LISTE):
         """The code used to solve the labyrinth and gettin processed in threads
 
@@ -102,6 +118,8 @@ class Labyrinth:
                     for coors in self.PathStorage:
                         self.LabyrinthArray[coors[1]][coors[0]] = 'z'
                     self.LabyrinthArray[self.Entry[1]][self.Entry[0]] = 'E'
+            self.ExecutionTime = perf_counter() - self.ExecutionTime
+            self.ShowExecutionTime()
             return True
         elif state == ' ':
             self.Solve(element, LISTE)                              # Appel récursif, LISTE deja copiee dans Solve()
@@ -116,6 +134,8 @@ class Labyrinth:
         :param LISTE: list
         :return: None
         """
+        if self.ExecutionTime == 0:
+            self.ExecutionTime = perf_counter()
         if self.PathFound == True:
             return True
         else:

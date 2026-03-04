@@ -184,6 +184,7 @@ class Labyrinth:
 #            return result
 #
 #    return []
+##########################################Pour avoir que le meilleur chemin il suffit de remonter la longueur des chemins et de tous les comparer
 
     def Draw(self) -> None:
         """

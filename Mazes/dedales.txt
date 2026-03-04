@@ -1,10 +1,20 @@
           
-        S 
-    XXX   
-   XXXXXX 
-   XXX   X
-    XX  X 
-     XXXX 
+       S  
           
+      XX  
+   XX X   
+ XX       
+X    X    
+X    X    
+     X    
+     XX   
+X    XX   
+XXXXX     
         E 
+          
+          
+          
+          
+          
+          
           

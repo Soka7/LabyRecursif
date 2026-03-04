@@ -141,6 +141,30 @@ class Labyrinth:
                                                                                  # plusieurs chemins en parallele
             return None
 
+#def Solve(self, COOS: tuple, LISTE: list) -> list:
+#    X1, Y1 = COOS
+#    state = self.FindState(X1, Y1)
+#
+#    if state == 'S':
+#        self.PathFound = True
+#        self.PathStorage = LISTE
+#        for coors in self.PathStorage:
+#            self.LabyrinthArray[coors[1]][coors[0]] = 'z'
+#        self.LabyrinthArray[self.Entry[1]][self.Entry[0]] = 'E'
+#        return LISTE
+#
+#    if state not in (' ', 'E'):
+#        return []
+#
+#    self.LabyrinthArray[Y1][X1] = '.'
+#
+#    for element in [(X1+1, Y1), (X1, Y1+1), (X1-1, Y1), (X1, Y1-1)]:
+#        result = self.Solve(element, LISTE + [COOS])
+#        if result:
+#            return result
+#
+#    return []
+
     def Draw(self) -> None:
         """
         Draw the maze with the color defined in the constructor.
